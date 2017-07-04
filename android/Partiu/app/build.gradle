@@ -36,7 +36,6 @@ dependencies {
     compile "com.android.support:support-v4:$supportlibVersion"
     compile "com.android.support:preference-v7:$supportlibVersion"
     compile "com.android.support:preference-v14:$supportlibVersion"
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
     compile "com.jakewharton:butterknife:$butterknifeVersion"
     compile "com.google.dagger:dagger:$daggerVersion"
@@ -44,6 +43,7 @@ dependencies {
     annotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
     annotationProcessor "com.jakewharton:butterknife-compiler:$butterknifeVersion"
 
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:2.7.21'
 }

@@ -1,5 +1,6 @@
 package br.edu.ufcg.partiu;
 
+import br.edu.ufcg.partiu.login.LoginComponent;
 import br.edu.ufcg.partiu.service.ServiceModule;
 import dagger.Component;
 
@@ -11,4 +12,6 @@ import dagger.Component;
         }
 )
 public interface AppComponent {
+
+    LoginComponent.Builder newLoginComponent();
 }
