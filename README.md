@@ -3,7 +3,7 @@
 Projeto da disciplina de Engenharia de Software, UFCG 2017.1
 
 ## Documentação
-A documentação referente ao processo de desenvolvimento encontra-se disponível para leiutra no [link](https://docs.google.com/document/d/1tWmXYNbgHWPPPpYU03oJQiq1NFbPeMLwKK1YN1aNMpg/edit?usp=sharing).
+A documentação referente ao processo de desenvolvimento encontra-se disponível para leitura no [link](https://docs.google.com/document/d/1tWmXYNbgHWPPPpYU03oJQiq1NFbPeMLwKK1YN1aNMpg/edit?usp=sharing).
 
 ## Nota importante: backend
 
