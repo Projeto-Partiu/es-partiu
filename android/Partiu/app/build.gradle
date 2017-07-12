@@ -11,12 +11,31 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    signingConfigs {
+        config {
+            keyAlias 'partiu'
+            keyPassword 'es147partiu'
+            storeFile file('partiu.jks')
+            storePassword 'es147partiu'
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
+
+        debug {
+            signingConfig signingConfigs.config
         }
     }
+}
+
+repositories {
+    mavenCentral()
 }
 
 dependencies {
@@ -36,6 +55,9 @@ dependencies {
     compile "com.android.support:support-v4:$supportlibVersion"
     compile "com.android.support:preference-v7:$supportlibVersion"
     compile "com.android.support:preference-v14:$supportlibVersion"
+
+    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
+    compile 'com.mcxiaoke.volley:library:1.0.19'
 
     compile "com.jakewharton:butterknife:$butterknifeVersion"
     compile "com.google.dagger:dagger:$daggerVersion"
