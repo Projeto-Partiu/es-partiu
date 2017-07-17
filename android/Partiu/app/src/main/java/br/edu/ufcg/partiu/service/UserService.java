@@ -3,6 +3,7 @@ package br.edu.ufcg.partiu.service;
 import com.facebook.Profile;
 
 import br.edu.ufcg.partiu.base.ServiceCallback;
+import br.edu.ufcg.partiu.model.User;
 
 /**
  * Created by Lucas on 17/07/2017.
@@ -10,5 +11,5 @@ import br.edu.ufcg.partiu.base.ServiceCallback;
 
 public interface UserService {
 
-    void createUser(Profile profile, ServiceCallback callback);
+    void createUser(User user, ServiceCallback callback);
 }

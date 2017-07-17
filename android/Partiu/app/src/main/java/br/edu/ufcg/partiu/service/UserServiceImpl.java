@@ -33,20 +33,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void createUser(Profile account, final ServiceCallback callback) {
-        final User user = new User(account);
-
+    public void createUser(final User user, final ServiceCallback callback) {
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST,
                 context.getString(R.string.url_server) + context.getString(R.string.request_user_login), user.toJSON(),
                 null, null) {
             @Override
             protected VolleyError parseNetworkError(VolleyError volleyError) {
+                try {
+                    LoginManager.getInstance().logOut();
+                } catch (Exception e){}
                 callback.onError(volleyError);
                 return super.parseNetworkError(volleyError);
             }
 
             @Override
             protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                user.saveInPreferences(context);
                 callback.onSuccess(response);
                 return super.parseNetworkResponse(response);
             }

@@ -55,8 +55,12 @@ public class LoginActivity extends AppCompatActivity {
 
         fragment = (LoginFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
 
+        callbackManager = CallbackManager.Factory.create();
+
         if (fragment == null) {
             fragment = new LoginFragment();
+
+            fragment.setCallbackManager(callbackManager);
 
             getSupportFragmentManager()
                     .beginTransaction()
@@ -64,39 +68,12 @@ public class LoginActivity extends AppCompatActivity {
                     .commit();
         }
 
-        callbackManager = CallbackManager.Factory.create();
-
         ((MainApplication) getApplication())
                 .getComponent()
                 .newLoginComponent()
                 .loginModule(new LoginModule(fragment))
                 .build()
                 .inject(this);
-
-        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                presenter.onSuccessfulLogin(loginResult);
-            }
-
-            @Override
-            public void onCancel() {
-                showLoginErrorDialog();
-            }
-
-            @Override
-            public void onError(FacebookException e) {
-                showLoginErrorDialog();
-            }
-        });
-    }
-
-    private void showLoginErrorDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Erro");
-        builder.setMessage("Ocorreu um erro ao tentar realizar o login");
-        builder.setNeutralButton("OK", null);
-        builder.show();
     }
 
     @Override

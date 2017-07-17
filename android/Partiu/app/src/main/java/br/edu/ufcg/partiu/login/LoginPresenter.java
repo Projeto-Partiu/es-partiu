@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
+import com.facebook.FacebookException;
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
@@ -11,6 +12,7 @@ import com.facebook.login.LoginResult;
 import javax.inject.Inject;
 
 import br.edu.ufcg.partiu.base.ServiceCallback;
+import br.edu.ufcg.partiu.model.User;
 import br.edu.ufcg.partiu.service.UserService;
 import br.edu.ufcg.partiu.util.Constants;
 
@@ -37,14 +39,15 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
 
     @Override
     public void onSuccessfulLogin(LoginResult loginResult) {
-        userService.createUser(Profile.getCurrentProfile(), new ServiceCallback() {
+        final User user = new User(Profile.getCurrentProfile());
+
+        userService.createUser(user, new ServiceCallback() {
             @Override
             public void onSuccess(NetworkResponse response) {
                 final int mStatusCode = response.statusCode;
 
                 if (mStatusCode == 202) {
                     Log.i(Constants.LOG, "User found");
-                    // user.saveInPreferences(getApplicationContext());
                 } else if (mStatusCode == 204) {
                     Log.i(Constants.LOG, "User not found");
                 } else {
@@ -55,10 +58,17 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
             @Override
             public void onError(VolleyError error) {
                 view.showLoginErrorDialog();
-                try {
-                    LoginManager.getInstance().logOut();
-                } catch (Exception e){}
             }
         });
+    }
+
+    @Override
+    public void onCancelLogin() {
+        view.showLoginErrorDialog();
+    }
+
+    @Override
+    public void onLoginError(FacebookException e) {
+        view.showLoginErrorDialog();
     }
 }
