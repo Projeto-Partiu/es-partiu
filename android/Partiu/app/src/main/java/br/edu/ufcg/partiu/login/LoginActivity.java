@@ -66,8 +66,6 @@ public class LoginActivity extends AppCompatActivity {
 
         callbackManager = CallbackManager.Factory.create();
 
-        fragment.setCallbackManager(callbackManager);
-
         ((MainApplication) getApplication())
                 .getComponent()
                 .newLoginComponent()
@@ -78,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                sendUserToServer(Profile.getCurrentProfile());
+                presenter.onSuccessfulLogin(loginResult);
             }
 
             @Override
@@ -93,53 +91,6 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void sendUserToServer(Profile account) {
-        final User user = new User(account);
-
-        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST,
-                getString(R.string.url_server) + getString(R.string.request_user_login), user.toJSON(),
-                null, null) {
-            @Override
-            protected VolleyError parseNetworkError(VolleyError volleyError) {
-                Log.i(Constants.LOG, "Erro no login");
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        showLoginErrorDialog();
-                        try {
-                            LoginManager.getInstance().logOut();
-                        } catch (Exception e){}
-                    }
-                });
-                return super.parseNetworkError(volleyError);
-            }
-
-            @Override
-            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
-                final int mStatusCode = response.statusCode;
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (mStatusCode == 202) {
-                            Log.i(Constants.LOG, "User found");
-                            user.saveInPreferences(getApplicationContext());
-                        } else if (mStatusCode == 204) {
-                            Log.i(Constants.LOG, "User not found");
-                        } else {
-                            showLoginErrorDialog();
-                        }
-                    }
-                });
-
-                return super.parseNetworkResponse(response);
-            }
-        };
-
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        requestQueue.add(req);
-    }
-
-
     private void showLoginErrorDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Erro");
@@ -147,7 +98,6 @@ public class LoginActivity extends AppCompatActivity {
         builder.setNeutralButton("OK", null);
         builder.show();
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

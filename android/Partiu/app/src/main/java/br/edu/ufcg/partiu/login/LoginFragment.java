@@ -26,7 +26,6 @@ public class LoginFragment extends Fragment implements LoginContract.LoginView {
     private LoginContract.LoginPresenter presenter;
 
     private LoginButton loginButton;
-    private CallbackManager callbackManager;
 
     public LoginFragment() {
     }
@@ -34,10 +33,6 @@ public class LoginFragment extends Fragment implements LoginContract.LoginView {
     @Override
     public void setPresenter(LoginContract.LoginPresenter presenter) {
         this.presenter = presenter;
-    }
-
-    public void setCallbackManager(CallbackManager callbackManager) {
-        this.callbackManager = callbackManager;
     }
 
     @Nullable
