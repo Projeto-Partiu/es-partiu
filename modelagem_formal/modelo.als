@@ -3,7 +3,6 @@ sig Usuario {
 }
 
 sig Comentarios {
-	//um usuario pode comentar um evento sem precisar marcar nada?
 	autor: one Usuario
 }
 
@@ -15,10 +14,8 @@ sig Evento {
 	comentarios : set Comentarios
 }
 
-//criador do evento marcar como interessado? 
-//criador do evento marcar presenca?
-fact CriadorEvento {
-	all e:Evento | e.criador not in (e.confirmados + e.interessados)
+fact CriadorEventoInteressado {
+	all e:Evento | e.criador in e.interessados
 }
 
 //usuario ou marca presença ou interesse
