@@ -6,8 +6,11 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.facebook.FacebookException;
 import com.facebook.Profile;
+import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+
+import org.json.JSONObject;
 
 import javax.inject.Inject;
 
@@ -20,7 +23,7 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
 
     private final UserService userService;
     private LoginContract.LoginView view;
-
+    
     @Inject
     public LoginPresenter(LoginContract.LoginView view, UserService userService) {
         this.view = view;
@@ -38,8 +41,8 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
     }
 
     @Override
-    public void onSuccessfulLogin(LoginResult loginResult) {
-        final User user = new User(Profile.getCurrentProfile());
+    public void onSuccessfulLogin(JSONObject profile) {
+        final User user = new User(profile);
 
         userService.createUser(user, new ServiceCallback() {
             @Override

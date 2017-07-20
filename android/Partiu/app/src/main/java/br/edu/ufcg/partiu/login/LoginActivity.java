@@ -51,16 +51,12 @@ public class LoginActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        FacebookSdk.sdkInitialize(getApplicationContext());
-
         fragment = (LoginFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
 
-        callbackManager = CallbackManager.Factory.create();
 
         if (fragment == null) {
             fragment = new LoginFragment();
 
-            fragment.setCallbackManager(callbackManager);
 
             getSupportFragmentManager()
                     .beginTransaction()
@@ -76,11 +72,4 @@ public class LoginActivity extends AppCompatActivity {
                 .inject(this);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
-        Profile profile = Profile.getCurrentProfile();
-        Log.d("fb_login_sdk", "callback onError");
-    }
 }

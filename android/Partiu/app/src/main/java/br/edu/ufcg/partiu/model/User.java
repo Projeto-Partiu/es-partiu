@@ -20,10 +20,14 @@ public class User {
     private String name;
     private String urlPhoto;
 
-    public User(Profile account) {
-        this.id = account.getId();
-        this.name = account.getName();
-        this.urlPhoto = account.getProfilePictureUri(400, 400).toString();
+    public User(JSONObject account) {
+        try {
+            this.id = account.getString("id");
+            this.name = account.getString("name");
+            this.urlPhoto = "";
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public String getId() {
