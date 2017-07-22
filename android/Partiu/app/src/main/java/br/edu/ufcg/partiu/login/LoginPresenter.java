@@ -51,8 +51,6 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
 
                 if (mStatusCode == 202) {
                     Log.i(Constants.LOG, "User found");
-                } else if (mStatusCode == 204) {
-                    Log.i(Constants.LOG, "User not found");
                 } else {
                     view.showLoginErrorDialog();
                 }

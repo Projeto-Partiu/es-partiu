@@ -68,10 +68,10 @@ public class User {
         JSONObject jsonObject = new JSONObject();
         try {
             if (getId() != null && !getId().trim().isEmpty())
-                jsonObject.put("id_social", getId());
+                jsonObject.put("id", getId());
             jsonObject.put("name", getName());
             if (getUrlPhoto() != null && !getUrlPhoto().trim().isEmpty())
-                jsonObject.put("url_foto", getUrlPhoto());
+                jsonObject.put("photo", getUrlPhoto());
             return jsonObject;
         } catch (JSONException e) {
             e.printStackTrace();
