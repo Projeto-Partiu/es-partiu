@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void createUser(final User user, final ServiceCallback callback) {
+    public Void createUser(final User user, final ServiceCallback callback) {
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST,
                 context.getString(R.string.url_server) + context.getString(R.string.request_user_login), user.toJSON(),
                 null, null) {
@@ -56,5 +56,8 @@ public class UserServiceImpl implements UserService {
 
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(req);
+
+        // para os testes
+        return null;
     }
 }

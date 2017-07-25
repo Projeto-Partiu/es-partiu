@@ -50,7 +50,7 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
                 final int mStatusCode = response.statusCode;
 
                 if (mStatusCode == 202) {
-                    Log.i(Constants.LOG, "User found");
+                    // User found
                 } else {
                     view.showLoginErrorDialog();
                 }

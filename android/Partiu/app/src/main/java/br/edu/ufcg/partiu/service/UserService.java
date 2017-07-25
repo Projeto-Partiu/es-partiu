@@ -11,5 +11,5 @@ import br.edu.ufcg.partiu.model.User;
 
 public interface UserService {
 
-    void createUser(User user, ServiceCallback callback);
+    Void createUser(User user, ServiceCallback callback);
 }
