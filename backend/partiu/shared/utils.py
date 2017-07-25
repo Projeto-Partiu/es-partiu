@@ -1,7 +1,8 @@
-import datetime
 """
     Utils
 """
+
+import datetime
 
 def default_parser(obj):
     """ Default Parser
@@ -14,3 +15,6 @@ def default_parser(obj):
         return obj.isoformat()
     else:
         return str(obj)
+
+def error(status):
+    return json.dumps({}, default=default_parser), status
