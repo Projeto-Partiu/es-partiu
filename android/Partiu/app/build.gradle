@@ -21,17 +21,25 @@ android {
         }
     }
 
+    productFlavors {
+        local {
+            buildConfigField "String", "SERVER_URL", "\"http://localhost:8080/\""
+        }
+
+        remote {
+            buildConfigField "String", "SERVER_URL", "\"https://es-partiu.herokuapp.com/\""
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
-            buildConfigField "String", "SERVER_URL", "\"http://es-partiu.herokuapp.com/\""
         }
 
         debug {
             signingConfig signingConfigs.config
-            buildConfigField "String", "SERVER_URL", "\"http://localhost:8080/\""
         }
     }
 }

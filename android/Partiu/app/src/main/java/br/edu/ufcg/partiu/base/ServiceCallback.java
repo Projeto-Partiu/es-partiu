@@ -8,7 +8,7 @@ import retrofit2.Response;
 
 public interface ServiceCallback<T> {
 
-    void onSuccess(T object, Response<T> response);
+    void onResponse(T object, Response<T> response);
 
     void onError(Throwable error);
 }

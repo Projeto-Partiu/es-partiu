@@ -38,7 +38,7 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
 
         userService.createUser(user, new ServiceCallback<User>() {
             @Override
-            public void onSuccess(User object, Response<User> response) {
+            public void onResponse(User object, Response<User> response) {
                 if (response.isSuccessful()) {
                     // found
                 } else {

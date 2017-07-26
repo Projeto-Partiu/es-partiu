@@ -14,7 +14,6 @@ import org.mockito.stubbing.Answer;
 import br.edu.ufcg.partiu.base.ServiceCallback;
 import br.edu.ufcg.partiu.model.User;
 import br.edu.ufcg.partiu.service.UserService;
-import okhttp3.Headers;
 import retrofit2.Response;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -58,7 +57,7 @@ public class LoginPresenterTest {
 
                 Response<User> response = Response.success(user);
 
-                ((ServiceCallback<User>) invocation.getArgument(1)).onSuccess(
+                ((ServiceCallback<User>) invocation.getArgument(1)).onResponse(
                         user, response
                 );
                 return null;

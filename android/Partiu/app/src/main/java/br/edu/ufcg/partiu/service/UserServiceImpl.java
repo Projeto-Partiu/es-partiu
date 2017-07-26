@@ -32,9 +32,14 @@ public class UserServiceImpl implements UserService {
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
                     response.body().saveInPreferences(context);
+                } else {
+                    try {
+                        LoginManager.getInstance().logOut();
+                    } catch (Exception e) {
+                    }
                 }
 
-                callback.onSuccess(response.body(), response);
+                callback.onResponse(response.body(), response);
             }
 
             @Override
