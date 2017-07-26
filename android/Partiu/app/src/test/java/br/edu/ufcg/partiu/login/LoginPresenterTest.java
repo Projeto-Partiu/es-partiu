@@ -1,7 +1,5 @@
 package br.edu.ufcg.partiu.login;
 
-import com.android.volley.NetworkResponse;
-
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Rule;
@@ -16,8 +14,9 @@ import org.mockito.stubbing.Answer;
 import br.edu.ufcg.partiu.base.ServiceCallback;
 import br.edu.ufcg.partiu.model.User;
 import br.edu.ufcg.partiu.service.UserService;
+import okhttp3.Headers;
+import retrofit2.Response;
 
-import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 
@@ -55,8 +54,12 @@ public class LoginPresenterTest {
         )).thenAnswer(new Answer<Object>() {
             @Override
             public Object answer(InvocationOnMock invocation) throws Throwable {
-                ((ServiceCallback) invocation.getArguments()[1]).onSuccess(
-                        new NetworkResponse(202, null, null, true)
+                User user = invocation.getArgument(0);
+
+                Response<User> response = Response.success(user);
+
+                ((ServiceCallback<User>) invocation.getArgument(1)).onSuccess(
+                        user, response
                 );
                 return null;
             }

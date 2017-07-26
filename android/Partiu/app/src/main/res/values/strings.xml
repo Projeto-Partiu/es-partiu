@@ -3,7 +3,4 @@
 
     <string name="facebook_app_id">1454994784592664</string>
     <string name="fb_login_protocol_scheme">fb1454994784592664</string>
-
-    <string name="url_server">http://localhost:8080/</string>
-    <string name="request_user_login">user/</string>
 </resources>

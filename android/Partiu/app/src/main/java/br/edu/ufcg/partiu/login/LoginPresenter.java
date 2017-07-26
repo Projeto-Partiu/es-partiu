@@ -1,14 +1,6 @@
 package br.edu.ufcg.partiu.login;
 
-import android.util.Log;
-
-import com.android.volley.NetworkResponse;
-import com.android.volley.VolleyError;
 import com.facebook.FacebookException;
-import com.facebook.Profile;
-import com.facebook.ProfileTracker;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
 
 import org.json.JSONObject;
 
@@ -17,7 +9,7 @@ import javax.inject.Inject;
 import br.edu.ufcg.partiu.base.ServiceCallback;
 import br.edu.ufcg.partiu.model.User;
 import br.edu.ufcg.partiu.service.UserService;
-import br.edu.ufcg.partiu.util.Constants;
+import retrofit2.Response;
 
 public class LoginPresenter implements LoginContract.LoginPresenter {
 
@@ -44,20 +36,18 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
     public void onSuccessfulLogin(JSONObject profile) {
         final User user = new User(profile);
 
-        userService.createUser(user, new ServiceCallback() {
+        userService.createUser(user, new ServiceCallback<User>() {
             @Override
-            public void onSuccess(NetworkResponse response) {
-                final int mStatusCode = response.statusCode;
-
-                if (mStatusCode == 202) {
-                    // User found
+            public void onSuccess(User object, Response<User> response) {
+                if (response.isSuccessful()) {
+                    // found
                 } else {
                     view.showLoginErrorDialog();
                 }
             }
 
             @Override
-            public void onError(VolleyError error) {
+            public void onError(Throwable error) {
                 view.showLoginErrorDialog();
             }
         });

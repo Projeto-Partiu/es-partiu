@@ -1,15 +1,14 @@
 package br.edu.ufcg.partiu.base;
 
-import com.android.volley.NetworkResponse;
-import com.android.volley.VolleyError;
+import retrofit2.Response;
 
 /**
  * Created by Lucas on 17/07/2017.
  */
 
-public interface ServiceCallback {
+public interface ServiceCallback<T> {
 
-    void onSuccess(NetworkResponse response);
+    void onSuccess(T object, Response<T> response);
 
-    void onError(VolleyError error);
+    void onError(Throwable error);
 }
