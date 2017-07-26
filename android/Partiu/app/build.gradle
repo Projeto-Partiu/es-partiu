@@ -11,19 +11,73 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    signingConfigs {
+        config {
+            keyAlias 'partiu'
+            keyPassword 'es147partiu'
+            storeFile file('partiu.jks')
+            storePassword 'es147partiu'
+        }
+    }
+
+    productFlavors {
+        local {
+            buildConfigField "String", "SERVER_URL", "\"http://localhost:8080/\""
+        }
+
+        remote {
+            buildConfigField "String", "SERVER_URL", "\"https://es-partiu.herokuapp.com/\""
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
+
+        debug {
+            signingConfig signingConfigs.config
         }
     }
 }
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
+    ext.supportlibVersion = '25.3.1';
+    ext.butterknifeVersion = '8.5.1';
+    ext.daggerVersion = '2.10'
+
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.1.0'
+
+    compile "com.android.support:recyclerview-v7:$supportlibVersion"
+    compile "com.android.support:design:$supportlibVersion"
+    compile "com.android.support:appcompat-v7:$supportlibVersion"
+    compile "com.android.support:cardview-v7:$supportlibVersion"
+    compile "com.android.support:support-v4:$supportlibVersion"
+    compile "com.android.support:preference-v7:$supportlibVersion"
+    compile "com.android.support:preference-v14:$supportlibVersion"
+
+    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
+    //compile 'com.mcxiaoke.volley:library:1.0.19'
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+
+    compile "com.jakewharton:butterknife:$butterknifeVersion"
+    compile "com.google.dagger:dagger:$daggerVersion"
+
+    annotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$butterknifeVersion"
+
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:2.7.21'
 }
