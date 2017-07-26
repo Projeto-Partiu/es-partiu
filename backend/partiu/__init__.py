@@ -12,7 +12,7 @@ from pymongo import MongoClient
 app = Flask(__name__)
 
 if os.getenv('ENV') == 'production':
-    app.mongodb_uri = 'mongodb://%s:%s@ds125113.mlab.com:25113/heroku_4j0wn873' % (os.environ['MONGODB_USER'], os.environ['MONGODB_PASSWORD'])
+    app.mongodb_uri = os.environ['MONGODB_URI']
 else:
     app.mongodb_uri = 'mongodb://localhost:27017/'
 
