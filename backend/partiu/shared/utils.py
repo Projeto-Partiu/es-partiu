@@ -3,6 +3,7 @@
 """
 
 import datetime
+import simplejson as json
 
 def default_parser(obj):
     """ Default Parser
