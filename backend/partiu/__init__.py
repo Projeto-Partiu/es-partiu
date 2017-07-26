@@ -3,6 +3,7 @@
 """
 
 import simplejson as json
+import os
 
 from flask import Flask, request
 from .shared.utils import default_parser, error
@@ -10,7 +11,12 @@ from pymongo import MongoClient
 
 app = Flask(__name__)
 
-client = MongoClient('mongodb://localhost:27017/')
+if os.getenv('ENV') == 'production':
+    app.mongodb_uri = 'mongodb://%s:%s@ds125113.mlab.com:25113/heroku_4j0wn873' % (os.environ['MONGODB_USER'], os.environ['MONGODB_PASSWORD'])
+else:
+    app.mongodb_uri = 'mongodb://localhost:27017/'
+
+client = MongoClient(app.mongodb_uri)
 db = client.partiu
 
 @app.route('/version', methods=['GET'])

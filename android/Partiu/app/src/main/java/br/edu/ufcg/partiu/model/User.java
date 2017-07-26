@@ -63,19 +63,4 @@ public class User {
         editor.apply();
         return true;
     }
-
-    public JSONObject toJSON(){
-        JSONObject jsonObject = new JSONObject();
-        try {
-            if (getId() != null && !getId().trim().isEmpty())
-                jsonObject.put("id", getId());
-            jsonObject.put("name", getName());
-            if (getUrlPhoto() != null && !getUrlPhoto().trim().isEmpty())
-                jsonObject.put("photo", getUrlPhoto());
-            return jsonObject;
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 }
