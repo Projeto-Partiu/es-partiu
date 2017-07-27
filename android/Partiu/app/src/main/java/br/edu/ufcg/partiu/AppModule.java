@@ -2,6 +2,7 @@ package br.edu.ufcg.partiu;
 
 import android.content.Context;
 
+import br.edu.ufcg.partiu.feed.FeedComponent;
 import br.edu.ufcg.partiu.login.LoginComponent;
 import br.edu.ufcg.partiu.login.LoginModule;
 import dagger.Module;
@@ -9,7 +10,8 @@ import dagger.Provides;
 
 @Module(
         subcomponents = {
-                LoginComponent.class
+                LoginComponent.class,
+                FeedComponent.class
         }
 )
 public class AppModule {

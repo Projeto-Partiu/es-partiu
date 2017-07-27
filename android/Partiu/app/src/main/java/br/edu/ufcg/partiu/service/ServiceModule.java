@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import br.edu.ufcg.partiu.AppScope;
 import br.edu.ufcg.partiu.BuildConfig;
+import br.edu.ufcg.partiu.service.repository.EventRepository;
 import br.edu.ufcg.partiu.service.repository.UserRepository;
 import dagger.Module;
 import dagger.Provides;
@@ -43,6 +44,12 @@ public class ServiceModule {
     @Provides
     public UserRepository providesUserRepository(Retrofit retrofit) {
         return retrofit.create(UserRepository.class);
+    }
+
+    @AppScope
+    @Provides
+    public EventRepository providesEventRepository(Retrofit retrofit) {
+        return retrofit.create(EventRepository.class);
     }
 
     @AppScope

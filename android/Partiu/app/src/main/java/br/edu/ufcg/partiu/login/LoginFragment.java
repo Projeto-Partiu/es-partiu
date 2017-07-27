@@ -3,11 +3,8 @@ package br.edu.ufcg.partiu.login;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.facebook.CallbackManager;
@@ -16,8 +13,6 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.Profile;
-import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
@@ -27,11 +22,13 @@ import org.json.JSONObject;
 import java.util.Arrays;
 
 import br.edu.ufcg.partiu.R;
+import br.edu.ufcg.partiu.shared.MainActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class LoginFragment extends Fragment implements LoginContract.LoginView {
-    private LoginContract.LoginPresenter presenter;
+public class LoginFragment extends android.support.v4.app.Fragment implements LoginContract.View {
+
+    private LoginContract.Presenter presenter;
 
     @BindView(R.id.login_button)
     LoginButton loginButton;
@@ -41,14 +38,14 @@ public class LoginFragment extends Fragment implements LoginContract.LoginView {
     }
 
     @Override
-    public void setPresenter(LoginContract.LoginPresenter presenter) {
+    public void setPresenter(LoginContract.Presenter presenter) {
         this.presenter = presenter;
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_login, container, false);
+    public android.view.View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        android.view.View view = inflater.inflate(R.layout.fragment_login, container, false);
 
         FacebookSdk.sdkInitialize(view.getContext());
 
@@ -115,6 +112,13 @@ public class LoginFragment extends Fragment implements LoginContract.LoginView {
                 builder.show();
             }
         });
+    }
+
+    @Override
+    public void goToMain() {
+        Intent intent = new Intent(getContext(), MainActivity.class);
+
+        startActivity(intent);
     }
 
     @Override

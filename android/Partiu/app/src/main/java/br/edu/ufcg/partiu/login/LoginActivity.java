@@ -3,8 +3,6 @@ package br.edu.ufcg.partiu.login;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.facebook.CallbackManager;
-
 import javax.inject.Inject;
 
 import br.edu.ufcg.partiu.MainApplication;

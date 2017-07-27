@@ -20,6 +20,9 @@ public class User {
     private String name;
     private String urlPhoto;
 
+    public User() {
+    }
+
     public User(JSONObject account) {
         try {
             this.id = account.getString("id");

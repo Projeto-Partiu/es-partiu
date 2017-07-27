@@ -1,12 +1,15 @@
 package br.edu.ufcg.partiu.service;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.facebook.login.LoginManager;
 
 import br.edu.ufcg.partiu.base.ServiceCallback;
 import br.edu.ufcg.partiu.model.User;
 import br.edu.ufcg.partiu.service.repository.UserRepository;
+import br.edu.ufcg.partiu.util.Constants;
+import br.edu.ufcg.partiu.util.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -54,5 +57,22 @@ public class UserServiceImpl implements UserService {
         });
 
         return null;
+    }
+
+    @Override
+    public User loggedUser() {
+        SharedPreferences prefs = Util.getPreferences(context);
+
+        if (!prefs.getBoolean(Constants.LOGGED_USER, false)) {
+            return null;
+        }
+
+        User loggedUser = new User();
+
+        loggedUser.setId(prefs.getString(Constants.ID_USER, ""));
+        loggedUser.setName(prefs.getString(Constants.NAME_USER, ""));
+        loggedUser.setUrlPhoto(prefs.getString(Constants.URL_PHOTO_USER, ""));
+
+        return loggedUser;
     }
 }

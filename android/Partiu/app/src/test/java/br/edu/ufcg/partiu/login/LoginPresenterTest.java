@@ -30,10 +30,10 @@ public class LoginPresenterTest {
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
-    LoginContract.LoginPresenter presenter;
+    LoginContract.Presenter presenter;
 
     @Mock
-    LoginContract.LoginView loginView;
+    LoginContract.View view;
 
     @Mock
     UserService userService;
@@ -43,7 +43,7 @@ public class LoginPresenterTest {
 
     @Before
     public void setUp() {
-        presenter = new LoginPresenter(loginView, userService);
+        presenter = new LoginPresenter(view, userService);
     }
 
     @Test
@@ -66,6 +66,6 @@ public class LoginPresenterTest {
 
         presenter.onSuccessfulLogin(mock(JSONObject.class));
 
-        Mockito.verifyZeroInteractions(loginView);
+        Mockito.verifyZeroInteractions(view);
     }
 }

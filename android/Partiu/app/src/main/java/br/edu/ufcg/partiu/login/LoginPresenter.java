@@ -11,13 +11,13 @@ import br.edu.ufcg.partiu.model.User;
 import br.edu.ufcg.partiu.service.UserService;
 import retrofit2.Response;
 
-public class LoginPresenter implements LoginContract.LoginPresenter {
+public class LoginPresenter implements LoginContract.Presenter {
 
     private final UserService userService;
-    private LoginContract.LoginView view;
+    private LoginContract.View view;
     
     @Inject
-    public LoginPresenter(LoginContract.LoginView view, UserService userService) {
+    public LoginPresenter(LoginContract.View view, UserService userService) {
         this.view = view;
         this.userService = userService;
     }
@@ -29,7 +29,9 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
 
     @Override
     public void start() {
-
+        if (userService.loggedUser() != null) {
+            view.goToMain();
+        }
     }
 
     @Override
@@ -40,7 +42,7 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
             @Override
             public void onResponse(User object, Response<User> response) {
                 if (response.isSuccessful()) {
-                    // found
+                    view.goToMain();
                 } else {
                     view.showLoginErrorDialog();
                 }
