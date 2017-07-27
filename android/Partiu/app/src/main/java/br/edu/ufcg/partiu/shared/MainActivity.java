@@ -76,9 +76,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private void navigateToFeed() {
         if (feedFragment == null) {
             feedFragment = new FeedFragment();
-
-            attachFragmentToContainer(feedFragment);
         }
+
+        attachFragmentToContainer(feedFragment);
 
         component
                 .newFeedComponent()
@@ -90,12 +90,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private void attachFragmentToContainer(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-        if (currentDisplayedFragment == null) {
+        if (currentDisplayedFragment != null) {
             transaction
                     .remove(currentDisplayedFragment)
                     .add(R.id.fragment_container, fragment);
         } else {
-            transaction.replace(R.id.fragment_container, fragment);
+            transaction.add(R.id.fragment_container, fragment);
         }
 
         currentDisplayedFragment = fragment;
