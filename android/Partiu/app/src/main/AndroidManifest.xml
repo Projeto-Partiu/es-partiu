@@ -44,8 +44,7 @@
 
         <activity
             android:name=".event.CreateEventActivity"
-            android:label="@string/title_activity_create_event"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:label="@string/title_activity_create_event"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

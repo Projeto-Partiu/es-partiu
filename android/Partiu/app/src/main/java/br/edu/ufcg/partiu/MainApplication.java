@@ -9,11 +9,10 @@ public class MainApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        //noinspection deprecation
-        // component = DaggerAppComponent
-        //        .builder()
-        //        .appModule(new AppModule(this))
-        //        .build();
+         component = DaggerAppComponent
+                .builder()
+                .appModule(new AppModule(this))
+                .build();
     }
 
     public AppComponent getComponent() {
