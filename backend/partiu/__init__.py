@@ -73,7 +73,7 @@ def create_event():
         else:
             return error(403)
 
-        if db.user.insert(event):
+        if db.event.insert(event):
             return json.dumps({}, default=default_parser), 202
         else:
             return error(501)
@@ -81,3 +81,11 @@ def create_event():
     except Exception as e:
         print(e)
         return error(500)
+
+@app.route('/events', methods=['GET'])
+def get_events():
+	s = ""
+	for event in db.event.find():
+		s += event['name']
+	return s
+

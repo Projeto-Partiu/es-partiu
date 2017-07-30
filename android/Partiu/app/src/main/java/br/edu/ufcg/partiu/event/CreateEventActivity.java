@@ -40,11 +40,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class CreateEventActivity extends AppCompatActivity {
 
     private static int PLACE_PICKER_REQUEST = 1;
+    private Event event;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
+
+        event = new Event();
 
         EditText localizationEditText = (EditText) findViewById(R.id.localizationEditText);
         localizationEditText.setOnClickListener(new View.OnClickListener() {
@@ -69,8 +72,6 @@ public class CreateEventActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Event event = new Event();
-
                 Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl(BuildConfig.SERVER_URL)
                         .addConverterFactory(GsonConverterFactory.create())
@@ -78,20 +79,18 @@ public class CreateEventActivity extends AppCompatActivity {
 
                 EventRepository eventRepository = retrofit.create(EventRepository.class);
 
-                final Call<Event> call = eventRepository.createEvent(event);
-
+                final Call<Event> call = eventRepository.createEvent(getEvent());
+                
                 call.enqueue(new Callback<Event>() {
                     @Override
                     public void onResponse(Call<Event> call, Response<Event> response) {
-                        System.out.println(response);
-                        System.out.println(call);
+
 
                     }
 
                     @Override
                     public void onFailure(Call<Event> call, Throwable t) {
-                        System.out.println(call);
-                        System.out.println(t);
+
                     }
                 });
 
@@ -106,6 +105,18 @@ public class CreateEventActivity extends AppCompatActivity {
 
         EditText startTimeEditText = (EditText) findViewById(R.id.startTimeEditText);
         startTimeEditText.setText(timeString.toString());
+        event.setEndMinute(Calendar.MINUTE);
+        event.setStartMinute(Calendar.MINUTE);
+        event.setStartHour(Calendar.HOUR_OF_DAY);
+        event.setEndHour(Calendar.HOUR_OF_DAY);
+
+        event.setStartDay(Calendar.DAY_OF_MONTH);
+        event.setStartMonth(Calendar.MONTH);
+        event.setStartYear(Calendar.YEAR);
+        event.setEndDay(Calendar.DAY_OF_MONTH);
+        event.setEndMonth(Calendar.MONTH);
+        event.setEndYear(Calendar.YEAR);
+
 
         EditText endTimeEditText = (EditText) findViewById(R.id.endTimeEditText);
         endTimeEditText.setText(timeString.toString());
@@ -141,6 +152,9 @@ public class CreateEventActivity extends AppCompatActivity {
 
                             formatter.format("%02d:%02d", selectedHour, selectedMinute);
 
+                            event.setStartHour(selectedHour);
+                            event.setStartMinute(selectedMinute);
+
                             startTimeEditText.setText(formatter.toString());
 
                     }
@@ -169,6 +183,9 @@ public class CreateEventActivity extends AppCompatActivity {
                         Formatter formatter = new Formatter();
 
                         formatter.format("%02d:%02d", selectedHour, selectedMinute);
+
+                        event.setEndHour(selectedHour);
+                        event.setEndMinute(selectedMinute);
 
                         endTimeEditText.setText(formatter.toString());
 
@@ -202,6 +219,10 @@ public class CreateEventActivity extends AppCompatActivity {
 
                         String monthName = monthDate.format(mcurrentDate.getTime());
 
+                        event.setEndDay(dayOfMonth);
+                        event.setEndMonth(monthOfYear);
+                        event.setEndYear(year);
+
                         endDateEditText.setText( dayOfMonth + " " + monthName + ", " + year);
                     }
                 }, year, month, day);//Yes 24 hour time
@@ -230,6 +251,10 @@ public class CreateEventActivity extends AppCompatActivity {
                         SimpleDateFormat monthDate = new SimpleDateFormat("MMM");
                         mcurrentDate.set(Calendar.MONTH, monthOfYear);
 
+                        event.setStartDay(dayOfMonth);
+                        event.setStartMonth(monthOfYear);
+                        event.setStartYear(year);
+
                         String monthName = monthDate.format(mcurrentDate.getTime());
                         startDateEditText.setText( dayOfMonth + " " + monthName + ", " + year);
                     }
@@ -257,13 +282,30 @@ public class CreateEventActivity extends AppCompatActivity {
                 final double latitude = place.getLatLng().latitude;
                 final double longitude = place.getLatLng().longitude;
 
+                event.setLatitude(latitude);
+                event.setLongitude(longitude);
+                event.setAddress(address.toString());
+
                 EditText localizationEditText = (EditText) findViewById(R.id.localizationEditText);
                 localizationEditText.setText(address);
 
                 EditText nameEditText = (EditText) findViewById(R.id.nameEditText);
-                nameEditText.setText(name);
+                if (!(name.length() > 2 && name.charAt(name.length() - 1) == 'W' && name.charAt(name.length() - 2) == '"'))
+                    nameEditText.setText(name);
             }
         }
+    }
+
+    private Event getEvent(){
+
+        EditText nameEditText = (EditText) findViewById(R.id.nameEditText);
+        event.setName(nameEditText.getText().toString());
+
+        EditText descriptionEditText = (EditText) findViewById(R.id.descriptionEditText);
+        event.setDescription(descriptionEditText.getText().toString());
+
+        return event;
+
     }
 
 }

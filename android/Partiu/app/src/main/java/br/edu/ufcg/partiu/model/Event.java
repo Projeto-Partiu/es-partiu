@@ -145,5 +145,26 @@ public class Event {
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", startHour=" + startHour +
+                ", endHour=" + endHour +
+                ", startMinute=" + startMinute +
+                ", endMinute=" + endMinute +
+                ", startDay=" + startDay +
+                ", endDay=" + endDay +
+                ", startMonth=" + startMonth +
+                ", endMonth=" + endMonth +
+                ", startYear=" + startYear +
+                ", endYear=" + endYear +
+                ", address='" + address + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                '}';
+    }
 }
 
