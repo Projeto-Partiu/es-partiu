@@ -3,6 +3,7 @@ package br.edu.ufcg.partiu.event;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -24,13 +25,21 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Formatter;
 
+import javax.inject.Inject;
+
 import br.edu.ufcg.partiu.BuildConfig;
 import br.edu.ufcg.partiu.R;
 import br.edu.ufcg.partiu.base.ServiceCallback;
+import br.edu.ufcg.partiu.login.LoginPresenter;
 import br.edu.ufcg.partiu.model.Event;
 import br.edu.ufcg.partiu.service.EventService;
 import br.edu.ufcg.partiu.service.EventServiceImpl;
+import br.edu.ufcg.partiu.service.UserService;
+import br.edu.ufcg.partiu.service.UserServiceImpl;
 import br.edu.ufcg.partiu.service.repository.EventRepository;
+import br.edu.ufcg.partiu.service.repository.UserRepository;
+import br.edu.ufcg.partiu.util.Constants;
+import br.edu.ufcg.partiu.util.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -41,6 +50,9 @@ public class CreateEventActivity extends AppCompatActivity {
 
     private static int PLACE_PICKER_REQUEST = 1;
     private Event event;
+
+    @Inject
+    CreateEventPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,11 +92,13 @@ public class CreateEventActivity extends AppCompatActivity {
                 EventRepository eventRepository = retrofit.create(EventRepository.class);
 
                 final Call<Event> call = eventRepository.createEvent(getEvent());
+
                 call.enqueue(new Callback<Event>() {
                     @Override
                     public void onResponse(Call<Event> call, Response<Event> response) {
 
-
+                        Toast.makeText(CreateEventActivity.this, "Evento criado com sucesso para " + presenter.getUser().getName(), Toast.LENGTH_SHORT).show();
+                        finish();
                     }
 
                     @Override
