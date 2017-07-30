@@ -80,7 +80,6 @@ public class CreateEventActivity extends AppCompatActivity {
                 EventRepository eventRepository = retrofit.create(EventRepository.class);
 
                 final Call<Event> call = eventRepository.createEvent(getEvent());
-                
                 call.enqueue(new Callback<Event>() {
                     @Override
                     public void onResponse(Call<Event> call, Response<Event> response) {

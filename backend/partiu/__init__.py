@@ -84,6 +84,6 @@ def create_event():
 
 @app.route('/events', methods=['GET'])
 def get_events():
-	return json.dumps({db.event.find({})}, default=default_parser), 202
+	return json.dumps({db.event.find()}, default=default_parser), 202
 
 
