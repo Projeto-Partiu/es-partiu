@@ -65,10 +65,19 @@ def login_user():
         print(e)
         return error(500)
 
-@app.route('/users/', methods=['GET'])
-def get_users():
-	s = ""
-	test = [ list(db[coll].find({})) for coll in db.collection_names() ] 
-	for coll in test:
-		s += coll['name']
-	return s
+@app.route('/event/new', methods=['POST'])
+def create_event():
+    try:
+        if request.data:
+            event = json.loads(request.data.decode('utf-8'))
+        else:
+            return error(403)
+
+        if db.user.insert(event):
+            return json.dumps({}, default=default_parser), 202
+        else:
+            return error(501)
+
+    except Exception as e:
+        print(e)
+        return error(500)
