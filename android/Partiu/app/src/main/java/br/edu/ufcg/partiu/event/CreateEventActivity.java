@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -23,6 +24,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Formatter;
 
+import br.edu.ufcg.partiu.BuildConfig;
 import br.edu.ufcg.partiu.R;
 import br.edu.ufcg.partiu.base.ServiceCallback;
 import br.edu.ufcg.partiu.model.Event;
@@ -32,6 +34,8 @@ import br.edu.ufcg.partiu.service.repository.EventRepository;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CreateEventActivity extends AppCompatActivity {
 
@@ -64,6 +68,32 @@ public class CreateEventActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
+
+                Event event = new Event();
+
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(BuildConfig.SERVER_URL)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+
+                EventRepository eventRepository = retrofit.create(EventRepository.class);
+
+                final Call<Event> call = eventRepository.createEvent(event);
+
+                call.enqueue(new Callback<Event>() {
+                    @Override
+                    public void onResponse(Call<Event> call, Response<Event> response) {
+                        System.out.println(response);
+                        System.out.println(call);
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<Event> call, Throwable t) {
+                        System.out.println(call);
+                        System.out.println(t);
+                    }
+                });
 
 
             }

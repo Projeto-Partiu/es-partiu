@@ -64,3 +64,11 @@ def login_user():
     except Exception as e:
         print(e)
         return error(500)
+
+@app.route('/users/', methods=['GET'])
+def get_users():
+	s = ""
+	test = [ list(db[coll].find({})) for coll in db.collection_names() ] 
+	for coll in test:
+		s += coll['name']
+	return s
