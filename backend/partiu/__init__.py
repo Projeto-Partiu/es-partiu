@@ -84,10 +84,10 @@ def create_event():
 
 @app.route('/events', methods=['GET'])
 def get_events():
-	json = {}
-	json['events'] = []
+	out = {}
+	out['events'] = []
 	for event in db.event.find():
-		json['events'].append(event)
-	return json.dumps(json, default=default_parser), 202
+		out['events'].append(event)
+	return json.dumps(out, default=default_parser), 202
 
 
