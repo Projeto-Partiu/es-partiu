@@ -60,3 +60,28 @@ def user_following_activities(user_id):
 
     except:
         return error(500)
+
+@app.route('/event/new', methods=['POST'])
+def create_event():
+    try:
+        if request.data:
+            event = json.loads(request.data.decode('utf-8'))
+        else:
+            return error(400)
+
+        inserted_id = db.event.insert(event)
+
+        if inserted_id:
+                return json.dumps(db.event.find_one({ '_id': inserted_id }), default=default_parser), 201
+        else:
+            return error(501)
+
+    except Exception as e:
+        print(e)
+        return error(500)
+
+@app.route('/events', methods=['GET'])
+def get_events():
+    return json.dumps({
+        'events': list(db.event.find())
+    }, default=default_parser), 200
