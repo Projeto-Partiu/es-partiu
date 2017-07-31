@@ -32,25 +32,11 @@ public class EventServiceImpl implements EventService {
         repository.createEvent(event).enqueue(new Callback<Event>() {
             @Override
             public void onResponse(Call<Event> call, Response<Event> response) {
-                if (response.isSuccessful()) {
-
-                } else {
-                    try {
-
-                    } catch (Exception e) {
-                    }
-                }
-
                 callback.onResponse(response.body(), response);
             }
 
             @Override
             public void onFailure(Call<Event> call, Throwable t) {
-                try {
-
-                } catch (Exception e) {
-                }
-
                 callback.onError(t);
             }
         });

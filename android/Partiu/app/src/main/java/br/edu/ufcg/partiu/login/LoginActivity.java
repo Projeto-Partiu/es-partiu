@@ -28,7 +28,6 @@ public class LoginActivity extends AppCompatActivity {
         if (fragment == null) {
             fragment = new LoginFragment();
 
-
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(R.id.fragment_container, fragment)

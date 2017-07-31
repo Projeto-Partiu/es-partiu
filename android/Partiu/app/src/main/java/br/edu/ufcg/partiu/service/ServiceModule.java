@@ -48,13 +48,19 @@ public class ServiceModule {
 
     @AppScope
     @Provides
+    public UserService providesUserService(Context context, UserRepository repository) {
+        return new UserServiceImpl(context, repository);
+    }
+
+    @AppScope
+    @Provides
     public EventRepository providesEventRepository(Retrofit retrofit) {
         return retrofit.create(EventRepository.class);
     }
 
     @AppScope
     @Provides
-    public UserService providesUserService(Context context, UserRepository repository) {
-        return new UserServiceImpl(context, repository);
+    public EventService providesEventService(Context context, EventRepository eventRepository) {
+        return new EventServiceImpl(context, eventRepository);
     }
 }
