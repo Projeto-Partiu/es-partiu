@@ -3,6 +3,7 @@
 
     <string name="facebook_app_id">1454994784592664</string>
     <string name="fb_login_protocol_scheme">fb1454994784592664</string>
+    <string name="fragment_feed_title">Feed</string>
 
     <string name="title_activity_create_event">Criar Evento</string>
 </resources>

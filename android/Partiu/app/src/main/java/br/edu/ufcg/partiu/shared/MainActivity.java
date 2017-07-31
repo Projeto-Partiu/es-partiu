@@ -91,9 +91,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         if (currentDisplayedFragment != null) {
-            transaction
-                    .remove(currentDisplayedFragment)
-                    .add(R.id.fragment_container, fragment);
+            transaction.replace(R.id.fragment_container, fragment);
         } else {
             transaction.add(R.id.fragment_container, fragment);
         }

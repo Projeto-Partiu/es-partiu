@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,12 +27,22 @@ public class FeedFragment extends Fragment implements FeedContract.View {
     @BindView(R.id.add_event_fab)
     public FloatingActionButton fab;
 
+    @BindView(R.id.toolbar)
+    public Toolbar toolbar;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_feed, container, false);
 
         ButterKnife.bind(this, view);
+
+        ((AppCompatActivity) getActivity())
+                .setSupportActionBar(toolbar);
+
+        ((AppCompatActivity) getActivity())
+                .getSupportActionBar()
+                .setTitle(R.string.fragment_feed_title);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
