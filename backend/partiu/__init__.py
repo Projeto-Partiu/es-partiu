@@ -71,10 +71,12 @@ def create_event():
         if request.data:
             event = json.loads(request.data.decode('utf-8'))
         else:
-            return error(403)
+            return error(400)
 
-        if db.event.insert(event):
-            return json.dumps({}, default=default_parser), 202
+        inserted_id = db.event.insert(event)
+	
+	if inserted_id:
+            return json.dumps(db.event.find_one({ '_id': inserted_id }), default=default_parser), 201
         else:
             return error(501)
 
@@ -84,10 +86,6 @@ def create_event():
 
 @app.route('/events', methods=['GET'])
 def get_events():
-	out = {}
-	out['events'] = []
-	for event in db.event.find():
-		out['events'].append(event)
-	return json.dumps(out, default=default_parser), 202
-
-
+	return json.dumps({
+		'events': list(db.event.find())
+	}, default=default_parser), 200
