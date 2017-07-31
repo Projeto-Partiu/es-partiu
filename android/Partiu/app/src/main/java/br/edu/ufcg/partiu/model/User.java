@@ -8,6 +8,8 @@ import com.facebook.Profile;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 import br.edu.ufcg.partiu.util.Constants;
 import br.edu.ufcg.partiu.util.Util;
 
@@ -16,9 +18,12 @@ import br.edu.ufcg.partiu.util.Util;
  */
 
 public class User {
+
     private String id;
     private String name;
     private String urlPhoto;
+    private List<User> following;
+    private List<User> followers;
 
     public User() {
     }
@@ -55,6 +60,22 @@ public class User {
 
     public void setUrlPhoto(String urlPhoto) {
         this.urlPhoto = urlPhoto;
+    }
+
+    public List<User> getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(List<User> following) {
+        this.following = following;
+    }
+
+    public List<User> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(List<User> followers) {
+        this.followers = followers;
     }
 
     public boolean saveInPreferences(Context context) {
