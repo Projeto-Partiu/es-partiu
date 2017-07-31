@@ -4,7 +4,17 @@ package br.edu.ufcg.partiu.event;
  * Created by ordan on 30/07/17.
  */
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.widget.DatePicker;
+import android.widget.TimePicker;
+
 import com.google.android.gms.location.places.Place;
+
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -20,6 +30,8 @@ public class CreateEventPresenter implements CreateEventContract.Presenter {
     private final EventService eventService;
     private final UserService userService;
 
+    private final DateFormat dateFormat;
+
     private Event event;
 
     @Inject
@@ -28,6 +40,7 @@ public class CreateEventPresenter implements CreateEventContract.Presenter {
         this.eventService = eventService;
         this.userService = userService;
         this.event = new Event();
+        this.dateFormat = DateFormat.getDateInstance();
     }
 
     @Inject
@@ -45,7 +58,7 @@ public class CreateEventPresenter implements CreateEventContract.Presenter {
         eventService.createEvent(event, new ServiceCallback<Event>() {
             @Override
             public void onResponse(Event object, Response<Event> response) {
-                view.showSuccessCreateEventToast("Evento criado com sucesso para " + userService.loggedUser().getName());
+                view.showToast("Evento criado com sucesso para " + userService.loggedUser().getName());
             }
 
             @Override
@@ -79,11 +92,97 @@ public class CreateEventPresenter implements CreateEventContract.Presenter {
 
     @Override
     public void onStartDateClick() {
+        final Calendar startDate = Calendar.getInstance();
 
+        startDate.setTimeInMillis(0);
+
+        view.showDatePicker(new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePickerView, int year, int month, int dayOfMonth) {
+                startDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                startDate.set(Calendar.MONTH, month);
+                startDate.set(Calendar.YEAR, year);
+
+                startDate.set(Calendar.HOUR_OF_DAY, 0);
+                startDate.set(Calendar.MINUTE, 0);
+
+                if (event.getEndDate() != null && startDate.compareTo(event.getEndDate()) > 0) {
+                    event.setEndDate(null);
+                    view.setEndDateText(null);
+                }
+
+                // save state
+                event.setStartDate(startDate);
+
+                view.setStartDateText(dateFormat.format(startDate.getTime()));
+
+                view.showTimePicker(new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePickerView, int hourOfDay, int minute) {
+                        startDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        startDate.set(Calendar.MINUTE, minute);
+
+                        event.setStartDate(startDate);
+
+                        view.setStartDateText(
+                                dateFormat.format(startDate.getTime()) + " " +
+                                        String.format(Locale.getDefault(), "%02d", hourOfDay) + "h" +
+                                        String.format(Locale.getDefault(), "%02d", minute)
+                        );
+                    }
+                });
+            }
+        }, System.currentTimeMillis() - 1000);
     }
 
     @Override
     public void onEndDateClick() {
+        if (event.getStartDate() == null) {
+            view.showToast("Selecione uma data de início, por favor");
+            return;
+        }
 
+        final Calendar endDate = Calendar.getInstance();
+
+        endDate.setTimeInMillis(0);
+
+        view.showDatePicker(new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePickerView, int year, int month, int dayOfMonth) {
+                endDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                endDate.set(Calendar.MONTH, month);
+                endDate.set(Calendar.YEAR, year);
+
+                endDate.set(Calendar.HOUR_OF_DAY, 0);
+                endDate.set(Calendar.MINUTE, 0);
+
+                // save state
+                event.setEndDate(endDate);
+
+                view.setEndDateText(dateFormat.format(endDate.getTime()));
+
+                view.showTimePicker(new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePickerView, int hourOfDay, int minute) {
+                        endDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        endDate.set(Calendar.MINUTE, minute);
+
+                        if (endDate.compareTo(event.getStartDate()) < 0) {
+                            event.setEndDate(null);
+                            view.setEndDateText(null);
+                            view.showToast("Data/hora inválida");
+                        } else {
+                            event.setEndDate(endDate);
+
+                            view.setEndDateText(
+                                    dateFormat.format(endDate.getTime()) + " " +
+                                            String.format(Locale.getDefault(), "%02d", hourOfDay) + "h" +
+                                            String.format(Locale.getDefault(), "%02d", minute)
+                            );
+                        }
+                    }
+                });
+            }
+        }, event.getStartDate().getTime().getTime());
     }
 }

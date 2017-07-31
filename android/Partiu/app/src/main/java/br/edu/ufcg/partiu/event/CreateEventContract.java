@@ -1,5 +1,8 @@
 package br.edu.ufcg.partiu.event;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+
 import com.google.android.gms.location.places.Place;
 
 import br.edu.ufcg.partiu.base.BasePresenter;
@@ -26,7 +29,15 @@ public interface CreateEventContract {
     }
 
     interface View extends BaseView<Presenter> {
-        void showSuccessCreateEventToast(String message);
+        void showToast(String message);
+
+        void showDatePicker(DatePickerDialog.OnDateSetListener callback, long minDate);
+
+        void showTimePicker(TimePickerDialog.OnTimeSetListener callback);
+
+        void setStartDateText(String text);
+
+        void setEndDateText(String text);
     }
 
 }

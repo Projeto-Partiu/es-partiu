@@ -73,7 +73,8 @@
                     android:id="@+id/event_start_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Dia/Hora de início"/>
+                    android:hint="Dia/Hora de início"
+                    android:focusable="false"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -89,7 +90,8 @@
                     android:id="@+id/event_end_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Dia/Hora de fim"/>
+                    android:hint="Dia/Hora de fim"
+                    android:focusable="false"/>
 
             </android.support.design.widget.TextInputLayout>
 
