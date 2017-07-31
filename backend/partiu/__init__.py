@@ -31,21 +31,6 @@ def version():
     }
     return json.dumps(version_json, default=default_parser), 200
 
-# The method bellow is only for example porpose.
-# @app.route('/version/<string:id>', methods=['POST']) # Using query params
-# def version_with_arg(id): # Query params goes here
-#     print(str(id))
-#     headers = request.headers # Getting general headers
-#     print(str(headers))
-#     esp_headers = request.headers['MeuHeaders'] if request.headers['MeuHeaders'] else None # Getting MeuHeaders from headers
-#     print(str(esp_headers))
-#     data = None
-#     if request.data:
-#         data = json.loads(request.data.decode('utf-8')) # Getting data from request
-#     print(str(data))
-#
-#     return "Example", 404 # returning not found.
-
 @app.route('/user/', methods=['POST'])
 def login_user():
     try:
@@ -63,4 +48,15 @@ def login_user():
                 return error(501)
     except Exception as e:
         print(e)
+        return error(500)
+
+@app.route('/activity/<int:user_id>', methods=['GET'])
+def user_following_activities(user_id):
+    try:
+        if request.data:
+            return json.dumps({}, default=default_parser)
+        else:
+            return error(400)
+
+    except:
         return error(500)
