@@ -48,9 +48,9 @@ def login_user():
             user['following'] = []
             user['followers'] = []
 
-            result = db.user.insert(user)
-            if result:
-                user['_id'] = result.inserted_id
+            inserted_id = db.user.insert(user)
+            if inserted_id:
+                user['_id'] = inserted_id
 
                 return json.dumps(user, default=default_parser), 202
             else:
