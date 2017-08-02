@@ -48,9 +48,11 @@ def login_user():
             user['following'] = []
             user['followers'] = []
 
-            db_user = db.user.insert(user)
-            if db_user:
-                return json.dumps(db_user, default=default_parser), 202
+            result = db.user.insert(user)
+            if result:
+                user['_id'] = result.inserted_id
+
+                return json.dumps(user, default=default_parser), 202
             else:
                 return error(501)
     except Exception as e:
@@ -71,7 +73,7 @@ def add_action(user_id):
 
         action = json.loads(request.data.decode('utf-8'))
 
-        inserted_action = db.action.insert({
+        inserted_action = db.action.insert_one({
             'date': str(datetime.now()),
             'type': action['type'],
             'user': user,
@@ -91,10 +93,11 @@ def find_all_actions(user_id):
         if not user:
             return error(400)
 
-        actions = db.action.find({ 'user.id': { '$in': user['following'] } })
+        actions = list(db.action.find({ 'user.id': { '$in': user['following'] } }))
 
         return json.dumps(actions, default=default_parser)
-    except:
+    except Exception as e:
+        print(e)
         return error(500)
 
 """
