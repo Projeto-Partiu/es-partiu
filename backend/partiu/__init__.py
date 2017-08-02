@@ -8,6 +8,7 @@ import os
 from flask import Flask, request
 from .shared.utils import default_parser, error
 from pymongo import MongoClient
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -39,27 +40,63 @@ def login_user():
         else:
             return error(403)
 
-        if db.user.find({"id": user['id']}).count() > 0:
-            return json.dumps({}, default=default_parser), 202
+        db_user = db.user.find_one({ 'id': user['id'] })
+
+        if db_user is not None:
+            return json.dumps(db_user, default=default_parser), 202
         else:
-            if db.user.insert(user):
-                return json.dumps({}, default=default_parser), 202
+            db_user = db.user.insert(user)
+            if db_user:
+                return json.dumps(db_user, default=default_parser), 202
             else:
                 return error(501)
     except Exception as e:
         print(e)
         return error(500)
 
-@app.route('/activity/<int:user_id>', methods=['GET'])
-def user_following_activities(user_id):
+"""
+    Actions
+"""
+
+@app.route('/action/<string:user_id>', methods=['POST'])
+def add_action(user_id):
     try:
-        if request.data:
-            return json.dumps({}, default=default_parser)
-        else:
+        user = db.user.find_one({ 'id': user_id }, ['_id', 'id', 'name'])
+
+        if not user and not request.data:
             return error(400)
 
+        action = json.loads(request.data.decode('utf-8'))
+
+        inserted_action = db.action.insert({
+            'date': str(datetime.now()),
+            'type': action['type'],
+            'user': user,
+            'comments': [],
+            'arguments': action['arguments']
+        })
+
+        return json.dumps(inserted_action, default=default_parser), 201
     except:
         return error(500)
+
+@app.route('/action/<string:user_id>', methods=['GET'])
+def find_all_actions(user_id):
+    try:
+        user = db.user.find_one({ 'id': user_id })
+
+        if not user:
+            return error(400)
+
+        actions = db.action.find({ 'user.id': { '$in': user['following'] } })
+
+        return json.dumps(actions, default=default_parser)
+    except:
+        return error(500)
+
+"""
+    Events
+"""
 
 @app.route('/event/new', methods=['POST'])
 def create_event():

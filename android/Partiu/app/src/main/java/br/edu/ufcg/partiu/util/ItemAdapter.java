@@ -96,8 +96,8 @@ public class ItemAdapter<T extends ItemAdapter.ItemHolder> extends RecyclerView.
         return itemHolderList.get(position).getItemViewType();
     }
 
-    public static abstract class ItemHolder {
-        public abstract int getItemViewType();
+    public interface ItemHolder {
+        int getItemViewType();
     }
 
     public static abstract class ItemViewHolder<T extends ItemHolder> extends RecyclerView.ViewHolder {

@@ -6,6 +6,8 @@ import java.util.concurrent.TimeUnit;
 
 import br.edu.ufcg.partiu.AppScope;
 import br.edu.ufcg.partiu.BuildConfig;
+import br.edu.ufcg.partiu.service.repository.ActionRepository;
+import br.edu.ufcg.partiu.service.repository.ActionServiceImpl;
 import br.edu.ufcg.partiu.service.repository.EventRepository;
 import br.edu.ufcg.partiu.service.repository.UserRepository;
 import dagger.Module;
@@ -62,5 +64,17 @@ public class ServiceModule {
     @Provides
     public EventService providesEventService(Context context, EventRepository eventRepository) {
         return new EventServiceImpl(context, eventRepository);
+    }
+
+    @AppScope
+    @Provides
+    public ActionRepository providesActionRepository(Retrofit retrofit) {
+        return retrofit.create(ActionRepository.class);
+    }
+
+    @AppScope
+    @Provides
+    public ActionService providesActionService(ActionRepository repository) {
+        return new ActionServiceImpl(repository);
     }
 }

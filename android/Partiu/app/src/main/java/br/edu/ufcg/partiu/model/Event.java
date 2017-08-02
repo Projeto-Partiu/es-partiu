@@ -2,6 +2,7 @@ package br.edu.ufcg.partiu.model;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by ordan on 29/07/17.
@@ -16,6 +17,24 @@ public class Event {
     private String address;
     private double latitude;
     private double longitude;
+    private List<User> interestedUsers;
+    private List<User> confirmedUsers;
+
+    public List<User> getInterestedUsers() {
+        return interestedUsers;
+    }
+
+    public void setInterestedUsers(List<User> interestedUsers) {
+        this.interestedUsers = interestedUsers;
+    }
+
+    public List<User> getConfirmedUsers() {
+        return confirmedUsers;
+    }
+
+    public void setConfirmedUsers(List<User> confirmedUsers) {
+        this.confirmedUsers = confirmedUsers;
+    }
 
     public String getName() {
         return name;
