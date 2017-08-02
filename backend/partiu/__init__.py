@@ -45,6 +45,9 @@ def login_user():
         if db_user is not None:
             return json.dumps(db_user, default=default_parser), 202
         else:
+            user['following'] = []
+            user['followers'] = []
+
             db_user = db.user.insert(user)
             if db_user:
                 return json.dumps(db_user, default=default_parser), 202
