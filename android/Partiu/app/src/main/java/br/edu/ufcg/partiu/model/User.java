@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.facebook.Profile;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -82,11 +84,15 @@ public class User {
     }
 
     public boolean saveInPreferences(Context context) {
+        Gson gson = new GsonBuilder()
+                .create();
+
         SharedPreferences.Editor editor = Util.getPreferences(context).edit();
         editor.putString(Constants.NAME_USER, getName());
         editor.putString(Constants.ID_SOCIAL_NETWORK, getId());
         editor.putString(Constants.URL_PHOTO_USER, getUrlPhoto());
         editor.putBoolean(Constants.LOGGED_USER, true);
+        editor.putString(Constants.FOLLOWING_USER, gson.toJson(getFollowing()));
         editor.putString(Constants.TOKEN, getToken());
         editor.apply();
         return true;

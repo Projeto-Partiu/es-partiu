@@ -4,6 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.facebook.login.LoginManager;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.util.List;
 
 import br.edu.ufcg.partiu.base.ServiceCallback;
 import br.edu.ufcg.partiu.model.User;
@@ -67,12 +71,18 @@ public class UserServiceImpl implements UserService {
             return null;
         }
 
+        Gson gson = new GsonBuilder().create();
+
         User loggedUser = new User();
 
         loggedUser.setId(prefs.getString(Constants.ID_SOCIAL_NETWORK, ""));
         loggedUser.setName(prefs.getString(Constants.NAME_USER, ""));
         loggedUser.setUrlPhoto(prefs.getString(Constants.URL_PHOTO_USER, ""));
         loggedUser.setToken(prefs.getString(Constants.TOKEN, ""));
+        try {
+            loggedUser.setFollowing((List<String>) gson.fromJson(prefs.getString(Constants.FOLLOWING_USER, "[]"), User.class.getDeclaredField("following").getGenericType()));
+        } catch (NoSuchFieldException e) {
+        }
 
         return loggedUser;
     }

@@ -19,4 +19,5 @@ public class Constants {
 
     public static final String LOGGED_USER = "LOGGED_USER";
     public static final String TOKEN = "TOKEN";
+    public static final String FOLLOWING_USER = "FOLLOWING_USER";
 }
