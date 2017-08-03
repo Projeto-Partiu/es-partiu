@@ -18,13 +18,11 @@ public class FeedPresenter implements FeedContract.Presenter {
 
     private final FeedContract.View view;
     private final ActionService actionService;
-    private final UserService userService;
 
     @Inject
-    public FeedPresenter(FeedContract.View view, ActionService actionService, UserService userService) {
+    public FeedPresenter(FeedContract.View view, ActionService actionService) {
         this.view = view;
         this.actionService = actionService;
-        this.userService = userService;
     }
 
     @Inject
@@ -37,7 +35,7 @@ public class FeedPresenter implements FeedContract.Presenter {
         view.hideEmptyMessage();
         view.showLoadingSpinner();
 
-        actionService.findAll(userService.loggedUser(), new ServiceCallback<List<Action>>() {
+        actionService.findAll(new ServiceCallback<List<Action>>() {
             @Override
             public void onResponse(List<Action> actionList, Response<List<Action>> response) {
                 view.hideLoadingSpinner();
@@ -56,7 +54,7 @@ public class FeedPresenter implements FeedContract.Presenter {
     public void onRefreshList() {
         view.setRefreshing(true);
 
-        actionService.findAll(userService.loggedUser(), new ServiceCallback<List<Action>>() {
+        actionService.findAll(new ServiceCallback<List<Action>>() {
             @Override
             public void onResponse(List<Action> actionList, Response<List<Action>> response) {
                 view.setRefreshing(false);

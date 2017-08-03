@@ -16,9 +16,9 @@ import retrofit2.http.Path;
 
 public interface ActionRepository {
 
-    @GET("/action/{userId}")
-    Call<List<Action>> findAll(@Path("userId") String userId, @Header("Authorization") String token);
+    @GET("/action/")
+    Call<List<Action>> findAll(@Header("Authorization") String token);
 
-    @POST("/action/{userId}")
-    Call<Action> insert(@Path("userId") String userId, @Header("Authorization") String token, @Body Action action);
+    @POST("/action/")
+    Call<Action> insert(@Header("Authorization") String token, @Body Action action);
 }

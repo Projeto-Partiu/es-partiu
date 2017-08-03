@@ -5,40 +5,13 @@
 import simplejson as json
 import os
 
-from functools import wraps
 from flask import Flask, request
-from .shared.utils import default_parser, error, get_random_string
-from pymongo import MongoClient
 from datetime import datetime
+from .shared.database import db
+from .shared.utils import default_parser, error, get_random_string
+from .shared.auth import requires_auth, with_user
 
 app = Flask(__name__)
-
-if os.getenv('ENV') == 'production':
-    app.mongodb_uri = os.environ['MONGODB_URI']
-else:
-    app.mongodb_uri = 'mongodb://localhost:27017/'
-
-client = MongoClient(app.mongodb_uri)
-db = client.partiu
-
-def requires_auth(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        try:
-            token = request.headers['Authorization']
-            if not token or not verify_auth(token):
-                return authenticate()
-            return f(*args, **kwargs)
-        except Exception:
-            return authenticate()
-    return decorated
-
-def authenticate():
-    return json.dumps({}, default=default_parser), 401
-
-def verify_auth(token):
-    session = db.session.find_one({'token': token})
-    return session is not None
 
 @app.route('/version', methods=['GET'])
 def version():
@@ -89,14 +62,12 @@ def login_user():
     Actions
 """
 
-
-@app.route('/action/<string:user_id>', methods=['POST'])
+@app.route('/action/', methods=['POST'])
 @requires_auth
-def add_action(user_id):
+@with_user
+def add_action(logged_user=None):
     try:
-        user = db.user.find_one({ 'id': user_id }, { '_id': 1, 'id': 1, 'name': 1, 'urlPhoto': 1 })
-
-        if not user and not request.data:
+        if not logged_user and not request.data:
             return error(400)
 
         action = json.loads(request.data.decode('utf-8'))
@@ -104,7 +75,7 @@ def add_action(user_id):
         inserted_action = db.action.insert_one({
             'date': str(datetime.now()),
             'type': action['type'],
-            'user': user,
+            'user': logged_user,
             'comments': [],
             'arguments': action['arguments']
         })
@@ -113,17 +84,15 @@ def add_action(user_id):
     except:
         return error(500)
 
-
-@app.route('/action/<string:user_id>', methods=['GET'])
+@app.route('/action/', methods=['GET'])
 @requires_auth
-def find_all_actions(user_id):
+@with_user
+def find_all_actions(logged_user=None):
     try:
-        user = db.user.find_one({ 'id': user_id })
-
-        if not user:
+        if not logged_user:
             return error(400)
 
-        actions = list(db.action.find({ 'user.id': { '$in': user['following'] } }))
+        actions = list(db.action.find({ 'user.id': { '$in': logged_user['following'] } }))
 
         return json.dumps(actions, default=default_parser)
     except Exception as e:
@@ -133,7 +102,6 @@ def find_all_actions(user_id):
 """
     Events
 """
-
 
 @app.route('/event/new', methods=['POST'])
 @requires_auth

@@ -2,22 +2,16 @@ package br.edu.ufcg.partiu.service;
 
 import android.content.Context;
 
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import br.edu.ufcg.partiu.AppScope;
 import br.edu.ufcg.partiu.BuildConfig;
 import br.edu.ufcg.partiu.service.repository.ActionRepository;
-import br.edu.ufcg.partiu.service.repository.ActionServiceImpl;
 import br.edu.ufcg.partiu.service.repository.EventRepository;
 import br.edu.ufcg.partiu.service.repository.UserRepository;
-import br.edu.ufcg.partiu.util.Util;
 import dagger.Module;
 import dagger.Provides;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -79,7 +73,7 @@ public class ServiceModule {
 
     @AppScope
     @Provides
-    public ActionService providesActionService(ActionRepository repository) {
-        return new ActionServiceImpl(repository);
+    public ActionService providesActionService(ActionRepository repository, UserService userService) {
+        return new ActionServiceImpl(repository, userService);
     }
 }

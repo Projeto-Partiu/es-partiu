@@ -12,5 +12,5 @@ import br.edu.ufcg.partiu.model.User;
 
 public interface ActionService {
 
-    Void findAll(User user, ServiceCallback<List<Action>> callback);
+    Void findAll(ServiceCallback<List<Action>> callback);
 }
