@@ -22,6 +22,7 @@ import br.edu.ufcg.partiu.base.ServiceCallback;
 import br.edu.ufcg.partiu.model.Event;
 import br.edu.ufcg.partiu.service.EventService;
 import br.edu.ufcg.partiu.service.UserService;
+import br.edu.ufcg.partiu.util.Util;
 import retrofit2.Response;
 
 public class CreateEventPresenter implements CreateEventContract.Presenter {
@@ -106,13 +107,13 @@ public class CreateEventPresenter implements CreateEventContract.Presenter {
                 startDate.set(Calendar.HOUR_OF_DAY, 0);
                 startDate.set(Calendar.MINUTE, 0);
 
-                if (event.getEndDate() != null && startDate.compareTo(event.getEndDate()) > 0) {
+                if (event.getEndDate() != null && startDate.compareTo(Util.toCalendar(event.getEndDate())) > 0) {
                     event.setEndDate(null);
                     view.setEndDateText(null);
                 }
 
                 // save state
-                event.setStartDate(startDate);
+                event.setStartDate(startDate.getTime());
 
                 view.setStartDateText(dateFormat.format(startDate.getTime()));
 
@@ -122,7 +123,7 @@ public class CreateEventPresenter implements CreateEventContract.Presenter {
                         startDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
                         startDate.set(Calendar.MINUTE, minute);
 
-                        event.setStartDate(startDate);
+                        event.setStartDate(startDate.getTime());
 
                         view.setStartDateText(
                                 dateFormat.format(startDate.getTime()) + " " +
@@ -157,7 +158,7 @@ public class CreateEventPresenter implements CreateEventContract.Presenter {
                 endDate.set(Calendar.MINUTE, 0);
 
                 // save state
-                event.setEndDate(endDate);
+                event.setEndDate(endDate.getTime());
 
                 view.setEndDateText(dateFormat.format(endDate.getTime()));
 
@@ -167,12 +168,12 @@ public class CreateEventPresenter implements CreateEventContract.Presenter {
                         endDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
                         endDate.set(Calendar.MINUTE, minute);
 
-                        if (endDate.compareTo(event.getStartDate()) < 0) {
+                        if (endDate.compareTo(Util.toCalendar(event.getStartDate())) < 0) {
                             event.setEndDate(null);
                             view.setEndDateText(null);
                             view.showToast("Data/hora inválida");
                         } else {
-                            event.setEndDate(endDate);
+                            event.setEndDate(endDate.getTime());
 
                             view.setEndDateText(
                                     dateFormat.format(endDate.getTime()) + " " +
@@ -183,6 +184,6 @@ public class CreateEventPresenter implements CreateEventContract.Presenter {
                     }
                 });
             }
-        }, event.getStartDate().getTime().getTime());
+        }, event.getStartDate().getTime());
     }
 }

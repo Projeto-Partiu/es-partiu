@@ -12,8 +12,8 @@ public class Event {
 
     private String name;
     private String description;
-    private Calendar startDate;
-    private Calendar endDate;
+    private Date startDate;
+    private Date endDate;
     private String address;
     private double latitude;
     private double longitude;
@@ -52,19 +52,19 @@ public class Event {
         this.description = description;
     }
 
-    public Calendar getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Calendar startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    public Calendar getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Calendar endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
