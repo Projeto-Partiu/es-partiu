@@ -10,7 +10,7 @@ import br.edu.ufcg.partiu.util.ItemAdapter;
 public class ActionHolder implements ItemAdapter.ItemHolder {
     private final Action action;
 
-    public ActionHolder(Action action) {
+    private ActionHolder(Action action) {
         this.action = action;
     }
 
@@ -21,5 +21,9 @@ public class ActionHolder implements ItemAdapter.ItemHolder {
 
     public Action getAction() {
         return action;
+    }
+
+    public static ActionHolder from(Action action) {
+        return new ActionHolder(action);
     }
 }

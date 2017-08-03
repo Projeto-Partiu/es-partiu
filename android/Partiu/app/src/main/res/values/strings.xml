@@ -6,4 +6,6 @@
     <string name="fragment_feed_title">Feed</string>
 
     <string name="title_activity_create_event">Criar Evento</string>
+    <string name="feed_empty_message">Você não tem atividades recentes para visualizar</string>
+    <string name="action_started_following">começou a seguir</string>
 </resources>

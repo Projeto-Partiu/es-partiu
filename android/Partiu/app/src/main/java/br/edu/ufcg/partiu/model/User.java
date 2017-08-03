@@ -22,8 +22,7 @@ public class User {
     private String id;
     private String name;
     private String urlPhoto;
-    private List<User> following;
-    private List<User> followers;
+    private List<String> following;
 
     public User() {
     }
@@ -62,20 +61,12 @@ public class User {
         this.urlPhoto = urlPhoto;
     }
 
-    public List<User> getFollowing() {
+    public List<String> getFollowing() {
         return following;
     }
 
-    public void setFollowing(List<User> following) {
+    public void setFollowing(List<String> following) {
         this.following = following;
-    }
-
-    public List<User> getFollowers() {
-        return followers;
-    }
-
-    public void setFollowers(List<User> followers) {
-        this.followers = followers;
     }
 
     public boolean saveInPreferences(Context context) {

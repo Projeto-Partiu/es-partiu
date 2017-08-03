@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * Created by caiovidal on 12/07/17.
  */
@@ -16,5 +19,11 @@ public class Util {
         if (preferences == null)
             preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences;
+    }
+
+    public static Calendar toCalendar(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar;
     }
 }

@@ -2,9 +2,9 @@ package br.edu.ufcg.partiu.model;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Calendar;
-import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Representa uma atividade no feed do usuário
@@ -13,11 +13,11 @@ public class Action {
 
     @SerializedName("_id")
     private String id;
-    private Calendar date;
+    private Date date;
     private ActionType type;
     private User user;
     private List<Comment> comments;
-    private HashMap<String, Object> arguments;
+    private Map<String, Object> arguments;
 
     public Action() {
     }
@@ -30,11 +30,11 @@ public class Action {
         this.id = id;
     }
 
-    public Calendar getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(Calendar date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -62,11 +62,11 @@ public class Action {
         this.comments = comments;
     }
 
-    public HashMap<String, Object> getArguments() {
+    public Map<String, Object> getArguments() {
         return arguments;
     }
 
-    public void setArguments(HashMap<String, Object> arguments) {
+    public void setArguments(Map<String, Object> arguments) {
         this.arguments = arguments;
     }
 }

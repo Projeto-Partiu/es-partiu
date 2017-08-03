@@ -34,16 +34,54 @@ public class FeedPresenter implements FeedContract.Presenter {
 
     @Override
     public void start() {
+        view.hideEmptyMessage();
+        view.showLoadingSpinner();
+
         actionService.findAll(userService.loggedUser(), new ServiceCallback<List<Action>>() {
             @Override
-            public void onResponse(List<Action> object, Response<List<Action>> response) {
-
+            public void onResponse(List<Action> actionList, Response<List<Action>> response) {
+                view.hideLoadingSpinner();
+                handleActionListResponse(actionList);
             }
 
             @Override
             public void onError(Throwable error) {
-
+                view.hideLoadingSpinner();
+                handleActionListError(error);
             }
         });
+    }
+
+    @Override
+    public void onRefreshList() {
+        view.setRefreshing(true);
+
+        actionService.findAll(userService.loggedUser(), new ServiceCallback<List<Action>>() {
+            @Override
+            public void onResponse(List<Action> actionList, Response<List<Action>> response) {
+                view.setRefreshing(false);
+                handleActionListResponse(actionList);
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                view.setRefreshing(false);
+                handleActionListError(error);
+            }
+        });
+    }
+
+    private void handleActionListResponse(List<Action> actionList) {
+        if (actionList != null && !actionList.isEmpty()) {
+            view.hideEmptyMessage();
+            view.setActionList(actionList);
+        } else {
+            view.showEmptyMessage();
+        }
+    }
+
+    private void handleActionListError(Throwable error) {
+        view.showEmptyMessage();
+        view.showToast("Não foi possível atualizar o feed");
     }
 }

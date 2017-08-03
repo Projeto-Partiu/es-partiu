@@ -53,8 +53,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     private void initializeActivity() {
-        if (getSupportFragmentManager().findFragmentById(R.id.fragment_container) == null) {
+        Fragment displayedFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+
+        if (displayedFragment == null) {
             navigateToFeed();
+        } else {
+            currentDisplayedFragment = displayedFragment;
         }
     }
 

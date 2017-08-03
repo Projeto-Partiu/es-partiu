@@ -1,16 +1,25 @@
 package br.edu.ufcg.partiu.feed;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import br.edu.ufcg.partiu.R;
 import br.edu.ufcg.partiu.event.CreateEventActivity;
@@ -18,6 +27,7 @@ import br.edu.ufcg.partiu.feed.view_holder.ActionFollowUserViewHolder;
 import br.edu.ufcg.partiu.feed.view_holder.ActionHolder;
 import br.edu.ufcg.partiu.feed.view_holder.ActionMarkInterestViewHolder;
 import br.edu.ufcg.partiu.feed.view_holder.ActionMarkPresenceViewHolder;
+import br.edu.ufcg.partiu.model.Action;
 import br.edu.ufcg.partiu.util.ItemAdapter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,13 +41,22 @@ public class FeedFragment extends Fragment implements FeedContract.View {
     private FeedContract.Presenter presenter;
 
     @BindView(R.id.add_event_fab)
-    public FloatingActionButton fab;
+    FloatingActionButton fab;
 
     @BindView(R.id.toolbar)
-    public Toolbar toolbar;
+    Toolbar toolbar;
 
     @BindView(R.id.action_list)
-    public RecyclerView actionRecyclerView;
+    RecyclerView actionRecyclerView;
+
+    @BindView(R.id.progress_bar)
+    ProgressBar progressBar;
+
+    @BindView(R.id.empty_message)
+    TextView emptyMessageTextView;
+
+    @BindView(R.id.action_list_layout)
+    SwipeRefreshLayout actionListLayout;
 
     private ItemAdapter<ActionHolder> actionListAdapter;
 
@@ -64,12 +83,22 @@ public class FeedFragment extends Fragment implements FeedContract.View {
             }
         });
 
+        actionListLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                presenter.onRefreshList();
+            }
+        });
+
         setupActionRecyclerView(inflater);
 
         return view;
     }
 
     private void setupActionRecyclerView(LayoutInflater inflater) {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+
         actionListAdapter = new ItemAdapter<ActionHolder>()
                 .withViewType(new ActionFollowUserViewHolder.Factory(inflater),
                         ActionFollowUserViewHolder.VIEW_TYPE)
@@ -79,6 +108,7 @@ public class FeedFragment extends Fragment implements FeedContract.View {
                         ActionMarkPresenceViewHolder.VIEW_TYPE);
 
         actionRecyclerView.setAdapter(actionListAdapter);
+        actionRecyclerView.setLayoutManager(layoutManager);
     }
 
     @Override
@@ -91,5 +121,46 @@ public class FeedFragment extends Fragment implements FeedContract.View {
         super.onStart();
 
         presenter.start();
+    }
+
+    @Override
+    public void setActionList(List<Action> actionList) {
+        List<ActionHolder> actionHolderList = new ArrayList<>();
+
+        for (Action action: actionList) {
+            actionHolderList.add(ActionHolder.from(action));
+        }
+
+        actionListAdapter.setItemHolderList(actionHolderList);
+    }
+
+    @Override
+    public void showLoadingSpinner() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLoadingSpinner() {
+        progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showEmptyMessage() {
+        emptyMessageTextView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideEmptyMessage() {
+        emptyMessageTextView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showToast(String text) {
+        Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void setRefreshing(boolean refreshing) {
+        actionListLayout.setRefreshing(refreshing);
     }
 }
