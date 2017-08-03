@@ -2,7 +2,7 @@
     Utils
 """
 
-import datetime
+from datetime import datetime
 import simplejson as json
 
 def default_parser(obj):
@@ -12,7 +12,9 @@ def default_parser(obj):
     """
     if getattr(obj, "__dict__", None):
         return obj.__dict__
-    elif type(obj) == datetime:
+    elif isinstance(obj, datetime):
+        if obj.utcoffset() is None:
+            return obj.isoformat() + 'Z'
         return obj.isoformat()
     else:
         return str(obj)

@@ -46,7 +46,6 @@ def login_user():
             return json.dumps(db_user, default=default_parser), 202
         else:
             user['following'] = []
-            user['followers'] = []
 
             inserted_id = db.user.insert(user)
             if inserted_id:
@@ -66,7 +65,7 @@ def login_user():
 @app.route('/action/<string:user_id>', methods=['POST'])
 def add_action(user_id):
     try:
-        user = db.user.find_one({ 'id': user_id }, ['_id', 'id', 'name'])
+        user = db.user.find_one({ 'id': user_id }, { '_id': 1, 'id': 1, 'name': 1, 'urlPhoto': 1 })
 
         if not user and not request.data:
             return error(400)
