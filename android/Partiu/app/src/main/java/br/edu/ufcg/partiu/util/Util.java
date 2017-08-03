@@ -7,6 +7,8 @@ import android.preference.PreferenceManager;
 import java.util.Calendar;
 import java.util.Date;
 
+import br.edu.ufcg.partiu.model.User;
+
 /**
  * Created by caiovidal on 12/07/17.
  */
@@ -25,5 +27,9 @@ public class Util {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         return calendar;
+    }
+
+    public static String getSessionToken(Context context) {
+        return getPreferences(context).getString(Constants.TOKEN, "");
     }
 }

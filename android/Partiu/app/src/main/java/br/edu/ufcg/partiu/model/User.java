@@ -23,6 +23,7 @@ public class User {
     private String name;
     private String urlPhoto;
     private List<String> following;
+    private String token;
 
     public User() {
     }
@@ -31,7 +32,8 @@ public class User {
         try {
             this.id = account.getString("id");
             this.name = account.getString("name");
-            this.urlPhoto = "";
+            this.urlPhoto = account.getJSONObject("picture").getJSONObject("data").getString("url");
+            this.token = account.getString("token");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -69,12 +71,23 @@ public class User {
         this.following = following;
     }
 
+    public String getToken() {
+        if (token == null)
+            return "";
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     public boolean saveInPreferences(Context context) {
         SharedPreferences.Editor editor = Util.getPreferences(context).edit();
         editor.putString(Constants.NAME_USER, getName());
         editor.putString(Constants.ID_SOCIAL_NETWORK, getId());
         editor.putString(Constants.URL_PHOTO_USER, getUrlPhoto());
         editor.putBoolean(Constants.LOGGED_USER, true);
+        editor.putString(Constants.TOKEN, getToken());
         editor.apply();
         return true;
     }

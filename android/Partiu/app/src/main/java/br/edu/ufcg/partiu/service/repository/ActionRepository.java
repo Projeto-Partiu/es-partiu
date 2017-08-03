@@ -6,6 +6,7 @@ import br.edu.ufcg.partiu.model.Action;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
@@ -16,8 +17,8 @@ import retrofit2.http.Path;
 public interface ActionRepository {
 
     @GET("/action/{userId}")
-    Call<List<Action>> findAll(@Path("userId") String userId);
+    Call<List<Action>> findAll(@Path("userId") String userId, @Header("Authorization") String token);
 
     @POST("/action/{userId}")
-    Call<Action> insert(@Path("userId") String userId, @Body Action action);
+    Call<Action> insert(@Path("userId") String userId, @Header("Authorization") String token, @Body Action action);
 }

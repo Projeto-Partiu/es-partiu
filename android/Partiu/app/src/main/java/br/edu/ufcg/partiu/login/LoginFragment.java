@@ -81,7 +81,7 @@ public class LoginFragment extends android.support.v4.app.Fragment implements Lo
                             }
                         });
                 Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,name,email,gender,birthday");
+                parameters.putString("fields", "id,name,email,picture.type(large)");
                 request.setParameters(parameters);
                 request.executeAsync();
             }

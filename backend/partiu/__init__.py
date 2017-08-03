@@ -5,8 +5,9 @@
 import simplejson as json
 import os
 
+from functools import wraps
 from flask import Flask, request
-from .shared.utils import default_parser, error
+from .shared.utils import default_parser, error, get_random_string
 from pymongo import MongoClient
 from datetime import datetime
 
@@ -19,6 +20,25 @@ else:
 
 client = MongoClient(app.mongodb_uri)
 db = client.partiu
+
+def requires_auth(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        try:
+            token = request.headers['Authorization']
+            if not token or not verify_auth(token):
+                return authenticate()
+            return f(*args, **kwargs)
+        except Exception:
+            return authenticate()
+    return decorated
+
+def authenticate():
+    return json.dumps({}, default=default_parser), 401
+
+def verify_auth(token):
+    session = db.session.find_one({'token': token})
+    return session is not None
 
 @app.route('/version', methods=['GET'])
 def version():
@@ -42,7 +62,12 @@ def login_user():
 
         db_user = db.user.find_one({ 'id': user['id'] })
 
+        newSession = {'token': get_random_string(20)}
+
         if db_user is not None:
+            newSession['user'] = db_user['_id']
+            db.session.insert(newSession)
+            db_user['token'] = newSession['token']
             return json.dumps(db_user, default=default_parser), 202
         else:
             user['following'] = []
@@ -50,7 +75,9 @@ def login_user():
             inserted_id = db.user.insert(user)
             if inserted_id:
                 user['_id'] = inserted_id
-
+                newSession['user'] = inserted_id
+                db.session.insert(newSession)
+                user['token'] = newSession['token']
                 return json.dumps(user, default=default_parser), 202
             else:
                 return error(501)
@@ -62,7 +89,9 @@ def login_user():
     Actions
 """
 
+
 @app.route('/action/<string:user_id>', methods=['POST'])
+@requires_auth
 def add_action(user_id):
     try:
         user = db.user.find_one({ 'id': user_id }, { '_id': 1, 'id': 1, 'name': 1, 'urlPhoto': 1 })
@@ -84,7 +113,9 @@ def add_action(user_id):
     except:
         return error(500)
 
+
 @app.route('/action/<string:user_id>', methods=['GET'])
+@requires_auth
 def find_all_actions(user_id):
     try:
         user = db.user.find_one({ 'id': user_id })
@@ -103,7 +134,9 @@ def find_all_actions(user_id):
     Events
 """
 
+
 @app.route('/event/new', methods=['POST'])
+@requires_auth
 def create_event():
     try:
         if request.data:
@@ -122,7 +155,9 @@ def create_event():
         print(e)
         return error(500)
 
+
 @app.route('/events', methods=['GET'])
+@requires_auth
 def get_events():
     return json.dumps({
         'events': list(db.event.find())
