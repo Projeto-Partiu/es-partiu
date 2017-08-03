@@ -72,6 +72,7 @@ public class UserServiceImpl implements UserService {
         loggedUser.setId(prefs.getString(Constants.ID_SOCIAL_NETWORK, ""));
         loggedUser.setName(prefs.getString(Constants.NAME_USER, ""));
         loggedUser.setUrlPhoto(prefs.getString(Constants.URL_PHOTO_USER, ""));
+        loggedUser.setToken(prefs.getString(Constants.TOKEN, ""));
 
         return loggedUser;
     }

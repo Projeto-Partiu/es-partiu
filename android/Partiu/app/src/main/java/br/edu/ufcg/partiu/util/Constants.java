@@ -18,4 +18,5 @@ public class Constants {
     public static final String URL_PHOTO_USER = "URL_PHOTO_USER";
 
     public static final String LOGGED_USER = "LOGGED_USER";
+    public static final String TOKEN = "TOKEN";
 }

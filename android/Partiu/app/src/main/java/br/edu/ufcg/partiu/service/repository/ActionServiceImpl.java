@@ -23,7 +23,7 @@ public class ActionServiceImpl implements ActionService {
 
     @Override
     public Void findAll(User user, final ServiceCallback<List<Action>> callback) {
-        repository.findAll(user.getId()).enqueue(new Callback<List<Action>>() {
+        repository.findAll(user.getId(), user.getToken()).enqueue(new Callback<List<Action>>() {
             @Override
             public void onResponse(Call<List<Action>> call, Response<List<Action>> response) {
                 callback.onResponse(response.body(), response);

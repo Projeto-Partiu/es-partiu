@@ -9,6 +9,7 @@ import br.edu.ufcg.partiu.model.Event;
 import br.edu.ufcg.partiu.model.User;
 import br.edu.ufcg.partiu.service.repository.EventRepository;
 import br.edu.ufcg.partiu.service.repository.UserRepository;
+import br.edu.ufcg.partiu.util.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,7 +30,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public Void createEvent(Event event, final ServiceCallback<Event> callback) {
-        repository.createEvent(event).enqueue(new Callback<Event>() {
+        repository.createEvent(event, Util.getSessionToken(context)).enqueue(new Callback<Event>() {
             @Override
             public void onResponse(Call<Event> call, Response<Event> response) {
                 callback.onResponse(response.body(), response);
