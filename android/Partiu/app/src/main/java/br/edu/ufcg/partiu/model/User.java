@@ -33,8 +33,8 @@ public class User {
         try {
             this.id = account.getString("id");
             this.name = account.getString("name");
+            this.urlPhoto = account.getJSONObject("picture").getJSONObject("data").getString("url");
             this.token = account.getString("token");
-            this.urlPhoto = "";
         } catch (JSONException e) {
             e.printStackTrace();
         }
