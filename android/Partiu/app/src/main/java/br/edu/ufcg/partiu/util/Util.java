@@ -2,7 +2,10 @@ package br.edu.ufcg.partiu.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.preference.PreferenceManager;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -31,5 +34,12 @@ public class Util {
 
     public static String getSessionToken(Context context) {
         return getPreferences(context).getString(Constants.TOKEN, "");
+    }
+
+    public static RoundedBitmapDrawable toRoundBitmap(Context context, Bitmap source) {
+        RoundedBitmapDrawable output = RoundedBitmapDrawableFactory.create(context.getResources(), source);
+        output.setCircular(true);
+        output.setCornerRadius(Math.max(source.getWidth(), source.getHeight()) / 2.0f);
+        return output;
     }
 }
