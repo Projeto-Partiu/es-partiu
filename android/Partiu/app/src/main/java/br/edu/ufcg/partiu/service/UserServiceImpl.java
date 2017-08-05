@@ -86,4 +86,39 @@ public class UserServiceImpl implements UserService {
 
         return loggedUser;
     }
+
+    @Override
+    public Void logout(final ServiceCallback<Void> callback) {
+        repository.logout(loggedUser().getToken()).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                SharedPreferences.Editor prefs = Util.getPreferences(context).edit();
+
+                prefs.putBoolean(Constants.LOGGED_USER, false);
+
+                prefs.remove(Constants.NAME_USER);
+                prefs.remove(Constants.ID_SOCIAL_NETWORK);
+                prefs.remove(Constants.URL_PHOTO_USER);
+                prefs.remove(Constants.TOKEN);
+
+                prefs.apply();
+
+                try {
+                    LoginManager.getInstance().logOut();
+                } catch (Exception e) {
+                    callback.onError(e);
+                    return;
+                }
+
+                callback.onResponse(null, response);
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                callback.onError(t);
+            }
+        });
+
+        return null;
+    }
 }

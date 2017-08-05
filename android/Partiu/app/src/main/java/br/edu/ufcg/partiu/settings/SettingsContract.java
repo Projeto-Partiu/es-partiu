@@ -16,5 +16,8 @@ public interface SettingsContract {
 
     interface View extends BaseView<Presenter> {
 
+        void goToLoginScreen();
+
+        void showToast(String text);
     }
 }

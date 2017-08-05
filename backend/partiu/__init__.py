@@ -58,6 +58,24 @@ def login_user():
         print(e)
         return error(500)
 
+@app.route('/user/logout', methods=['POST'])
+@requires_auth
+@with_user
+def logout_user(logged_user=None):
+    try:
+        if not logged_user:
+            return error(401)
+
+        result = db.session.delete_one({ 'token': logged_user['token'], 'user': logged_user['_id'] })
+
+        if not result or result.deleted_count != 1:
+            return error(500)
+
+        return '', 204
+    except Exception as e:
+        print(e)
+        return error(500)
+
 """
     Actions
 """

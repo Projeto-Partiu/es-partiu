@@ -19,6 +19,8 @@ def with_user(f):
         user_id = db.session.find_one({'token': token})['user']
         user = db.user.find_one({'_id': user_id})
 
+        user['token'] = token
+
         return f(*args, **kwargs, logged_user=user)
     return with_user_decoration
 

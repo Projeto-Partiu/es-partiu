@@ -14,4 +14,6 @@ public interface UserService {
     Void createUser(User user, ServiceCallback<User> callback);
 
     User loggedUser();
+
+    Void logout(ServiceCallback<Void> callback);
 }
