@@ -1,4 +1,4 @@
-package br.edu.ufcg.partiu.feed;
+package br.edu.ufcg.partiu.shared;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -6,10 +6,10 @@ import java.lang.annotation.RetentionPolicy;
 import javax.inject.Scope;
 
 /**
- * Created by lucas on 26/07/17.
+ * Created by lucas on 05/08/17.
  */
 
 @Scope
 @Retention(RetentionPolicy.RUNTIME)
-public @interface FeedScope {
+public @interface MainScope {
 }

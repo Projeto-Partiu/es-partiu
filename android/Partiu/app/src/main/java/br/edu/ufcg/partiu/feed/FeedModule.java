@@ -1,5 +1,6 @@
 package br.edu.ufcg.partiu.feed;
 
+import br.edu.ufcg.partiu.shared.MainScope;
 import dagger.Module;
 import dagger.Provides;
 
@@ -16,7 +17,7 @@ public class FeedModule {
         this.view = view;
     }
 
-    @FeedScope
+    @MainScope
     @Provides
     public FeedContract.View providesView() {
         return view;

@@ -1,9 +1,9 @@
 package br.edu.ufcg.partiu;
 
 import br.edu.ufcg.partiu.event.CreateEventComponent;
-import br.edu.ufcg.partiu.feed.FeedComponent;
 import br.edu.ufcg.partiu.login.LoginComponent;
 import br.edu.ufcg.partiu.service.ServiceModule;
+import br.edu.ufcg.partiu.shared.MainComponent;
 import dagger.Component;
 
 @AppScope
@@ -17,7 +17,7 @@ public interface AppComponent {
 
     LoginComponent.Builder newLoginComponent();
 
-    FeedComponent.Builder newFeedComponent();
-
     CreateEventComponent.Builder newCreateEventComponent();
+
+    MainComponent.Builder newMainComponent();
 }
