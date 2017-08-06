@@ -1,6 +1,7 @@
 package br.edu.ufcg.partiu.shared;
 
 import br.edu.ufcg.partiu.feed.FeedModule;
+import br.edu.ufcg.partiu.profile.ProfileModule;
 import br.edu.ufcg.partiu.settings.SettingsModule;
 import dagger.Subcomponent;
 
@@ -11,7 +12,8 @@ import dagger.Subcomponent;
 @MainScope
 @Subcomponent(modules = {
         FeedModule.class,
-        SettingsModule.class
+        SettingsModule.class,
+        ProfileModule.class
 })
 public interface MainComponent {
 
@@ -23,6 +25,8 @@ public interface MainComponent {
         Builder feedModule(FeedModule module);
 
         Builder settingsModule(SettingsModule module);
+
+        Builder profileModule(ProfileModule module);
 
         MainComponent build();
     }
