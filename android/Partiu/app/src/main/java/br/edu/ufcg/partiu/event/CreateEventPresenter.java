@@ -56,18 +56,22 @@ public class CreateEventPresenter implements CreateEventContract.Presenter {
 
     @Override
     public void onCreateEvent() {
-        eventService.createEvent(event, new ServiceCallback<Event>() {
-            @Override
-            public void onResponse(Event object, Response<Event> response) {
-                view.showToast("Evento criado com sucesso");
-                view.goBack();
-            }
+        try {
+            eventService.createEvent(event, new ServiceCallback<Event>() {
+                @Override
+                public void onResponse(Event object, Response<Event> response) {
+                    view.showToast("Evento criado com sucesso");
+                    view.goBack();
+                }
 
-            @Override
-            public void onError(Throwable error) {
-
-            }
-        });
+                @Override
+                public void onError(Throwable error) {
+                    view.showToast("Ocorreu um erro ao criar o evento");
+                }
+            });
+        } catch (Exception e) {
+            view.showToast(e.getMessage());
+        }
     }
 
     @Override

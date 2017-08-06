@@ -7,6 +7,7 @@ import os
 
 from flask import Flask, request
 from datetime import datetime
+from dateutil import parser as date_parser
 from .shared.database import db
 from .shared.utils import default_parser, error, get_random_string
 from .shared.auth import requires_auth, with_user
@@ -123,17 +124,23 @@ def find_all_actions(logged_user=None):
 
 @app.route('/event/new', methods=['POST'])
 @requires_auth
-def create_event():
+@with_user
+def create_event(logged_user=None):
     try:
         if request.data:
             event = json.loads(request.data.decode('utf-8'))
         else:
             return error(400)
 
+        event['startDate'] = date_parser.parse(event['startDate'])
+        event['owner'] = logged_user
+        event['interestedUsers'] = []
+        event['confirmedUsers'] = []
+
         inserted_id = db.event.insert(event)
 
         if inserted_id:
-                return json.dumps(db.event.find_one({ '_id': inserted_id }), default=default_parser), 201
+            return json.dumps(db.event.find_one({ '_id': inserted_id }), default=default_parser), 201
         else:
             return error(501)
 

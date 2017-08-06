@@ -1,6 +1,5 @@
 package br.edu.ufcg.partiu.model;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +16,7 @@ public class Event {
     private String address;
     private double latitude;
     private double longitude;
+    private User owner;
     private List<User> interestedUsers;
     private List<User> confirmedUsers;
 
@@ -90,6 +90,14 @@ public class Event {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
     @Override

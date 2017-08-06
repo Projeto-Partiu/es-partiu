@@ -2,6 +2,11 @@ package br.edu.ufcg.partiu.service;
 
 import android.content.Context;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import br.edu.ufcg.partiu.AppScope;
@@ -33,9 +38,17 @@ public class ServiceModule {
 
     @AppScope
     @Provides
-    public Retrofit providesRetrofit(OkHttpClient client) {
+    public Gson providesGson() {
+        return new GsonBuilder()
+                .setDateFormat(DateFormat.FULL)
+                .create();
+    }
+
+    @AppScope
+    @Provides
+    public Retrofit providesRetrofit(OkHttpClient client, Gson gson) {
         return new Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(client)
                 .baseUrl(BuildConfig.SERVER_URL)
                 .build();
@@ -61,8 +74,8 @@ public class ServiceModule {
 
     @AppScope
     @Provides
-    public EventService providesEventService(Context context, EventRepository eventRepository) {
-        return new EventServiceImpl(context, eventRepository);
+    public EventService providesEventService(Context context, EventRepository eventRepository, UserService userService) {
+        return new EventServiceImpl(context, eventRepository, userService);
     }
 
     @AppScope
