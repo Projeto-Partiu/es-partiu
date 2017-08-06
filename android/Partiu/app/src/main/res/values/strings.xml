@@ -9,4 +9,6 @@
     <string name="feed_empty_message">Você não tem atividades recentes para visualizar</string>
     <string name="action_started_following">começou a seguir</string>
     <string name="fragment_settings_title">Configuração</string>
+    <string name="action_marked_presence">marcou presença no evento</string>
+    <string name="action_marked_interest">marcou interesse no evento</string>
 </resources>
