@@ -38,6 +38,10 @@ public interface CreateEventContract {
         void setStartDateText(String text);
 
         void setEndDateText(String text);
+
+        void setLocationText(String location);
+
+        void goBack();
     }
 
 }

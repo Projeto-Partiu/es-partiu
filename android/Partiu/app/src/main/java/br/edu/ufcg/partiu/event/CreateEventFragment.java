@@ -16,8 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.location.places.Place;
@@ -36,14 +34,16 @@ import static android.app.Activity.RESULT_OK;
  */
 
 public class CreateEventFragment extends Fragment implements CreateEventContract.View {
+
     private static final int PLACE_PICKER_REQUEST = 1;
+
     private final String DATE_PICKER_TAG = "br.edu.ufcg.partiu.event.CreateEventFragment.DATE_PICKER";
     private final String TIME_PICKER_TAG = "br.edu.ufcg.partiu.event.CreateEventFragment.TIME_PICKER";
 
     private CreateEventContract.Presenter presenter;
 
-    @BindView(R.id.event_local_button)
-    Button localizationButton;
+    @BindView(R.id.event_place)
+    TextInputEditText locationEditText;
 
     @BindView(R.id.event_name)
     TextInputEditText nameEditText;
@@ -72,7 +72,7 @@ public class CreateEventFragment extends Fragment implements CreateEventContract
 
         ButterKnife.bind(this, view);
 
-        localizationButton.setOnClickListener(new View.OnClickListener() {
+        locationEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
@@ -182,6 +182,16 @@ public class CreateEventFragment extends Fragment implements CreateEventContract
     @Override
     public void setEndDateText(String text) {
         endDateEditText.setText(text);
+    }
+
+    @Override
+    public void setLocationText(String location) {
+        locationEditText.setText(location);
+    }
+
+    @Override
+    public void goBack() {
+        getActivity().finish();
     }
 
     public static class DatePickerFragment extends DialogFragment {

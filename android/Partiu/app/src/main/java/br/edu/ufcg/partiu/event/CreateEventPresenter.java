@@ -59,7 +59,8 @@ public class CreateEventPresenter implements CreateEventContract.Presenter {
         eventService.createEvent(event, new ServiceCallback<Event>() {
             @Override
             public void onResponse(Event object, Response<Event> response) {
-                view.showToast("Evento criado com sucesso para " + userService.loggedUser().getName());
+                view.showToast("Evento criado com sucesso");
+                view.goBack();
             }
 
             @Override
@@ -79,6 +80,8 @@ public class CreateEventPresenter implements CreateEventContract.Presenter {
         event.setLatitude(latitude);
         event.setLongitude(longitude);
         event.setAddress(address);
+
+        view.setLocationText(address);
     }
 
     @Override

@@ -13,5 +13,5 @@ import retrofit2.http.POST;
 
 public interface EventRepository {
     @POST("event/new")
-        Call<Event> createEvent(@Body Event event, @Header("Authorization") String token);
+    Call<Event> createEvent(@Body Event event, @Header("Authorization") String token);
 }
