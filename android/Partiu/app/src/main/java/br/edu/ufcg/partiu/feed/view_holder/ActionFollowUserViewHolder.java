@@ -2,10 +2,14 @@ package br.edu.ufcg.partiu.feed.view_holder;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,14 +41,11 @@ public class ActionFollowUserViewHolder extends ItemAdapter.ItemViewHolder<Actio
 
     public static final int VIEW_TYPE = ActionType.FOLLOW_USER.ordinal();
 
-    @BindView(R.id.user_name)
-    TextView userNameText;
-
-    @BindView(R.id.second_user_name)
-    TextView secondUserNameText;
-
     @BindView(R.id.user_image)
     ImageView userImage;
+
+    @BindView(R.id.action_text)
+    TextView actionTextView;
 
     public ActionFollowUserViewHolder(View itemView) {
         super(itemView);
@@ -55,7 +56,32 @@ public class ActionFollowUserViewHolder extends ItemAdapter.ItemViewHolder<Actio
     public void bind(ActionHolder itemHolder) {
         Action action = itemHolder.getAction();
 
-        userNameText.setText(action.getUser().getName());
+        String userName = action.getUser().getName();
+        String followedUserName = (String) ((Map<String, Object>) action.getArguments().get("user")).get("name");
+        String actionText = itemView.getContext().getString(R.string.action_started_following);
+
+        SpannableStringBuilder sb = new SpannableStringBuilder()
+                .append(userName)
+                .append(" ")
+                .append(actionText)
+                .append(" ")
+                .append(followedUserName);
+
+        sb.setSpan(
+                new StyleSpan(Typeface.BOLD),
+                0,
+                userName.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
+
+        sb.setSpan(
+                new StyleSpan(Typeface.BOLD),
+                userName.length() + 1 + actionText.length() + 1,
+                sb.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
+
+        actionTextView.setText(sb);
 
         Picasso
                 .with(itemView.getContext())
@@ -78,8 +104,6 @@ public class ActionFollowUserViewHolder extends ItemAdapter.ItemViewHolder<Actio
 
                     }
                 });
-
-        secondUserNameText.setText((String) ((Map<String, Object>) action.getArguments().get("user")).get("name"));
     }
 
     public static class Factory implements ItemAdapter.ItemViewHolder.Factory {
@@ -93,7 +117,7 @@ public class ActionFollowUserViewHolder extends ItemAdapter.ItemViewHolder<Actio
         @Override
         public ItemAdapter.ItemViewHolder createViewHolder(ViewGroup parent, int viewType) {
             return new ActionFollowUserViewHolder(
-                    inflater.inflate(R.layout.view_holder_action_follow_user, parent, false)
+                    inflater.inflate(R.layout.view_holder_action_template, parent, false)
             );
         }
     }
