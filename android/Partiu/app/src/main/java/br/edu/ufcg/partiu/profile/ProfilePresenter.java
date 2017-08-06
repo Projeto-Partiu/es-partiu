@@ -24,4 +24,9 @@ public class ProfilePresenter implements ProfileContract.Presenter {
     public void start() {
 
     }
+
+    @Override
+    public void searchProfiles() {
+        view.launchSearchActivity();
+    }
 }

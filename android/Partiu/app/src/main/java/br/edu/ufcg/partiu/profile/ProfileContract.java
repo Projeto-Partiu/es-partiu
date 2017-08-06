@@ -10,10 +10,11 @@ import br.edu.ufcg.partiu.base.BaseView;
 public interface ProfileContract {
 
     interface Presenter extends BasePresenter {
-
+        void searchProfiles();
     }
 
     interface View extends BaseView<Presenter> {
 
+        void launchSearchActivity();
     }
 }
