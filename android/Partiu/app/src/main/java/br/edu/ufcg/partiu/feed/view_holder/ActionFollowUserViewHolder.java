@@ -60,6 +60,7 @@ public class ActionFollowUserViewHolder extends ItemAdapter.ItemViewHolder<Actio
         Picasso
                 .with(itemView.getContext())
                 .load(action.getUser().getUrlPhoto())
+                .placeholder(R.drawable.ic_person_placeholder)
                 .resize(64, 64)
                 .into(userImage, new Callback() {
                     @Override
