@@ -32,6 +32,8 @@ public class CreateEventActivity extends AppCompatActivity {
             actionBar.setDisplayShowHomeEnabled(true);
         }
 
+        fragment = (CreateEventFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+
         if (fragment == null) {
             fragment = new CreateEventFragment();
 
@@ -47,8 +49,6 @@ public class CreateEventActivity extends AppCompatActivity {
                 .createEventModule(new CreateEventModule(fragment))
                 .build()
                 .inject(this);
-
-        fragment.setPresenter(presenter);
     }
 
     @Override
