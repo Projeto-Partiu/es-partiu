@@ -22,6 +22,9 @@ import br.edu.ufcg.partiu.profile.ProfilePresenter;
 import br.edu.ufcg.partiu.settings.SettingsFragment;
 import br.edu.ufcg.partiu.settings.SettingsModule;
 import br.edu.ufcg.partiu.settings.SettingsPresenter;
+import br.edu.ufcg.partiu.show_events.ShowEventsFragment;
+import br.edu.ufcg.partiu.show_events.ShowEventsModule;
+import br.edu.ufcg.partiu.show_events.ShowEventsPresenter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -45,6 +48,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @Inject
     SettingsPresenter settingsPresenter;
     SettingsFragment settingsFragment;
+
+    @Inject
+    ShowEventsPresenter showEventsPresenter;
+    ShowEventsFragment showEventsFragment;
 
     @Inject
     ProfilePresenter profilePresenter;
@@ -72,6 +79,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             outState.putInt(CURRENT_FRAGMENT_KEY, R.id.settings_icon);
         } else if (currentDisplayedFragment instanceof ProfileFragment) {
             outState.putInt(CURRENT_FRAGMENT_KEY, R.id.profile_icon);
+        } else if (currentDisplayedFragment instanceof ShowEventsFragment) {
+            outState.putInt(CURRENT_FRAGMENT_KEY, R.id.event_icon);
         } else {
             outState.putInt(CURRENT_FRAGMENT_KEY, -1);
         }
@@ -95,6 +104,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 case R.id.profile_icon:
                     profileFragment = (ProfileFragment) currentDisplayedFragment;
                     break;
+                case R.id.event_icon:
+                    showEventsFragment = (ShowEventsFragment) currentDisplayedFragment;
+                    break;
             }
 
             handleNavigation(displayedFragmentId);
@@ -107,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 .newMainComponent()
                 .feedModule(new FeedModule(feedFragment))
                 .settingsModule(new SettingsModule(settingsFragment))
+                .showEventsModule(new ShowEventsModule(showEventsFragment))
                 .profileModule(new ProfileModule(profileFragment))
                 .build()
                 .inject(this);
@@ -116,6 +129,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         feedFragment = new FeedFragment();
         settingsFragment = new SettingsFragment();
         profileFragment = new ProfileFragment();
+        showEventsFragment = new ShowEventsFragment();
     }
 
     @Override
@@ -128,6 +142,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             case R.id.feed_icon:
                 navigateToFeed();
                 return true;
+            case R.id.event_icon:
+                navigateToEvents();
+                return true;
             case R.id.profile_icon:
                 navigateToProfile();
                 return true;
@@ -137,6 +154,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
 
         return false;
+    }
+
+    private void navigateToEvents() {
+        attachFragmentToContainer(showEventsFragment);
     }
 
     private void navigateToProfile() {

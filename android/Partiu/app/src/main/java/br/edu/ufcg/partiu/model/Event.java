@@ -1,7 +1,13 @@
 package br.edu.ufcg.partiu.model;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+
+import br.edu.ufcg.partiu.util.Util;
 
 /**
  * Created by ordan on 29/07/17.
@@ -110,5 +116,41 @@ public class Event {
                 ", longitude=" + longitude +
                 '}';
     }
+
+    public String getFriendlyAddress() {
+        int virgulas = 0;
+        String address = getAddress();
+        int idx = 0;
+        while (true) {
+            if (address.charAt(idx) == ',') virgulas++;
+            if (virgulas == 2) return address.substring(0, idx);
+            idx++;
+        }
+    }
+
+    public String getFriendlyDate() {
+        if (endDate != null && !endDate.equals(startDate)) {
+            if (Util.toCalendar(startDate).get(Calendar.YEAR) == Util.toCalendar(endDate).get(Calendar.YEAR)) {
+                DateFormat format = new SimpleDateFormat("dd 'de' MMM", Locale.getDefault());
+
+                return format.format(startDate) +
+                        " - " +
+                        format.format(endDate) +
+                        " de " +
+                        Util.toCalendar(startDate).get(Calendar.YEAR);
+            }
+
+            DateFormat format = new SimpleDateFormat("dd 'de' MMM 'de' yyyy", Locale.getDefault());
+
+            return format.format(startDate) +
+                    " - " +
+                    format.format(endDate);
+        } else {
+            DateFormat format = new SimpleDateFormat("dd 'de' MMM 'de' yyyy", Locale.getDefault());
+
+            return format.format(startDate);
+        }
+    }
+
 }
 

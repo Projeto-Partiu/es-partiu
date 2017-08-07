@@ -1,6 +1,5 @@
 package br.edu.ufcg.partiu.feed;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
