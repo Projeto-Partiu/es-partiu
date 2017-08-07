@@ -12,6 +12,7 @@ from dateutil import parser as date_parser
 from .shared.database import db
 from .shared.utils import default_parser, error, get_random_string
 from .shared.auth import requires_auth, with_user
+from bson import ObjectId
 
 app = Flask(__name__)
 
@@ -79,7 +80,7 @@ def logout_user(logged_user=None):
         return error(500)
 
 """
-    Find Users
+    Find and Update Users
 """
 
 @app.route('/find_users/<string:query>', methods=['GET'])
@@ -88,12 +89,26 @@ def logout_user(logged_user=None):
 def find_users(query):
     regx = re.compile("^" + query, re.IGNORECASE)
     ret = {'users': []}
-    for user in db.user.find({"name": regx}): #{'$regex':'^fulano'}}
+    for user in db.user.find({"name": regx}):
         ret['users'].append(user)
     return json.dumps(ret, default=default_parser), 200
 
+@app.route('/user/update/<string:_id>', methods=['PUT'])
+@requires_auth
+@with_user
+def update_user(_id):
+    updated_user = json.loads(request.data.decode('utf-8'))
+    old_user = db.session.find_one({'_id': ObjectId(_id)})
+    if old_user is None:
+        return error(404)
+    db.user.update_one( {'_id': ObjectId(old_user['user'])},
+        {
+            '$set': {'name': 'kkkk'}
+        }, upsert=False)
+    return "done", 200
+
 """
-    Actions
+   Actions
 """
 
 @app.route('/action/', methods=['POST'])
