@@ -4,6 +4,7 @@
 
 import simplejson as json
 import os
+import re
 
 from flask import Flask, request
 from datetime import datetime
@@ -76,6 +77,20 @@ def logout_user(logged_user=None):
     except Exception as e:
         print(e)
         return error(500)
+
+"""
+    Find Users
+"""
+
+@app.route('/find_users/<string:query>', methods=['GET'])
+@requires_auth
+@with_user
+def find_users(query):
+    regx = re.compile("^" + query, re.IGNORECASE)
+    ret = {'users': []}
+    for user in db.user.find({"name": regx}): #{'$regex':'^fulano'}}
+        ret['users'].append(user)
+    return json.dumps(ret, default=default_parser), 200
 
 """
     Actions
