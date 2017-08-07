@@ -2,6 +2,8 @@ package br.edu.ufcg.partiu.service;
 
 import android.content.Context;
 
+import java.util.List;
+
 import br.edu.ufcg.partiu.base.ServiceCallback;
 import br.edu.ufcg.partiu.model.Event;
 import br.edu.ufcg.partiu.service.repository.EventRepository;
@@ -42,6 +44,25 @@ public class EventServiceImpl implements EventService {
             public void onFailure(Call<Event> call, Throwable t) {
                 callback.onError(t);
             }
+        });
+
+        return null;
+    }
+
+    @Override
+    public Void getEvents(final ServiceCallback<List<Event>> callback) {
+        eventRepository.getEvents(Util.getSessionToken(context)).enqueue(new Callback<List<Event>>() {
+
+            @Override
+            public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
+                callback.onResponse(response.body(), response);
+            }
+
+            @Override
+            public void onFailure(Call<List<Event>> call, Throwable t) {
+                callback.onError(t);
+            }
+
         });
 
         return null;

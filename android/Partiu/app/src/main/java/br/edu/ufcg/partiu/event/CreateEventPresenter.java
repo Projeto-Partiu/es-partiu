@@ -14,6 +14,7 @@ import com.google.android.gms.location.places.Place;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;
@@ -96,6 +97,23 @@ public class CreateEventPresenter implements CreateEventContract.Presenter {
     @Override
     public void onEventDescriptionChange(CharSequence description) {
         event.setDescription(description.toString());
+
+        eventService.getEvents(new ServiceCallback<List<Event>>() {
+            @Override
+            public void onResponse(List<Event> object, Response<List<Event>> response) {
+                view.showToast("entro 1");
+                System.out.print("AAAAAAA" + object);
+                for (Event e: object){
+                    view.showToast(e.getName());
+                }
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                view.showToast("entro 2");
+                System.out.print(error.toString());
+            }
+        });
     }
 
     @Override

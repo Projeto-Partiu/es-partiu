@@ -9,19 +9,46 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import javax.inject.Inject;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import br.edu.ufcg.partiu.R;
 import br.edu.ufcg.partiu.model.Event;
+import br.edu.ufcg.partiu.MainApplication;
 
-public class ShowEvents extends AppCompatActivity {
+
+public class ShowEventsActivity extends AppCompatActivity {
+
+    @Inject
+    ShowEventsPresenter presenter;
+
+    ShowEventsFragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_events);
+
+        fragment = (ShowEventsFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+
+        if (fragment == null) {
+            fragment = new ShowEventsFragment();
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.fragment_container, fragment)
+                    .commit();
+        }
+
+        ((MainApplication) getApplication())
+                .getComponent()
+                .newShowEventsComponent()
+                .showEventsModule(new ShowEventsModule(fragment))
+                .build()
+                .inject(this);
 
         ListView eventList = (ListView) findViewById(R.id.list_view);
 
@@ -31,7 +58,7 @@ public class ShowEvents extends AppCompatActivity {
         e1.setName("Teste 1");
         e2.setName("Teste 2");
 
-        e1.setDescription("Nada com nada");
+        e1.setDescription("nome: " + presenter.userService.loggedUser().getName() + " foto: " + presenter.userService.loggedUser().getUrlPhoto());
         e2.setDescription("Nada com tudo");
 
         e1.setAddress("Rua das palmeiras");
@@ -43,7 +70,9 @@ public class ShowEvents extends AppCompatActivity {
         events.add(e1);
         events.add(e2);
 
-        ArrayAdapter<Event> adapter = new ArrayAdapter<Event>();
+        ArrayAdapter<Event> adapter = new ArrayAdapter<Event>(this, android.R.layout.simple_list_item_1, events);
+
+        eventList.setAdapter(adapter);
 
     }
 
