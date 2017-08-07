@@ -1,8 +1,13 @@
 package br.edu.ufcg.partiu.model;
 
-import android.text.format.DateFormat;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+
+import br.edu.ufcg.partiu.util.Util;
 
 /**
  * Created by ordan on 29/07/17.
@@ -112,34 +117,39 @@ public class Event {
                 '}';
     }
 
-    public String getFriendlyAddress(){
+    public String getFriendlyAddress() {
         int virgulas = 0;
         String address = getAddress();
         int idx = 0;
-        while (true){
+        while (true) {
             if (address.charAt(idx) == ',') virgulas++;
             if (virgulas == 2) return address.substring(0, idx);
             idx++;
         }
-
     }
 
-    public String getFriendlyDate(){
-        String dayStart = (String) DateFormat.format("dd", startDate);
-        String monthStart = (String) DateFormat.format("MMM",  startDate);
-        String yearStart = (String) DateFormat.format("yyyy", startDate);
+    public String getFriendlyDate() {
+        if (endDate != null && !endDate.equals(startDate)) {
+            if (Util.toCalendar(startDate).get(Calendar.YEAR) == Util.toCalendar(endDate).get(Calendar.YEAR)) {
+                DateFormat format = new SimpleDateFormat("dd 'de' MMM", Locale.getDefault());
 
-        String dayEnd = (String) DateFormat.format("dd", endDate);
-        String monthEnd = (String) DateFormat.format("MMM",  endDate);
-        String yearEnd = (String) DateFormat.format("yyyy",  endDate);
+                return format.format(startDate) +
+                        " - " +
+                        format.format(endDate) +
+                        " de " +
+                        Util.toCalendar(startDate).get(Calendar.YEAR);
+            }
 
-        String start = dayStart + " de " +  monthStart;
-        String end = dayEnd + " de " +  monthEnd;
+            DateFormat format = new SimpleDateFormat("dd 'de' MMM 'de' yyyy", Locale.getDefault());
 
-        if (start.equals(end)) return start + " de " + yearEnd;
-        if (yearStart.equals(yearEnd)) return start + " - " + end + " de " + yearStart;
+            return format.format(startDate) +
+                    " - " +
+                    format.format(endDate);
+        } else {
+            DateFormat format = new SimpleDateFormat("dd 'de' MMM 'de' yyyy", Locale.getDefault());
 
-        else return start + " de " + yearStart + " - " + end + " de " + yearEnd;
+            return format.format(startDate);
+        }
     }
 
 }

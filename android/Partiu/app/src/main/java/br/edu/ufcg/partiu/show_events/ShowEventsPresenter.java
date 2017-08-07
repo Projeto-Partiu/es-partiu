@@ -35,26 +35,16 @@ public class ShowEventsPresenter implements ShowEventsContract.Presenter {
 
     @Override
     public void start() {
+        eventService.getEvents(new ServiceCallback<List<Event>>() {
+            @Override
+            public void onResponse(List<Event> events, Response<List<Event>> response) {
+                view.showEvents(events);
+            }
 
-    }
-
-    @Override
-    public void loadEvents() {
-        try {
-            eventService.getEvents(new ServiceCallback<List<Event>>() {
-
-                @Override
-                public void onResponse(List<Event> object, Response<List<Event>> response) {
-                    view.showEvents(object);
-                }
-
-                @Override
-                public void onError(Throwable error) {
-
-                }
-            });
-        } catch (Exception e) {
-
-        }
+            @Override
+            public void onError(Throwable error) {
+                view.showToast("Não foi possível atualizar eventos");
+            }
+        });
     }
 }

@@ -22,7 +22,6 @@ import java.util.List;
 
 import br.edu.ufcg.partiu.R;
 import br.edu.ufcg.partiu.event.CreateEventActivity;
-import br.edu.ufcg.partiu.show_events.ShowEventsActivity;
 import br.edu.ufcg.partiu.feed.view_holder.ActionFollowUserViewHolder;
 import br.edu.ufcg.partiu.feed.view_holder.ActionHolder;
 import br.edu.ufcg.partiu.feed.view_holder.ActionMarkInterestViewHolder;
@@ -58,9 +57,6 @@ public class FeedFragment extends Fragment implements FeedContract.View {
     @BindView(R.id.action_list_layout)
     SwipeRefreshLayout actionListLayout;
 
-    @BindView(R.id.show_events_fab)
-    FloatingActionButton ShowEventsFab;
-
     private ItemAdapter<ActionHolder> actionListAdapter;
 
     @Nullable
@@ -81,15 +77,6 @@ public class FeedFragment extends Fragment implements FeedContract.View {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), CreateEventActivity.class);
-
-                startActivity(intent);
-            }
-        });
-
-        ShowEventsFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), ShowEventsActivity.class);
 
                 startActivity(intent);
             }

@@ -1,6 +1,7 @@
 package br.edu.ufcg.partiu.show_events;
 
 
+import br.edu.ufcg.partiu.shared.MainScope;
 import dagger.Module;
 import dagger.Provides;
 
@@ -16,7 +17,7 @@ public class ShowEventsModule {
         this.view = view;
     }
 
-    @ShowEventsScope
+    @MainScope
     @Provides
     public ShowEventsContract.View providesCreateEventView() {
         return view;

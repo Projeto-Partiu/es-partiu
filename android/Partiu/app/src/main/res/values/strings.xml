@@ -12,4 +12,5 @@
     <string name="title_activity_show_events">ShowEvents</string>
     <string name="action_marked_presence">marcou presença no evento</string>
     <string name="action_marked_interest">marcou interesse no evento</string>
+    <string name="fragment_events_title">Eventos</string>
 </resources>
