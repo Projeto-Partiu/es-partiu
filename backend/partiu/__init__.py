@@ -152,6 +152,4 @@ def create_event(logged_user=None):
 @app.route('/events', methods=['GET'])
 @requires_auth
 def get_events():
-    return json.dumps({
-        'events': list(db.event.find())
-    }, default=default_parser), 200
+    return json.dumps(list(db.event.find()), default=default_parser), 200
