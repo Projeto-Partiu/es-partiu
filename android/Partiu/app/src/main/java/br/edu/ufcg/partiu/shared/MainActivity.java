@@ -19,6 +19,9 @@ import br.edu.ufcg.partiu.feed.FeedPresenter;
 import br.edu.ufcg.partiu.settings.SettingsFragment;
 import br.edu.ufcg.partiu.settings.SettingsModule;
 import br.edu.ufcg.partiu.settings.SettingsPresenter;
+import br.edu.ufcg.partiu.show_events.ShowEventsFragment;
+import br.edu.ufcg.partiu.show_events.ShowEventsModule;
+import br.edu.ufcg.partiu.show_events.ShowEventsPresenter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -43,6 +46,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     SettingsPresenter settingsPresenter;
     SettingsFragment settingsFragment;
 
+    @Inject
+    ShowEventsPresenter showEventsPresenter;
+    ShowEventsFragment showEventsFragment;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             outState.putInt(CURRENT_FRAGMENT_KEY, R.id.feed_icon);
         } else if (currentDisplayedFragment instanceof SettingsFragment) {
             outState.putInt(CURRENT_FRAGMENT_KEY, R.id.settings_icon);
+        } else if (currentDisplayedFragment instanceof ShowEventsFragment) {
+            outState.putInt(CURRENT_FRAGMENT_KEY, R.id.event_icon);
         } else {
             outState.putInt(CURRENT_FRAGMENT_KEY, -1);
         }
@@ -82,6 +91,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     break;
                 case R.id.settings_icon:
                     settingsFragment = (SettingsFragment) currentDisplayedFragment;
+                    break;
+                case R.id.event_icon:
+                    showEventsFragment = (ShowEventsFragment) currentDisplayedFragment;
+                    break;
             }
 
             handleNavigation(displayedFragmentId);
@@ -94,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 .newMainComponent()
                 .feedModule(new FeedModule(feedFragment))
                 .settingsModule(new SettingsModule(settingsFragment))
+                .showEventsModule(new ShowEventsModule(showEventsFragment))
                 .build()
                 .inject(this);
     }
@@ -101,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private void initializeFragments() {
         feedFragment = new FeedFragment();
         settingsFragment = new SettingsFragment();
+        showEventsFragment = new ShowEventsFragment();
     }
 
     @Override
@@ -113,6 +128,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             case R.id.feed_icon:
                 navigateToFeed();
                 return true;
+            case R.id.event_icon:
+                navigateToEvents();
+                return true;
             case R.id.profile_icon:
                 return true;
             case R.id.settings_icon:
@@ -121,6 +139,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
 
         return false;
+    }
+
+    private void navigateToEvents() {
+        attachFragmentToContainer(showEventsFragment);
     }
 
     private void navigateToFeed() {

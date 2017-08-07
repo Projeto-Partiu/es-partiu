@@ -1,5 +1,7 @@
 package br.edu.ufcg.partiu.service;
 
+import java.util.List;
+
 import br.edu.ufcg.partiu.model.Event;
 import br.edu.ufcg.partiu.base.ServiceCallback;
 
@@ -10,5 +12,8 @@ import br.edu.ufcg.partiu.base.ServiceCallback;
 public interface EventService {
 
     Void createEvent(Event event, ServiceCallback<Event> callback);
+
+    Void getEvents(ServiceCallback<List<Event>> callback);
+
 
 }

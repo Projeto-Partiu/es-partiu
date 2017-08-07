@@ -9,6 +9,13 @@
         app:showAsAction="ifRoom"/>
 
     <item
+        android:id="@+id/event_icon"
+        android:enabled="true"
+        android:title="Eventos"
+        android:icon="@drawable/ic_event_black_24dp"
+        app:showAsAction="ifRoom"/>
+
+    <item
         android:id="@+id/profile_icon"
         android:title="Perfil"
         android:icon="@drawable/ic_person_black_24dp"

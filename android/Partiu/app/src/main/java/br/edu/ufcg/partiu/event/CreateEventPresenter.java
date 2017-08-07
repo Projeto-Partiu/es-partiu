@@ -14,6 +14,7 @@ import com.google.android.gms.location.places.Place;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;
