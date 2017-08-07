@@ -2,7 +2,9 @@ package br.edu.ufcg.partiu.event.show;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.support.design.widget.FloatingActionButton;
 import android.text.Layout;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
@@ -20,6 +22,7 @@ import org.w3c.dom.Text;
 import java.util.List;
 
 import br.edu.ufcg.partiu.R;
+import br.edu.ufcg.partiu.event.CreateEventActivity;
 import br.edu.ufcg.partiu.model.Event;
 
 /**
@@ -52,7 +55,7 @@ public class EventAdapter extends BaseAdapter implements ListAdapter{
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, final ViewGroup parent) {
 
         View view = convertView;
 
@@ -63,9 +66,9 @@ public class EventAdapter extends BaseAdapter implements ListAdapter{
 
         Event event = (Event) getItem(position);
 
-        LinearLayout dayMonthLayout = (LinearLayout) view.findViewById(R.id.day_month_layout);
+        // LinearLayout dayMonthLayout = (LinearLayout) view.findViewById(R.id.day_month_layout);
 
-        dayMonthLayout.setBackgroundColor(Color.BLUE);
+        // dayMonthLayout.setBackgroundColor(Color.BLUE);
 
         TextView dayText = (TextView) view.findViewById(R.id.day_text_view);
         String day  = (String) DateFormat.format("dd",   event.getStartDate());
@@ -79,10 +82,21 @@ public class EventAdapter extends BaseAdapter implements ListAdapter{
         nameText.setText(event.getName());
 
         TextView addressText = (TextView) view.findViewById(R.id.address_text_view);
-        addressText.setText(event.getAddress());
+        addressText.setText(event.getFriendlyAddress());
 
-        TextView dateText = (TextView) view.findViewById(R.id.day_text_view);
-        dateText.setText(event.getStartDate().toString() + " - " + event.getEndDate().toString());
+        TextView dateText = (TextView) view.findViewById(R.id.date_text_view);
+        dateText.setText(event.getFriendlyDate());
+
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.edit_event_fab);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, CreateEventActivity.class);
+
+                parent.getContext().startActivity(intent);
+            }
+        });
 
         return view;
 

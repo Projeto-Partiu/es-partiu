@@ -1,5 +1,6 @@
 package br.edu.ufcg.partiu.model;
 
+import android.text.format.DateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -110,5 +111,36 @@ public class Event {
                 ", longitude=" + longitude +
                 '}';
     }
+
+    public String getFriendlyAddress(){
+        int virgulas = 0;
+        String address = getAddress();
+        int idx = 0;
+        while (true){
+            if (address.charAt(idx) == ',') virgulas++;
+            if (virgulas == 2) return address.substring(0, idx);
+            idx++;
+        }
+
+    }
+
+    public String getFriendlyDate(){
+        String dayStart = (String) DateFormat.format("dd", startDate);
+        String monthStart = (String) DateFormat.format("MMM",  startDate);
+        String yearStart = (String) DateFormat.format("yyyy", startDate);
+
+        String dayEnd = (String) DateFormat.format("dd", endDate);
+        String monthEnd = (String) DateFormat.format("MMM",  endDate);
+        String yearEnd = (String) DateFormat.format("yyyy",  endDate);
+
+        String start = dayStart + " de " +  monthStart;
+        String end = dayEnd + " de " +  monthEnd;
+
+        if (start.equals(end)) return start + " de " + yearEnd;
+        if (yearStart.equals(yearEnd)) return start + " - " + end + " de " + yearStart;
+
+        else return start + " de " + yearStart + " - " + end + " de " + yearEnd;
+    }
+
 }
 

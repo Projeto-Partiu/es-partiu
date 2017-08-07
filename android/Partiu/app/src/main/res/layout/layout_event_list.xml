@@ -8,13 +8,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
+        android:clickable="false"
         android:orientation="horizontal">
 
         <LinearLayout
             android:id="@+id/day_month_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/holo_red_light"
             android:orientation="vertical"
             android:padding="0dp">
 
@@ -51,59 +51,79 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/background_light"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:padding="0dp">
 
-            <TextView
-                android:id="@+id/name_text_view"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_marginBottom="0dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="0dp"
-                android:gravity="left"
-                android:padding="0dp"
-                android:paddingBottom="0dp"
-                android:paddingLeft="0dp"
-                android:paddingRight="0dp"
-                android:text="Só na pisadinha"
-                android:textSize="25sp"
-                android:textStyle="bold" />
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/address_text_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="20dp"
-                android:layout_weight="1.52"
-                android:gravity="left"
-                android:paddingLeft="0dp"
-                android:paddingRight="0dp"
-                android:text="Rua dos palmares"
-                android:textSize="18sp" />
+                <TextView
+                    android:id="@+id/name_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginBottom="0dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="0dp"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:maxWidth="1000dp"
+                    android:padding="0dp"
+                    android:paddingBottom="0dp"
+                    android:paddingLeft="0dp"
+                    android:paddingRight="0dp"
+                    android:text="Só na pisadinha aaaaaaa"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/date_text_view"
-                android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/address_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:paddingLeft="0dp"
+                    android:paddingRight="0dp"
+                    android:text="Rua dos palmares"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/date_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:paddingLeft="0dp"
+                    android:paddingRight="0dp"
+                    android:text="25 Jun 2016 10:45 - 27 Jun 2016"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/edit_event_fab"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="20dp"
-                android:layout_weight="1.52"
-                android:gravity="left"
-                android:paddingLeft="0dp"
-                android:paddingRight="0dp"
-                android:text="25 Jun 2016 10:45 - 27 Jun 2016"
-                android:textSize="15sp" />
+                android:layout_gravity="right"
+                android:src="@drawable/ic_edit_black_24dp" />
 
         </LinearLayout>
+
+
     </LinearLayout>
+
+
+
 
 </RelativeLayout>

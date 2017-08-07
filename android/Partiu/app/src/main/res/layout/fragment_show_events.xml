@@ -6,11 +6,6 @@
     tools:context="br.edu.ufcg.partiu.event.show.ShowEventsActivity"
     >
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Eventos" />
 
     <RelativeLayout
         android:id="@+id/list_layout"
