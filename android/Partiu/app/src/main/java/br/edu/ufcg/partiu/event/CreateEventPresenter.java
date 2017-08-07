@@ -97,23 +97,6 @@ public class CreateEventPresenter implements CreateEventContract.Presenter {
     @Override
     public void onEventDescriptionChange(CharSequence description) {
         event.setDescription(description.toString());
-
-        eventService.getEvents(new ServiceCallback<List<Event>>() {
-            @Override
-            public void onResponse(List<Event> object, Response<List<Event>> response) {
-                view.showToast("entro 1");
-                System.out.print("AAAAAAA" + object);
-                for (Event e: object){
-                    view.showToast(e.getName());
-                }
-            }
-
-            @Override
-            public void onError(Throwable error) {
-                view.showToast("entro 2");
-                System.out.print(error.toString());
-            }
-        });
     }
 
     @Override

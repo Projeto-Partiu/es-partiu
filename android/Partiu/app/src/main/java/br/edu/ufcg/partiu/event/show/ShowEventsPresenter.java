@@ -1,7 +1,18 @@
 package br.edu.ufcg.partiu.event.show;
 
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import br.edu.ufcg.partiu.R;
+import br.edu.ufcg.partiu.base.ServiceCallback;
+import br.edu.ufcg.partiu.model.Event;
 import br.edu.ufcg.partiu.service.EventService;
 import br.edu.ufcg.partiu.service.UserService;
+import retrofit2.Response;
 
 /**
  * Created by ordan on 06/08/17.
@@ -32,5 +43,28 @@ public class ShowEventsPresenter implements ShowEventsContract.Presenter{
     public void start() {
 
     }
+
+    @Override
+    public void loadEvents (){
+
+        try {
+            eventService.getEvents(new ServiceCallback<List<Event>>() {
+
+                @Override
+                public void onResponse(List<Event> object, Response<List<Event>> response) {
+                    view.showEvents(object);
+                }
+
+                @Override
+                public void onError(Throwable error) {
+
+                }
+            });
+        } catch (Exception e){
+
+        }
+    }
+
+
 
 }
