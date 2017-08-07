@@ -132,6 +132,8 @@ def create_event(logged_user=None):
         else:
             return error(400)
 
+        del logged_user['token']
+
         event['startDate'] = date_parser.parse(event['startDate'])
         event['owner'] = logged_user
         event['interestedUsers'] = []

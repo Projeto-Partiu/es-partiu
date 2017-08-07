@@ -10,4 +10,6 @@
     <string name="action_started_following">começou a seguir</string>
     <string name="fragment_settings_title">Configuração</string>
     <string name="title_activity_show_events">ShowEvents</string>
+    <string name="action_marked_presence">marcou presença no evento</string>
+    <string name="action_marked_interest">marcou interesse no evento</string>
 </resources>
