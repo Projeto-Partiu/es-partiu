@@ -31,8 +31,6 @@ import butterknife.ButterKnife;
 
 public class ProfileViewHolder extends ItemAdapter.ItemViewHolder<ProfileHolder> {
 
-    public static final int VIEW_TYPE = ActionType.FOLLOW_USER.ordinal();
-
     @BindView(R.id.profile_list_pic)
     ImageView profilePic;
 
