@@ -1,41 +1,42 @@
 package br.edu.ufcg.partiu.profile.view_holder;
 
-import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
-import android.text.style.StyleSpan;
+import android.support.design.widget.FloatingActionButton;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
-
-import java.util.Map;
-
 import br.edu.ufcg.partiu.R;
-import br.edu.ufcg.partiu.model.Action;
-import br.edu.ufcg.partiu.model.ActionType;
+import br.edu.ufcg.partiu.model.Event;
 import br.edu.ufcg.partiu.model.User;
 import br.edu.ufcg.partiu.util.ItemAdapter;
-import br.edu.ufcg.partiu.util.Util;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by filipe on 06/08/17.
+ * Created by lucas on 07/08/17.
  */
 
 public class ProfileViewHolder extends ItemAdapter.ItemViewHolder<ProfileHolder> {
 
-    @BindView(R.id.profile_list_pic)
-    ImageView profilePic;
-
-    @BindView(R.id.profile_list_name)
-    TextView profileName;
+//    @BindView(R.id.day_text_view)
+//    TextView dayText;
+//
+//    @BindView(R.id.month_text_view)
+//    TextView monthText;
+//
+//    @BindView(R.id.name_text_view)
+//    TextView nameText;
+//
+//    @BindView(R.id.address_text_view)
+//    TextView addressText;
+//
+//    @BindView(R.id.date_text_view)
+//    TextView dateText;
+//
+//    @BindView(R.id.edit_event_fab)
+//    FloatingActionButton fab;
 
     public ProfileViewHolder(View itemView) {
         super(itemView);
@@ -45,31 +46,30 @@ public class ProfileViewHolder extends ItemAdapter.ItemViewHolder<ProfileHolder>
     @Override
     public void bind(ProfileHolder itemHolder) {
         User user = itemHolder.getUser();
-        String userName = user.getName();
 
-        Picasso
-                .with(itemView.getContext())
-                .load(user.getUrlPhoto())
-                .placeholder(R.drawable.ic_person_placeholder)
-                .resize(64, 64)
-                .into(profilePic, new Callback() {
-                    @Override
-                    public void onSuccess() {
-                        profilePic.setImageDrawable(
-                                Util.toRoundBitmap(
-                                        itemView.getContext(),
-                                        ((BitmapDrawable) profilePic.getDrawable()).getBitmap()
-                                )
-                        );
-                    }
+//        String day = (String) DateFormat.format("dd", event.getStartDate());
+//        dayText.setText(day);
+//
+//        String month = (String) DateFormat.format("MMM", event.getStartDate());
+//        monthText.setText(month);
+//
+//        nameText.setText(event.getName());
+//
+//        addressText.setText(event.getFriendlyAddress());
+//
+//        dateText.setText(event.getFriendlyDate());
+//
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+////                Intent intent = new Intent(context, CreateEventActivity.class);
+////
+////                parent.getContext().startActivity(intent);
+//            }
+//        });
+//    }
 
-                    @Override
-                    public void onError() {
 
-                    }
-                });
-
-        profileName.setText(userName);
     }
 
     public static class Factory implements ItemAdapter.ItemViewHolder.Factory {
@@ -83,7 +83,7 @@ public class ProfileViewHolder extends ItemAdapter.ItemViewHolder<ProfileHolder>
         @Override
         public ItemAdapter.ItemViewHolder createViewHolder(ViewGroup parent, int viewType) {
             return new ProfileViewHolder(
-                    inflater.inflate(R.layout.view_holder_action_template, parent, false)
+                    inflater.inflate(R.layout.view_holder_event, parent, false)
             );
         }
     }

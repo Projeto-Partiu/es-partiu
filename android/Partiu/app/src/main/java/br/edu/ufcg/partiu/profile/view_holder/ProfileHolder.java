@@ -1,6 +1,6 @@
 package br.edu.ufcg.partiu.profile.view_holder;
 
-import br.edu.ufcg.partiu.model.Action;
+import br.edu.ufcg.partiu.model.Event;
 import br.edu.ufcg.partiu.model.User;
 import br.edu.ufcg.partiu.util.ItemAdapter;
 
@@ -9,22 +9,25 @@ import br.edu.ufcg.partiu.util.ItemAdapter;
  */
 
 public class ProfileHolder implements ItemAdapter.ItemHolder {
+
+    public static final int VIEW_TYPE = 1;
+
     private final User user;
-    public static final int ITEM_TYPE = 1;
+
     private ProfileHolder(User user) {
         this.user = user;
     }
 
-    @Override
-    public int getItemViewType() {
-        return ITEM_TYPE;
+    public static ProfileHolder from(User user) {
+        return new ProfileHolder(user);
     }
 
     public User getUser() {
         return user;
     }
 
-    public static ProfileHolder from(User user) {
-        return new ProfileHolder(user);
+    @Override
+    public int getItemViewType() {
+        return VIEW_TYPE;
     }
 }

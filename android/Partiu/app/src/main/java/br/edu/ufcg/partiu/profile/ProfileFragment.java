@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import br.edu.ufcg.partiu.R;
 import br.edu.ufcg.partiu.profile_search.ProfileSearchActivity;
@@ -20,13 +21,15 @@ import butterknife.ButterKnife;
 public class ProfileFragment extends Fragment implements ProfileContract.View {
 
     private ProfileContract.Presenter presenter;
+    private Button searchButton;
+    private TextView searchTextView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        Button searchButton = (Button) view.findViewById(R.id.search_profile_button);
+        searchButton = (Button) view.findViewById(R.id.search_profile_button);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -34,6 +37,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
             }
         });
 
+        searchTextView = (TextView) view.findViewById(R.id.search_profile_field);
 
         ButterKnife.bind(this, view);
 
@@ -48,6 +52,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
     @Override
     public void launchSearchActivity() {
         Intent intent = new Intent(getContext(), ProfileSearchActivity.class);
+        intent.putExtra("SEARCH_STRING", searchTextView.getText().toString());
 
         startActivity(intent);
     }
