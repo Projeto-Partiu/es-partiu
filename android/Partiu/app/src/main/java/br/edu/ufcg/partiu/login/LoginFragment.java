@@ -119,6 +119,7 @@ public class LoginFragment extends android.support.v4.app.Fragment implements Lo
         Intent intent = new Intent(getContext(), MainActivity.class);
 
         startActivity(intent);
+        getActivity().finish();
     }
 
     @Override

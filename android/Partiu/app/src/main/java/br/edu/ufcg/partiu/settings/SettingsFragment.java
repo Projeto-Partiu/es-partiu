@@ -64,8 +64,8 @@ public class SettingsFragment extends Fragment implements SettingsContract.View 
     public void goToLoginScreen() {
         Intent intent = new Intent(getContext(), LoginActivity.class);
 
-        getActivity().finish();
         startActivity(intent);
+        getActivity().finish();
     }
 
     @Override
