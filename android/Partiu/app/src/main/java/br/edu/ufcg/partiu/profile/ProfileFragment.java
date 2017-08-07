@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import br.edu.ufcg.partiu.R;
+import br.edu.ufcg.partiu.profile_search.ProfileSearchActivity;
 import butterknife.ButterKnife;
 
 /**
@@ -47,6 +48,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
     @Override
     public void launchSearchActivity() {
         Intent intent = new Intent(getContext(), ProfileSearchActivity.class);
+
         startActivity(intent);
     }
 }
