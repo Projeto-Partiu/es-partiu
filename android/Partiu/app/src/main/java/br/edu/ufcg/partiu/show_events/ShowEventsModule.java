@@ -1,4 +1,4 @@
-package br.edu.ufcg.partiu.event.show;
+package br.edu.ufcg.partiu.show_events;
 
 
 import dagger.Module;

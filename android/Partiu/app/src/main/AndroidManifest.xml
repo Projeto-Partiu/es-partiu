@@ -51,7 +51,7 @@
             android:value="AIzaSyAsRC-L4oCgfXC-CJnE1msXcB3UpuT2HAk" />
 
         <activity
-            android:name=".event.show.ShowEventsActivity"
+            android:name=".show_events.ShowEventsActivity"
             android:label="@string/title_activity_show_events"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>

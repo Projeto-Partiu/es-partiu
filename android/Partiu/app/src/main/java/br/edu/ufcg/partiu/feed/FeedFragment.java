@@ -1,6 +1,5 @@
 package br.edu.ufcg.partiu.feed;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -23,7 +22,7 @@ import java.util.List;
 
 import br.edu.ufcg.partiu.R;
 import br.edu.ufcg.partiu.event.CreateEventActivity;
-import br.edu.ufcg.partiu.event.show.ShowEventsActivity;
+import br.edu.ufcg.partiu.show_events.ShowEventsActivity;
 import br.edu.ufcg.partiu.feed.view_holder.ActionFollowUserViewHolder;
 import br.edu.ufcg.partiu.feed.view_holder.ActionHolder;
 import br.edu.ufcg.partiu.feed.view_holder.ActionMarkInterestViewHolder;

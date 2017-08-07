@@ -1,13 +1,7 @@
-package br.edu.ufcg.partiu.event.show;
+package br.edu.ufcg.partiu.show_events;
 
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import br.edu.ufcg.partiu.R;
 import br.edu.ufcg.partiu.base.ServiceCallback;
 import br.edu.ufcg.partiu.model.Event;
 import br.edu.ufcg.partiu.service.EventService;
@@ -21,7 +15,7 @@ import retrofit2.Response;
 import javax.inject.Inject;
 
 
-public class ShowEventsPresenter implements ShowEventsContract.Presenter{
+public class ShowEventsPresenter implements ShowEventsContract.Presenter {
 
     private final ShowEventsContract.View view;
     private final EventService eventService;
@@ -45,8 +39,7 @@ public class ShowEventsPresenter implements ShowEventsContract.Presenter{
     }
 
     @Override
-    public void loadEvents (){
-
+    public void loadEvents() {
         try {
             eventService.getEvents(new ServiceCallback<List<Event>>() {
 
@@ -60,11 +53,8 @@ public class ShowEventsPresenter implements ShowEventsContract.Presenter{
 
                 }
             });
-        } catch (Exception e){
+        } catch (Exception e) {
 
         }
     }
-
-
-
 }

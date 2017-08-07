@@ -1,7 +1,7 @@
 package br.edu.ufcg.partiu;
 
 import br.edu.ufcg.partiu.event.CreateEventComponent;
-import br.edu.ufcg.partiu.event.show.ShowEventsComponent;
+import br.edu.ufcg.partiu.show_events.ShowEventsComponent;
 import br.edu.ufcg.partiu.login.LoginComponent;
 import br.edu.ufcg.partiu.service.ServiceModule;
 import br.edu.ufcg.partiu.shared.MainComponent;
