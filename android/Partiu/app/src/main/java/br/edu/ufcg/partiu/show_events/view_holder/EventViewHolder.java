@@ -79,7 +79,7 @@ public class EventViewHolder extends ItemAdapter.ItemViewHolder<EventHolder> {
         @Override
         public ItemAdapter.ItemViewHolder createViewHolder(ViewGroup parent, int viewType) {
             return new EventViewHolder(
-                    inflater.inflate(R.layout.layout_event_list, parent, false)
+                    inflater.inflate(R.layout.view_holder_event, parent, false)
             );
         }
     }

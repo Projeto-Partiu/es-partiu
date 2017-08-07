@@ -53,7 +53,7 @@ public class EventAdapter extends BaseAdapter implements ListAdapter{
 
         if (view == null){
             LayoutInflater inflater =  LayoutInflater.from(context);
-            view = inflater.inflate(R.layout.layout_event_list, parent, false);
+            view = inflater.inflate(R.layout.view_holder_event, parent, false);
         }
 
         Event event = (Event) getItem(position);
