@@ -9,8 +9,9 @@ from flask import Flask, request
 from datetime import datetime
 from dateutil import parser as date_parser
 from .shared.database import db
-from .shared.utils import default_parser, error, get_random_string
+from .shared.utils import default_parser, error, get_random_string, haversine
 from .shared.auth import requires_auth, with_user
+from math import sqrt
 
 app = Flask(__name__)
 
@@ -111,7 +112,7 @@ def find_all_actions(logged_user=None):
         if not logged_user:
             return error(400)
 
-        actions = list(db.action.find({ 'user.id': { '$in': logged_user['following'] } }))
+        actions = list(db.action.find({ 'user.id': {'$in': logged_user['following'] } }))
 
         return json.dumps(actions, default=default_parser)
     except Exception as e:
@@ -159,9 +160,52 @@ def get_events():
 @app.route('/events/by_time', methods=['GET'])
 @requires_auth
 def get_events_by_time():
-    return json.dumps(list(db.event.find().limit(20)), default=default_parser), 200
+    events = db.event.find({'startDate': {'$gt': datetime.now()}}).limit(20)
 
-@app.route('/events/by_distance', methods=['GET'])
+    return json.dumps(list(events), default=default_parser), 200
+
+@app.route('/events/by_distance', methods=['POST'])
 @requires_auth
 def get_events_by_distance():
-    return json.dumps(list(db.event.find().limit(20)), default=default_parser), 200
+    try:
+        if request.data:
+            position = json.loads(request.data.decode('utf-8'))
+            if position['latitude'] == -1 and position['longitude'] == -1:
+                position = {'latitude': -7.219447, 'longitude': -35.884460}  # Centro de CG
+        else:
+            position = {'latitude': -7.219447, 'longitude': -35.884460} # Centro de CG
+
+        events = db.event.find({'startDate': {'$gt': datetime.now()}}).limit(20)
+
+        list_next_events = []
+
+        for event in events:
+            if its_close(event, position):
+                list_next_events.append(event)
+
+
+        return json.dumps(list_next_events, default=default_parser), 200
+
+    except Exception as e:
+        print(e)
+        return error(500)
+
+
+def its_close(event, position):
+    lat_user = position['latitude']
+    long_user = position['longitude']
+
+    lat_event = event['latitude']
+    long_event = event['longitude']
+
+    print(position)
+
+    dt = haversine(long_user, lat_user, long_event, lat_event)
+    print(dt)
+
+    if dt < 20: # 20km
+        return True
+
+    return False
+
+

@@ -35,7 +35,9 @@ public class ShowEventsPresenter implements ShowEventsContract.Presenter {
     }
 
     @Override
-    public void start() {}
+    public void start() {
+
+    }
 
     @Override
     public void getEvents(FilterType filterType) {

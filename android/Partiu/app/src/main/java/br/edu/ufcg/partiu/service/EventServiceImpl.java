@@ -1,12 +1,14 @@
 package br.edu.ufcg.partiu.service;
 
 import android.content.Context;
+import android.location.Location;
 
 import java.util.List;
 
 import br.edu.ufcg.partiu.base.ServiceCallback;
 import br.edu.ufcg.partiu.model.Event;
 import br.edu.ufcg.partiu.model.FilterType;
+import br.edu.ufcg.partiu.model.LocationUser;
 import br.edu.ufcg.partiu.service.repository.EventRepository;
 import br.edu.ufcg.partiu.util.Util;
 import retrofit2.Call;
@@ -69,7 +71,9 @@ public class EventServiceImpl implements EventService {
 
         switch (filterType) {
             case BY_DISTANCE:
-                eventRepository.getEventsByDistance(Util.getSessionToken(context)).enqueue(callbackEvent);
+                LocationUser locationUser = Util.getLastLocation(context);
+
+                eventRepository.getEventsByDistance(Util.getSessionToken(context), locationUser).enqueue(callbackEvent);
                 break;
             case BY_TIME:
                 eventRepository.getEventsByTime(Util.getSessionToken(context)).enqueue(callbackEvent);
