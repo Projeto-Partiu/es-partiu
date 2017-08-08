@@ -39,13 +39,13 @@ public class EventDetailActivity extends AppCompatActivity {
         if (fragment == null) {
             fragment = new EventDetailFragment();
 
+            fragment.setArguments(getIntent().getExtras());
+
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(R.id.fragment_container, fragment)
                     .commit();
         }
-
-        fragment.setArguments(getIntent().getExtras());
 
         ((MainApplication) getApplication())
                 .getComponent()
