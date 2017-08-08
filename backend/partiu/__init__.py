@@ -161,7 +161,7 @@ def find_event(event_id):
     if not event:
         return '', 404
 
-    event['comments'] = sorted(event['comments'], key=lambda x: x['date'], reverse=True)
+    event['comments'] = _find_event_comments(event)
 
     return json.dumps(event, default=default_parser), 201
 
@@ -169,7 +169,12 @@ def find_event(event_id):
 @app.route('/events', methods=['GET'])
 @requires_auth
 def get_events():
-    return json.dumps(list(db.event.find()), default=default_parser), 200
+    events = list(db.event.find())
+
+    for event in events:
+        event['comments'] = _find_event_comments(event)
+
+    return json.dumps(events, default=default_parser), 200
 
 @app.route('/events/confirm-presense/<string:_id>', methods=['PUT'])
 @requires_auth
@@ -214,3 +219,51 @@ def disconfirm_presence(_id, logged_user=None):
         {'$set': curr_event}
     )
     return '', 204
+
+@app.route('/comment/<string:comment_id>', methods=['DELETE'])
+@requires_auth
+@with_user
+def delete_comment(comment_id, logged_user=None):
+    try:
+        comment = db.comment.find_one({ '_id': ObjectId(comment_id) })
+
+        if comment['user']['id'] != logged_user['id']:
+            return error(401)
+
+        db.comment.delete_one(comment)
+
+        return '', 204
+    except:
+        return error(500)
+
+
+@app.route('/comment', methods=['POST'])
+@requires_auth
+@with_user
+def add_comment(logged_user=None):
+    try:
+        if not request.data:
+            return error(400)
+
+        comment = json.loads(request.data.decode('utf-8'))
+
+        del logged_user['token']
+        comment['user'] = logged_user
+
+        inserted_id = db.comment.insert_one(comment)
+
+        if not inserted_id:
+            comment['_id'] = inserted_id
+            return json.dumps(comment, default=default_parser)
+        else:
+            return error(501)
+    except:
+        return error(500)
+
+
+def _find_event_comments(event):
+    return sorted(
+        list(db.comment.find({ '_id': { '$in': [ObjectId(id) for id in event['comments']] } })),
+        key=lambda x: x['date'],
+        reverse=True
+    )

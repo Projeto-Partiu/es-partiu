@@ -2,6 +2,7 @@ package br.edu.ufcg.partiu.service;
 
 import java.util.List;
 
+import br.edu.ufcg.partiu.model.Comment;
 import br.edu.ufcg.partiu.model.Event;
 import br.edu.ufcg.partiu.base.ServiceCallback;
 
