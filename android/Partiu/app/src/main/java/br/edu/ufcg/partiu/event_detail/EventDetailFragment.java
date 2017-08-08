@@ -50,4 +50,9 @@ public class EventDetailFragment extends Fragment implements EventDetailContract
     public void setEventFields(Event event) {
 
     }
+
+    @Override
+    public void close() {
+        getActivity().finish();
+    }
 }

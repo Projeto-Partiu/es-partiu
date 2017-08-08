@@ -20,5 +20,7 @@ public interface EventDetailContract {
         void showToast(String text);
 
         void setEventFields(Event event);
+
+        void close();
     }
 }

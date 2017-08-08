@@ -51,6 +51,7 @@ public class EventDetailPresenter implements EventDetailContract.Presenter {
             public void onError(Throwable error) {
                 if (error == null) {
                     view.showToast("Evento não encontrado");
+                    view.close();
                 } else {
                     view.showToast("Ocorreu um erro ao processar a requisição");
                 }
