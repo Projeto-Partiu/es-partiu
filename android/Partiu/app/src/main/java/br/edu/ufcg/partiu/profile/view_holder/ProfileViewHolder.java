@@ -1,11 +1,15 @@
 package br.edu.ufcg.partiu.profile.view_holder;
 
+import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import br.edu.ufcg.partiu.R;
 import br.edu.ufcg.partiu.model.Event;
@@ -20,23 +24,13 @@ import butterknife.ButterKnife;
 
 public class ProfileViewHolder extends ItemAdapter.ItemViewHolder<ProfileHolder> {
 
-//    @BindView(R.id.day_text_view)
-//    TextView dayText;
-//
-//    @BindView(R.id.month_text_view)
-//    TextView monthText;
-//
-//    @BindView(R.id.name_text_view)
-//    TextView nameText;
-//
-//    @BindView(R.id.address_text_view)
-//    TextView addressText;
-//
-//    @BindView(R.id.date_text_view)
-//    TextView dateText;
-//
-//    @BindView(R.id.edit_event_fab)
-//    FloatingActionButton fab;
+    @BindView(R.id.profile_list_name)
+    TextView nameInList;
+
+    @BindView(R.id.profile_list_pic)
+    ImageView picInList;
+
+
 
     public ProfileViewHolder(View itemView) {
         super(itemView);
@@ -47,28 +41,12 @@ public class ProfileViewHolder extends ItemAdapter.ItemViewHolder<ProfileHolder>
     public void bind(ProfileHolder itemHolder) {
         User user = itemHolder.getUser();
 
-//        String day = (String) DateFormat.format("dd", event.getStartDate());
-//        dayText.setText(day);
-//
-//        String month = (String) DateFormat.format("MMM", event.getStartDate());
-//        monthText.setText(month);
-//
-//        nameText.setText(event.getName());
-//
-//        addressText.setText(event.getFriendlyAddress());
-//
-//        dateText.setText(event.getFriendlyDate());
-//
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-////                Intent intent = new Intent(context, CreateEventActivity.class);
-////
-////                parent.getContext().startActivity(intent);
-//            }
-//        });
-//    }
+        nameInList.setText(user.getName());
 
+        Picasso
+                .with(picInList.getContext())
+                .load(user.getUrlPhoto())
+                .into(picInList);
 
     }
 
@@ -83,7 +61,7 @@ public class ProfileViewHolder extends ItemAdapter.ItemViewHolder<ProfileHolder>
         @Override
         public ItemAdapter.ItemViewHolder createViewHolder(ViewGroup parent, int viewType) {
             return new ProfileViewHolder(
-                    inflater.inflate(R.layout.view_holder_event, parent, false)
+                    inflater.inflate(R.layout.view_holder_profile_template, parent, false)
             );
         }
     }
