@@ -29,6 +29,7 @@ public class Event {
     private User owner;
     private List<User> interestedUsers;
     private List<User> confirmedUsers;
+    private List<Comment> comments;
 
     public List<User> getInterestedUsers() {
         return interestedUsers;
@@ -44,6 +45,22 @@ public class Event {
 
     public void setConfirmedUsers(List<User> confirmedUsers) {
         this.confirmedUsers = confirmedUsers;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 
     public String getName() {
@@ -154,14 +171,6 @@ public class Event {
 
             return format.format(startDate);
         }
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 }
 
