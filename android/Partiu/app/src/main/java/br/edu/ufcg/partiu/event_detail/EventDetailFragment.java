@@ -1,8 +1,10 @@
 package br.edu.ufcg.partiu.event_detail;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -68,7 +70,21 @@ public class EventDetailFragment extends Fragment implements EventDetailContract
         ButterKnife.bind(this, view);
 
         commentAdapter = new ItemAdapter<CommentHolder>()
-                .withViewType(new CommentViewHolder.Factory(inflater), CommentViewHolder.VIEW_TYPE);
+                .withViewType(
+                        new CommentViewHolder.Factory(inflater),
+                        CommentViewHolder.VIEW_TYPE,
+                        new ItemAdapter.OnItemClickedListener() {
+                            @Override
+                            public void onItemClicked(ItemAdapter.ItemViewHolder<?> viewHolder) {
+                                Comment comment = commentAdapter
+                                        .getItemHolderList()
+                                        .get(viewHolder.getAdapterPosition())
+                                        .getComment();
+
+                                presenter.onCommentClicked(comment);
+                            }
+                        }
+                );
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -125,7 +141,7 @@ public class EventDetailFragment extends Fragment implements EventDetailContract
     public void setComments(List<Comment> comments) {
         List<CommentHolder> commentHolderList = new ArrayList<>();
 
-        for (Comment comment: comments) {
+        for (Comment comment : comments) {
             commentHolderList.add(CommentHolder.from(comment));
         }
 
@@ -170,5 +186,43 @@ public class EventDetailFragment extends Fragment implements EventDetailContract
     @Override
     public void setEndDate(String endDate) {
         endDateText.setText(endDate);
+    }
+
+    @Override
+    public void showDeleteCommentPopup(final Comment comment) {
+        AlertDialog dialog = new AlertDialog.Builder(getContext())
+                .setTitle("Apagar comentário")
+                .setMessage("Você deseja apagar esse comentário?")
+                .setPositiveButton("Apagar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        presenter.onDeleteComment(comment);
+                    }
+                })
+                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // nao faz nada
+                    }
+                })
+                .create();
+
+        dialog.show();
+    }
+
+    @Override
+    public void removeCommentFromList(Comment comment) {
+        List<CommentHolder> commentHolderList = commentAdapter.getItemHolderList();
+
+        int commentIndex = -1;
+
+        for (int i = 0; i < commentHolderList.size(); i++) {
+            if (commentHolderList.get(i).getComment().equals(comment)) {
+                commentIndex = i;
+                break;
+            }
+        }
+
+        commentAdapter.removeItem(commentIndex);
     }
 }

@@ -15,6 +15,10 @@ public interface EventDetailContract {
     interface Presenter extends BasePresenter {
 
         void fetchEvent(String eventId);
+
+        void onCommentClicked(Comment comment);
+
+        void onDeleteComment(Comment comment);
     }
 
     interface View extends BaseView<Presenter> {
@@ -48,5 +52,9 @@ public interface EventDetailContract {
         void showEndDate();
 
         void setEndDate(String endDate);
+
+        void showDeleteCommentPopup(Comment comment);
+
+        void removeCommentFromList(Comment comment);
     }
 }

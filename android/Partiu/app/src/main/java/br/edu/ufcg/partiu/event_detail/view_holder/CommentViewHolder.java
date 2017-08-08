@@ -1,6 +1,8 @@
 package br.edu.ufcg.partiu.event_detail.view_holder;
 
 import android.graphics.drawable.BitmapDrawable;
+import android.support.constraint.ConstraintLayout;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +26,9 @@ import butterknife.ButterKnife;
 public class CommentViewHolder extends ItemAdapter.ItemViewHolder<CommentHolder> {
 
     public static final int VIEW_TYPE = 1;
+
+    @BindView(R.id.layout)
+    ConstraintLayout layout;
 
     @BindView(R.id.user_image)
     ImageView userImage;
@@ -67,6 +72,13 @@ public class CommentViewHolder extends ItemAdapter.ItemViewHolder<CommentHolder>
 
                     }
                 });
+
+        layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CommentViewHolder.super.notifyItemClicked();
+            }
+        });
     }
 
     public static class Factory implements ItemAdapter.ItemViewHolder.Factory {

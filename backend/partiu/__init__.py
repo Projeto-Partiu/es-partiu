@@ -161,13 +161,7 @@ def find_event(event_id):
     if not event:
         return '', 404
 
-    event_comments = sorted(
-        db.comment.find({ '$in': { '_id': [ObjectId(id) for id in event['comments']] } }),
-        key=lambda x: x['date'],
-        reverse=True
-    )
-
-    event['comments'] = event_comments
+    event['comments'] = _find_event_comments(event)
 
     return json.dumps(event, default=default_parser), 201
 
@@ -175,7 +169,12 @@ def find_event(event_id):
 @app.route('/events', methods=['GET'])
 @requires_auth
 def get_events():
-    return json.dumps(list(db.event.find()), default=default_parser), 200
+    events = list(db.event.find())
+
+    for event in events:
+        event['comments'] = _find_event_comments(event)
+
+    return json.dumps(events, default=default_parser), 200
 
 
 @app.route('/comment/<string:comment_id>', methods=['DELETE'])
@@ -183,7 +182,7 @@ def get_events():
 @with_user
 def delete_comment(comment_id, logged_user=None):
     try:
-        comment = db.comment.find({ '_id': ObjectId(comment_id) })
+        comment = db.comment.find_one({ '_id': ObjectId(comment_id) })
 
         if comment['user']['id'] != logged_user['id']:
             return error(401)
@@ -217,3 +216,11 @@ def add_comment(logged_user=None):
             return error(501)
     except:
         return error(500)
+
+
+def _find_event_comments(event):
+    return sorted(
+        list(db.comment.find({ '_id': { '$in': [ObjectId(id) for id in event['comments']] } })),
+        key=lambda x: x['date'],
+        reverse=True
+    )
