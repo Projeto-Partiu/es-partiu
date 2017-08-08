@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.edu.ufcg.partiu.model.Event;
 import br.edu.ufcg.partiu.base.ServiceCallback;
+import br.edu.ufcg.partiu.model.FilterType;
 
 /**
  * Created by ordan on 29/07/17.
@@ -13,7 +14,5 @@ public interface EventService {
 
     Void createEvent(Event event, ServiceCallback<Event> callback);
 
-    Void getEvents(ServiceCallback<List<Event>> callback);
-
-
+    Void getEvents(FilterType filterType, ServiceCallback<List<Event>> callback);
 }

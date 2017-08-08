@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.edu.ufcg.partiu.base.ServiceCallback;
 import br.edu.ufcg.partiu.model.Event;
+import br.edu.ufcg.partiu.model.FilterType;
 import br.edu.ufcg.partiu.service.EventService;
 import br.edu.ufcg.partiu.service.UserService;
 import retrofit2.Response;
@@ -34,8 +35,11 @@ public class ShowEventsPresenter implements ShowEventsContract.Presenter {
     }
 
     @Override
-    public void start() {
-        eventService.getEvents(new ServiceCallback<List<Event>>() {
+    public void start() {}
+
+    @Override
+    public void getEvents(FilterType filterType) {
+        eventService.getEvents(filterType, new ServiceCallback<List<Event>>() {
             @Override
             public void onResponse(List<Event> events, Response<List<Event>> response) {
                 view.showEvents(events);

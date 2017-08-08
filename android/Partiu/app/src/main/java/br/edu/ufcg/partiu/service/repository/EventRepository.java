@@ -3,6 +3,7 @@ package br.edu.ufcg.partiu.service.repository;
 import java.util.List;
 
 import br.edu.ufcg.partiu.model.Event;
+import br.edu.ufcg.partiu.model.FilterType;
 import br.edu.ufcg.partiu.model.User;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -18,6 +19,9 @@ public interface EventRepository {
     @POST("event/new")
     Call<Event> createEvent(@Body Event event, @Header("Authorization") String token);
 
-    @GET("events")
-    Call<List<Event>> getEvents(@Header("Authorization") String token);
+    @GET("events/by_time")
+    Call<List<Event>> getEventsByTime(@Header("Authorization") String token);
+
+    @GET("events/by_distance")
+    Call<List<Event>> getEventsByDistance(@Header("Authorization") String token);
 }

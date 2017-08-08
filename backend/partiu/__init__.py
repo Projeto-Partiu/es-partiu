@@ -152,6 +152,16 @@ def create_event(logged_user=None):
 
 
 @app.route('/events', methods=['GET'])
-#@requires_auth
+@requires_auth
 def get_events():
-    return json.dumps(list(db.event.find()), default=default_parser), 200
+    return json.dumps(list(db.event.find().limit(20)), default=default_parser), 200
+
+@app.route('/events/by_time', methods=['GET'])
+@requires_auth
+def get_events_by_time():
+    return json.dumps(list(db.event.find().limit(20)), default=default_parser), 200
+
+@app.route('/events/by_distance', methods=['GET'])
+@requires_auth
+def get_events_by_distance():
+    return json.dumps(list(db.event.find().limit(20)), default=default_parser), 200
