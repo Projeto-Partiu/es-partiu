@@ -2,6 +2,8 @@ package br.edu.ufcg.partiu.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 /**
  * Created by lucas on 31/07/17.
  */
@@ -12,6 +14,7 @@ public class Comment {
     private String id;
     private User user;
     private String content;
+    private Date date;
 
     public Comment() {
     }
@@ -38,5 +41,13 @@ public class Comment {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }
