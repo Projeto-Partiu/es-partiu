@@ -25,6 +25,8 @@ public interface EventDetailContract {
 
         void close();
 
+        void setPresence(boolean presenca);
+
         void setComments(List<Comment> comments);
 
         void setEventName(String eventName);

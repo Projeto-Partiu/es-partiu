@@ -22,6 +22,7 @@ import br.edu.ufcg.partiu.util.Util;
 public class User {
 
     private String id;
+    private String _id;
     private String name;
     private String urlPhoto;
     private List<String> following;
@@ -33,6 +34,7 @@ public class User {
     public User(JSONObject account) {
         try {
             this.id = account.getString("id");
+            this._id = account.getString("_id");
             this.name = account.getString("name");
             this.urlPhoto = account.getJSONObject("picture").getJSONObject("data").getString("url");
             this.token = account.getString("token");
@@ -47,6 +49,14 @@ public class User {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String get_Id() {
+        return this._id;
+    }
+
+    public void set_Id(String _id) {
+        this._id = _id;
     }
 
     public String getName() {
@@ -90,6 +100,7 @@ public class User {
         SharedPreferences.Editor editor = Util.getPreferences(context).edit();
         editor.putString(Constants.NAME_USER, getName());
         editor.putString(Constants.ID_SOCIAL_NETWORK, getId());
+        editor.putString(Constants.ID_USER, get_Id());
         editor.putString(Constants.URL_PHOTO_USER, getUrlPhoto());
         editor.putBoolean(Constants.LOGGED_USER, true);
         editor.putString(Constants.FOLLOWING_USER, gson.toJson(getFollowing()));

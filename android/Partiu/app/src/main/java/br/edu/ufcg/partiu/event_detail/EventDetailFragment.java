@@ -50,6 +50,9 @@ public class EventDetailFragment extends Fragment implements EventDetailContract
     @BindView(R.id.event_place)
     TextView placeText;
 
+    @BindView(R.id.presence_text)
+    TextView presence_text;
+
     ItemAdapter<CommentHolder> commentAdapter;
 
     @Nullable
@@ -103,6 +106,14 @@ public class EventDetailFragment extends Fragment implements EventDetailContract
         commentAdapter.setItemHolderList(commentHolderList);
     }
 
+    @Override
+    public void setPresence(boolean presenca) {
+        if(presenca) {
+            presence_text.setText("Eu vou. Partiu!");
+        } else {
+            presence_text.setText("Eu não vou.");
+        }
+    }
     @Override
     public void setEventName(String eventName) {
         nameText.setText(eventName);
