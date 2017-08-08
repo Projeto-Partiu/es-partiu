@@ -40,7 +40,6 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
     private Button searchButton;
     private TextView searchTextView;
 
-    @BindView(R.id.user_list)
     RecyclerView profileRecyclerView;
 
     @BindView(R.id.profile_layout)
@@ -52,6 +51,8 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        profileRecyclerView = (RecyclerView) view.findViewById(R.id.user_list);
 
         searchButton = (Button) view.findViewById(R.id.search_profile_button);
         searchButton.setOnClickListener(new View.OnClickListener() {
