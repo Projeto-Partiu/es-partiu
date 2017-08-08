@@ -1,7 +1,11 @@
 package br.edu.ufcg.partiu.event_detail;
 
+import java.util.Date;
+import java.util.List;
+
 import br.edu.ufcg.partiu.base.BasePresenter;
 import br.edu.ufcg.partiu.base.BaseView;
+import br.edu.ufcg.partiu.model.Comment;
 import br.edu.ufcg.partiu.model.Event;
 
 /**
@@ -19,8 +23,20 @@ public interface EventDetailContract {
 
         void showToast(String text);
 
-        void setEventFields(Event event);
-
         void close();
+
+        void setComments(List<Comment> comments);
+
+        void setEventName(String eventName);
+
+        void setEventDescription(String eventDescription);
+
+        void setStartDate(String startDate);
+
+        void setPlace(String address);
+
+        void showEndDate();
+
+        void setEndDate(String endDate);
     }
 }

@@ -1,5 +1,9 @@
 package br.edu.ufcg.partiu.event_detail;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 import javax.inject.Inject;
 
 import br.edu.ufcg.partiu.base.ServiceCallback;
@@ -44,7 +48,23 @@ public class EventDetailPresenter implements EventDetailContract.Presenter {
             public void onResponse(Event event, Response<Event> response) {
                 EventDetailPresenter.this.event = event;
 
-                view.setEventFields(event);
+                DateFormat formatter = SimpleDateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT);
+
+                view.setEventName(event.getName());
+                view.setEventDescription(event.getDescription());
+                view.setStartDate(formatter.format(event.getStartDate()));
+                view.setPlace(event.getAddress());
+
+                if (event.getEndDate() != null) {
+                    view.showEndDate();
+                    view.setEndDate(formatter.format(event.getEndDate()));
+                }
+
+                if (!event.getComments().isEmpty()) {
+                    view.setComments(event.getComments());
+                } else {
+                    // mostrar texto dizendo que não há comentarios
+                }
             }
 
             @Override
