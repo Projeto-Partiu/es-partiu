@@ -161,6 +161,8 @@ def find_event(event_id):
     if not event:
         return '', 404
 
+    event['comments'] = sorted(event['comments'], key=lambda x: x['date'], reverse=True)
+
     return json.dumps(event, default=default_parser), 201
 
 
