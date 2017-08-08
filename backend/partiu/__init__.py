@@ -194,10 +194,10 @@ def delete_comment(comment_id, logged_user=None):
         return error(500)
 
 
-@app.route('/comment', methods=['POST'])
+@app.route('/comment/<string:event_id>', methods=['POST'])
 @requires_auth
 @with_user
-def add_comment(logged_user=None):
+def add_comment(event_id, logged_user=None):
     try:
         if not request.data:
             return error(400)
@@ -206,12 +206,16 @@ def add_comment(logged_user=None):
 
         del logged_user['token']
         comment['user'] = logged_user
+        comment['date'] = datetime.now().isoformat() + 'Z'
 
-        inserted_id = db.comment.insert_one(comment)
+        inserted_id = db.comment.insert(comment)
 
-        if not inserted_id:
+        if inserted_id:
             comment['_id'] = inserted_id
-            return json.dumps(comment, default=default_parser)
+
+            db.event.update_one({ '_id': ObjectId(event_id) }, { '$push': { 'comments': str(inserted_id) }})
+
+            return json.dumps(comment, default=default_parser), 201
         else:
             return error(501)
     except:
