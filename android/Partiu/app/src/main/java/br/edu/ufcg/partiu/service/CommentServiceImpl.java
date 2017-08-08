@@ -4,6 +4,7 @@ import android.content.Context;
 
 import br.edu.ufcg.partiu.base.ServiceCallback;
 import br.edu.ufcg.partiu.model.Comment;
+import br.edu.ufcg.partiu.model.Event;
 import br.edu.ufcg.partiu.service.repository.CommentRepository;
 import br.edu.ufcg.partiu.util.Util;
 import retrofit2.Call;
@@ -25,8 +26,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Void createComment(Comment comment, final ServiceCallback<Comment> callback) {
-        commentRepository.createComment(comment, Util.getSessionToken(context))
+    public Void createComment(Event event, Comment comment, final ServiceCallback<Comment> callback) {
+        commentRepository.createComment(comment, event.getId(), Util.getSessionToken(context))
                 .enqueue(new Callback<Comment>() {
                     @Override
                     public void onResponse(Call<Comment> call, Response<Comment> response) {

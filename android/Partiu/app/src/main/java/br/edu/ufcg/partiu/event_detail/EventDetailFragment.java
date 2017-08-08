@@ -7,9 +7,13 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -61,6 +65,12 @@ public class EventDetailFragment extends Fragment implements EventDetailContract
     @BindView(R.id.empty_comments_message)
     TextView emptyCommentsMessage;
 
+    @BindView(R.id.comment_edit_text)
+    EditText commentEditText;
+
+    @BindView(R.id.add_comment_button)
+    ImageButton addCommentButton;
+
     ItemAdapter<CommentHolder> commentAdapter;
 
     @Nullable
@@ -91,6 +101,30 @@ public class EventDetailFragment extends Fragment implements EventDetailContract
 
         commentRecyclerView.setAdapter(commentAdapter);
         commentRecyclerView.setLayoutManager(layoutManager);
+
+        commentEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                presenter.onCommentChanged(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                //
+            }
+        });
+
+        addCommentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.onComment();
+            }
+        });
 
         return view;
     }
@@ -224,5 +258,15 @@ public class EventDetailFragment extends Fragment implements EventDetailContract
         }
 
         commentAdapter.removeItem(commentIndex);
+    }
+
+    @Override
+    public void addCommentToList(Comment comment) {
+        commentAdapter.addItem(CommentHolder.from(comment));
+    }
+
+    @Override
+    public void setCommentInputText(String text) {
+        commentEditText.setText(text);
     }
 }

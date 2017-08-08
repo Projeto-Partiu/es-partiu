@@ -19,6 +19,10 @@ public interface EventDetailContract {
         void onCommentClicked(Comment comment);
 
         void onDeleteComment(Comment comment);
+
+        void onCommentChanged(CharSequence text);
+
+        void onComment();
     }
 
     interface View extends BaseView<Presenter> {
@@ -56,5 +60,9 @@ public interface EventDetailContract {
         void showDeleteCommentPopup(Comment comment);
 
         void removeCommentFromList(Comment comment);
+
+        void addCommentToList(Comment comment);
+
+        void setCommentInputText(String text);
     }
 }

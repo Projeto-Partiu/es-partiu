@@ -14,8 +14,8 @@ import retrofit2.http.Path;
 
 public interface CommentRepository {
 
-    @POST("comment")
-    Call<Comment> createComment(@Body Comment comment, @Header("Authorization") String token);
+    @POST("comment/{eventId}")
+    Call<Comment> createComment(@Body Comment comment, @Path("eventId") String eventId, @Header("Authorization") String token);
 
     @DELETE("comment/{commentId}")
     Call<Void> deleteComment(@Path("commentId") String commentId, @Header("Authorization") String token);

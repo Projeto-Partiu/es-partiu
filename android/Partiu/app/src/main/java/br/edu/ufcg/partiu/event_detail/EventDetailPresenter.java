@@ -2,7 +2,6 @@ package br.edu.ufcg.partiu.event_detail;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -26,6 +25,7 @@ public class EventDetailPresenter implements EventDetailContract.Presenter {
     private final CommentService commentService;
 
     private Event event;
+    private String commentText;
 
     @Inject
     public EventDetailPresenter(EventDetailContract.View view, EventService eventService, UserService userService, CommentService commentService) {
@@ -33,6 +33,7 @@ public class EventDetailPresenter implements EventDetailContract.Presenter {
         this.eventService = eventService;
         this.commentService = commentService;
         this.userService = userService;
+        this.commentText = "";
     }
 
     @Inject
@@ -46,9 +47,6 @@ public class EventDetailPresenter implements EventDetailContract.Presenter {
 
     @Override
     public void fetchEvent(String eventId) {
-        if (event != null)
-            return;
-
         view.hideDetailLayout();
         view.showLoader();
 
@@ -112,6 +110,27 @@ public class EventDetailPresenter implements EventDetailContract.Presenter {
             @Override
             public void onError(Throwable error) {
                 view.showToast("Ocorreu um erro ao apagar o comentário");
+            }
+        });
+    }
+
+    @Override
+    public void onCommentChanged(CharSequence text) {
+        commentText = text.toString();
+    }
+
+    @Override
+    public void onComment() {
+        commentService.createComment(event, new Comment(commentText), new ServiceCallback<Comment>() {
+            @Override
+            public void onResponse(Comment comment, Response<Comment> response) {
+                view.addCommentToList(comment);
+                view.setCommentInputText(null);
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                view.showToast("Ocorreu um erro ao adicionar comentário");
             }
         });
     }

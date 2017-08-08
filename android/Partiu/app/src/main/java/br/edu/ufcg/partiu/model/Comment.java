@@ -19,6 +19,10 @@ public class Comment {
     public Comment() {
     }
 
+    public Comment(String commentText) {
+        content = commentText;
+    }
+
     public String getId() {
         return id;
     }
