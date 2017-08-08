@@ -15,8 +15,8 @@
 
         <ImageView
             android:id="@+id/profile_list_pic"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:scaleType="fitCenter"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
@@ -33,8 +33,9 @@
             android:layout_marginStart="8dp"
             android:textSize="18sp"
             android:maxEms="20"
+            android:text="Caio Vidal"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/user_image"
+            app:layout_constraintLeft_toRightOf="@id/profile_list_pic"
             app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>

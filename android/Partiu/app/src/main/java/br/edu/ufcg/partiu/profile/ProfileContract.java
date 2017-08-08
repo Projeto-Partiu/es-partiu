@@ -1,7 +1,10 @@
 package br.edu.ufcg.partiu.profile;
 
+import java.util.List;
+
 import br.edu.ufcg.partiu.base.BasePresenter;
 import br.edu.ufcg.partiu.base.BaseView;
+import br.edu.ufcg.partiu.model.User;
 
 /**
  * Created by lucas on 06/08/17.
@@ -10,11 +13,13 @@ import br.edu.ufcg.partiu.base.BaseView;
 public interface ProfileContract {
 
     interface Presenter extends BasePresenter {
-        void searchProfiles();
+        void searchProfiles(String query);
     }
 
     interface View extends BaseView<Presenter> {
 
-        void launchSearchActivity();
+        void showUsers(List<User> users);
+
+        void showToast(String message);
     }
 }

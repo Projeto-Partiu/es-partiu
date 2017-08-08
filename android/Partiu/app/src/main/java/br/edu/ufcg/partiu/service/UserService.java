@@ -2,6 +2,8 @@ package br.edu.ufcg.partiu.service;
 
 import com.facebook.Profile;
 
+import java.util.List;
+
 import br.edu.ufcg.partiu.base.ServiceCallback;
 import br.edu.ufcg.partiu.model.User;
 
@@ -16,4 +18,6 @@ public interface UserService {
     User loggedUser();
 
     Void logout(ServiceCallback<Void> callback);
+
+    Void findUsers(String query, ServiceCallback<List<User>> callback);
 }

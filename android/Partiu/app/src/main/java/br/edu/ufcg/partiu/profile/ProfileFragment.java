@@ -3,15 +3,31 @@ package br.edu.ufcg.partiu.profile;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import br.edu.ufcg.partiu.R;
+import br.edu.ufcg.partiu.model.Event;
+import br.edu.ufcg.partiu.model.User;
+import br.edu.ufcg.partiu.profile.view_holder.ProfileHolder;
+import br.edu.ufcg.partiu.profile.view_holder.ProfileViewHolder;
 import br.edu.ufcg.partiu.profile_search.ProfileSearchActivity;
+import br.edu.ufcg.partiu.show_events.view_holder.EventHolder;
+import br.edu.ufcg.partiu.show_events.view_holder.EventViewHolder;
+import br.edu.ufcg.partiu.util.ItemAdapter;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -24,6 +40,14 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
     private Button searchButton;
     private TextView searchTextView;
 
+    @BindView(R.id.user_list)
+    RecyclerView profileRecyclerView;
+
+    @BindView(R.id.profile_layout)
+    LinearLayout profileLayout;
+
+    private ItemAdapter<ProfileHolder> profileAdapter;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -33,11 +57,24 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.searchProfiles();
+                String query = searchTextView.getText().toString();
+                profileLayout.setVisibility(View.GONE);
+                profileRecyclerView.setVisibility(View.VISIBLE);
+
+                presenter.searchProfiles(query);
             }
         });
 
         searchTextView = (TextView) view.findViewById(R.id.search_profile_field);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+
+        profileAdapter = new ItemAdapter<ProfileHolder>()
+                .withViewType(new ProfileViewHolder.Factory(inflater), ProfileHolder.VIEW_TYPE);
+
+        profileRecyclerView.setAdapter(profileAdapter);
+        profileRecyclerView.setLayoutManager(layoutManager);
 
         ButterKnife.bind(this, view);
 
@@ -50,10 +87,26 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
     }
 
     @Override
-    public void launchSearchActivity() {
-        Intent intent = new Intent(getContext(), ProfileSearchActivity.class);
-        intent.putExtra("SEARCH_STRING", searchTextView.getText().toString());
+    public void showUsers(List<User> users) {
+        List<ProfileHolder> profileHolderList = new ArrayList<>();
 
-        startActivity(intent);
+        for (User user : users) {
+            profileHolderList.add(ProfileHolder.from(user));
+        }
+
+        profileAdapter.setItemHolderList(profileHolderList);
     }
+
+    @Override
+    public void showToast(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    //    @Override
+//    public void launchSearchActivity() {
+//        Intent intent = new Intent(getContext(), ProfileSearchActivity.class);
+//        intent.putExtra("SEARCH_STRING", searchTextView.getText().toString());
+//
+//        startActivity(intent);
+//    }
 }
