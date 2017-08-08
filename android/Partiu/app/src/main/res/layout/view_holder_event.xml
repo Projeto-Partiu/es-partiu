@@ -1,119 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_marginBottom="8dp"
+    android:layout_marginTop="8dp"
+    app:cardCornerRadius="0dp">
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:clickable="false"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/card_padding"
+        android:paddingTop="@dimen/card_padding">
 
-        <LinearLayout
-            android:id="@+id/day_month_layout"
+        <TextView
+            android:id="@+id/day_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="0dp">
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
 
-            <TextView
-                android:id="@+id/day_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="-12dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:gravity="center"
-                android:padding="0dp"
-                android:paddingBottom="0dp"
-                android:paddingLeft="0dp"
-                android:paddingRight="0dp"
-                android:textSize="50sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/month_text_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="-2dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-        <LinearLayout
+        <TextView
+            android:id="@+id/month_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/background_light"
-            android:orientation="horizontal"
-            android:padding="0dp">
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/day_text_view"
+            app:layout_constraintLeft_toLeftOf="@id/day_text_view"
+            app:layout_constraintRight_toRightOf="@id/day_text_view"
+            app:layout_constraintHorizontal_bias="0.5" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+        <TextView
+            android:id="@+id/name_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            app:layout_constraintLeft_toRightOf="@id/day_text_view"
+            app:layout_constraintTop_toTopOf="@id/day_text_view" />
 
-                <TextView
-                    android:id="@+id/name_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginBottom="0dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="0dp"
-                    android:layout_weight="1"
-                    android:gravity="left"
-                    android:maxWidth="1000dp"
-                    android:padding="0dp"
-                    android:paddingBottom="0dp"
-                    android:paddingLeft="0dp"
-                    android:paddingRight="0dp"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+        <TextView
+            android:id="@+id/address_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/name_text_view"
+            app:layout_constraintLeft_toLeftOf="@id/name_text_view" />
 
-                <TextView
-                    android:id="@+id/address_text_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="5dp"
-                    android:layout_weight="1"
-                    android:gravity="left"
-                    android:paddingLeft="0dp"
-                    android:paddingRight="0dp"
-                    android:textSize="13sp" />
+        <TextView
+            android:id="@+id/date_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/address_text_view"
+            app:layout_constraintLeft_toLeftOf="@id/address_text_view" />
 
-                <TextView
-                    android:id="@+id/date_text_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="5dp"
-                    android:layout_weight="1"
-                    android:gravity="left"
-                    android:paddingLeft="0dp"
-                    android:paddingRight="0dp"
-                    android:textSize="12sp" />
-            </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/edit_event_fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:src="@drawable/ic_edit_black_24dp" />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-</RelativeLayout>
+</android.support.v7.widget.CardView>

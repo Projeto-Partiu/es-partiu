@@ -34,8 +34,8 @@ public class EventViewHolder extends ItemAdapter.ItemViewHolder<EventHolder> {
     @BindView(R.id.date_text_view)
     TextView dateText;
 
-    @BindView(R.id.edit_event_fab)
-    FloatingActionButton fab;
+//    @BindView(R.id.edit_event_fab)
+//    FloatingActionButton fab;
 
     public EventViewHolder(View itemView) {
         super(itemView);
@@ -58,14 +58,14 @@ public class EventViewHolder extends ItemAdapter.ItemViewHolder<EventHolder> {
 
         dateText.setText(event.getFriendlyDate());
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
 //                Intent intent = new Intent(context, CreateEventActivity.class);
 //
 //                parent.getContext().startActivity(intent);
-            }
-        });
+//            }
+//        });
     }
 
     public static class Factory implements ItemAdapter.ItemViewHolder.Factory {
