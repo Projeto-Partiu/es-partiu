@@ -1,12 +1,10 @@
 package br.edu.ufcg.partiu.event_detail;
 
-import java.util.Date;
 import java.util.List;
 
 import br.edu.ufcg.partiu.base.BasePresenter;
 import br.edu.ufcg.partiu.base.BaseView;
 import br.edu.ufcg.partiu.model.Comment;
-import br.edu.ufcg.partiu.model.Event;
 
 /**
  * Created by lucas on 07/08/17.
@@ -21,11 +19,23 @@ public interface EventDetailContract {
 
     interface View extends BaseView<Presenter> {
 
+        void showLoader();
+
+        void hideLoader();
+
+        void showDetailLayout();
+
+        void hideDetailLayout();
+
         void showToast(String text);
 
         void close();
 
         void setComments(List<Comment> comments);
+
+        void showEmptyCommentsMessage();
+
+        void hideEmptyCommentsMessage();
 
         void setEventName(String eventName);
 

@@ -8,18 +8,18 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import br.edu.ufcg.partiu.R;
 import br.edu.ufcg.partiu.event_detail.view_holder.CommentHolder;
 import br.edu.ufcg.partiu.event_detail.view_holder.CommentViewHolder;
 import br.edu.ufcg.partiu.model.Comment;
-import br.edu.ufcg.partiu.model.Event;
 import br.edu.ufcg.partiu.util.ItemAdapter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,6 +49,15 @@ public class EventDetailFragment extends Fragment implements EventDetailContract
 
     @BindView(R.id.event_place)
     TextView placeText;
+
+    @BindView(R.id.progress_bar)
+    ProgressBar loader;
+
+    @BindView(R.id.detail_container_layout)
+    ScrollView eventDetailLayout;
+
+    @BindView(R.id.empty_comments_message)
+    TextView emptyCommentsMessage;
 
     ItemAdapter<CommentHolder> commentAdapter;
 
@@ -83,6 +92,26 @@ public class EventDetailFragment extends Fragment implements EventDetailContract
     }
 
     @Override
+    public void showLoader() {
+        loader.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLoader() {
+        loader.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showDetailLayout() {
+        eventDetailLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideDetailLayout() {
+        eventDetailLayout.setVisibility(View.GONE);
+    }
+
+    @Override
     public void showToast(String text) {
         Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
     }
@@ -101,6 +130,16 @@ public class EventDetailFragment extends Fragment implements EventDetailContract
         }
 
         commentAdapter.setItemHolderList(commentHolderList);
+    }
+
+    @Override
+    public void showEmptyCommentsMessage() {
+        emptyCommentsMessage.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideEmptyCommentsMessage() {
+        emptyCommentsMessage.setVisibility(View.GONE);
     }
 
     @Override

@@ -43,6 +43,9 @@ public class EventDetailPresenter implements EventDetailContract.Presenter {
         if (event != null)
             return;
 
+        view.hideDetailLayout();
+        view.showLoader();
+
         eventService.find(eventId, new ServiceCallback<Event>() {
             @Override
             public void onResponse(Event event, Response<Event> response) {
@@ -61,10 +64,14 @@ public class EventDetailPresenter implements EventDetailContract.Presenter {
                 }
 
                 if (!event.getComments().isEmpty()) {
+                    view.hideEmptyCommentsMessage();
                     view.setComments(event.getComments());
                 } else {
-                    // mostrar texto dizendo que não há comentarios
+                    view.showEmptyCommentsMessage();
                 }
+
+                view.hideLoader();
+                view.showDetailLayout();
             }
 
             @Override
@@ -74,6 +81,7 @@ public class EventDetailPresenter implements EventDetailContract.Presenter {
                     view.close();
                 } else {
                     view.showToast("Ocorreu um erro ao processar a requisição");
+                    view.hideLoader();
                 }
             }
         });
