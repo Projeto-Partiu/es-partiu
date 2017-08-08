@@ -5,6 +5,7 @@
 import simplejson as json
 import os
 
+from bson import ObjectId
 from flask import Flask, request
 from datetime import datetime
 from dateutil import parser as date_parser
@@ -151,7 +152,51 @@ def create_event(logged_user=None):
         return error(500)
 
 
-@app.route('/events', methods=['GET'])
-#@requires_auth
+@app.route('/events', methods=['PUT'])
+@requires_auth
 def get_events():
     return json.dumps(list(db.event.find()), default=default_parser), 200
+
+@app.route('/events/confirm-presense/<string:_id>', methods=['PUT'])
+@requires_auth
+@with_user
+def confirm_presence(_id, logged_user=None):
+    if logged_user is None:
+        return error(400)
+    confirmed_user = {
+        'name': logged_user['name'],
+        'urlPhoto': logged_user['urlPhoto'],
+        '_id': logged_user['_id']
+    }
+    curr_event = db.event.find_one({ '_id': ObjectId(_id) })
+    interestedUsers = curr_event['interestedUsers']
+    for index in range(len(interestedUsers)):
+        if interestedUsers[index]['_id'] == confirmed_user['_id']:
+            curr_event['interestedUsers'].pop(index)
+            break
+    
+    curr_event['confirmedUsers'].append(confirmed_user)
+    db.event.find_one_and_update(
+        {'_id': ObjectId(_id)},
+        {'$set': curr_event}
+    )
+    return '', 204
+    
+@app.route('/events/disconfirm-presense/<string:_id>', methods=['PUT'])
+@requires_auth
+@with_user
+def disconfirm_presence(_id, logged_user=None):
+    if logged_user is None:
+        return error(400)
+    curr_event = db.event.find_one({'_id': ObjectId(_id)})
+    confirmedUsers = curr_event['confirmedUsers']
+    for index in range(len(confirmedUsers)):
+        if confirmedUsers[index]['_id'] == logged_user['_id']:
+            curr_event['confirmedUsers'].pop(index)
+            break
+    
+    db.event.find_one_and_update(
+        {'_id': ObjectId(_id)},
+        {'$set': curr_event}
+    )
+    return '', 204
