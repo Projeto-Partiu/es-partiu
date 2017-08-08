@@ -95,7 +95,6 @@ def add_action(logged_user=None):
             'date': str(datetime.now()),
             'type': action['type'],
             'user': logged_user,
-            'comments': [],
             'arguments': action['arguments']
         })
 
@@ -138,6 +137,7 @@ def create_event(logged_user=None):
         event['owner'] = logged_user
         event['interestedUsers'] = []
         event['confirmedUsers'] = []
+        event['comments'] = []
 
         inserted_id = db.event.insert(event)
 
@@ -151,7 +151,7 @@ def create_event(logged_user=None):
         return error(500)
 
 
-@app.route('/events/{string:event_id}', methods=['GET'])
+@app.route('/event/<string:event_id>', methods=['GET'])
 @requires_auth
 def find_event(event_id):
     event = db.event.find_one({ '_id': event_id })
