@@ -1,5 +1,7 @@
 package br.edu.ufcg.partiu.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -15,6 +17,8 @@ import br.edu.ufcg.partiu.util.Util;
 
 public class Event {
 
+    @SerializedName("_id")
+    private String id;
     private String name;
     private String description;
     private Date startDate;
@@ -152,5 +156,12 @@ public class Event {
         }
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 }
 

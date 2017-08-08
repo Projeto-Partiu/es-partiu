@@ -8,8 +8,11 @@
     app:cardCornerRadius="0dp">
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clickable="true"
+        android:background="?android:selectableItemBackground"
         android:paddingBottom="@dimen/card_padding"
         android:paddingTop="@dimen/card_padding">
 
