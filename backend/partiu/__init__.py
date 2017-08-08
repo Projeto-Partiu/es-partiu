@@ -153,7 +153,6 @@ def create_event(logged_user=None):
         print(e)
         return error(500)
 
-@app.route('/events', methods=['PUT'])
 @app.route('/event/<string:event_id>', methods=['GET'])
 @requires_auth
 def find_event(event_id):
