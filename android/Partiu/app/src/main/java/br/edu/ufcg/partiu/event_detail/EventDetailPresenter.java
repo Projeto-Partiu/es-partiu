@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import br.edu.ufcg.partiu.base.ServiceCallback;
 import br.edu.ufcg.partiu.model.Comment;
 import br.edu.ufcg.partiu.model.Event;
+import br.edu.ufcg.partiu.model.User;
 import br.edu.ufcg.partiu.service.CommentService;
 import br.edu.ufcg.partiu.service.EventService;
 import br.edu.ufcg.partiu.service.UserService;
@@ -66,6 +67,15 @@ public class EventDetailPresenter implements EventDetailContract.Presenter {
                     view.showEndDate();
                     view.setEndDate(formatter.format(event.getEndDate()));
                 }
+
+                User loggedUser = userService.loggedUser();
+                boolean confirmed = false;
+                for (int i = 0; i < event.getConfirmedUsers().size(); i++) {
+                    if (loggedUser.get_Id().equals(event.getConfirmedUsers().get(i).get_Id()))
+                        confirmed = true;
+                        break;
+                }
+                view.setPresence(confirmed);
 
                 if (!event.getComments().isEmpty()) {
                     view.hideEmptyCommentsMessage();
