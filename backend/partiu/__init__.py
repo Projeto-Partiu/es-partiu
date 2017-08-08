@@ -2,6 +2,7 @@
     Server
 """
 
+import pymongo
 import simplejson as json
 import os
 
@@ -9,6 +10,7 @@ from bson import ObjectId
 from flask import Flask, request
 from datetime import datetime
 from dateutil import parser as date_parser
+from bson.objectid import ObjectId
 from .shared.database import db
 from .shared.utils import default_parser, error, get_random_string
 from .shared.auth import requires_auth, with_user
@@ -96,7 +98,6 @@ def add_action(logged_user=None):
             'date': str(datetime.now()),
             'type': action['type'],
             'user': logged_user,
-            'comments': [],
             'arguments': action['arguments']
         })
 
@@ -112,7 +113,7 @@ def find_all_actions(logged_user=None):
         if not logged_user:
             return error(400)
 
-        actions = list(db.action.find({ 'user.id': { '$in': logged_user['following'] } }))
+        actions = list(db.action.find({ 'user.id': { '$in': logged_user['following'] } }).sort('date', pymongo.DESCENDING))
 
         return json.dumps(actions, default=default_parser)
     except Exception as e:
@@ -139,6 +140,7 @@ def create_event(logged_user=None):
         event['owner'] = logged_user
         event['interestedUsers'] = []
         event['confirmedUsers'] = []
+        event['comments'] = []
 
         inserted_id = db.event.insert(event)
 
@@ -151,8 +153,21 @@ def create_event(logged_user=None):
         print(e)
         return error(500)
 
-
 @app.route('/events', methods=['PUT'])
+@app.route('/event/<string:event_id>', methods=['GET'])
+@requires_auth
+def find_event(event_id):
+    event = db.event.find_one({ '_id': ObjectId(event_id) })
+
+    if not event:
+        return '', 404
+
+    event['comments'] = sorted(event['comments'], key=lambda x: x['date'], reverse=True)
+
+    return json.dumps(event, default=default_parser), 201
+
+
+@app.route('/events', methods=['GET'])
 @requires_auth
 def get_events():
     return json.dumps(list(db.event.find()), default=default_parser), 200

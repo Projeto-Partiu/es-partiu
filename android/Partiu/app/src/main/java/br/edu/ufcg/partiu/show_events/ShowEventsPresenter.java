@@ -47,4 +47,9 @@ public class ShowEventsPresenter implements ShowEventsContract.Presenter {
             }
         });
     }
+
+    @Override
+    public void onEventClicked(Event event) {
+        view.goToEventDetailActivity(event.getId());
+    }
 }

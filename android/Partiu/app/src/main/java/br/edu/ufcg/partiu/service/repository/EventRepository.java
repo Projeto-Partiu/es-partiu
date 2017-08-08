@@ -9,6 +9,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 /**
  * Created by lucas on 26/07/17.
@@ -20,4 +21,7 @@ public interface EventRepository {
 
     @GET("events")
     Call<List<Event>> getEvents(@Header("Authorization") String token);
+
+    @GET("event/{eventId}")
+    Call<Event> findEvent(@Header("Authorization") String token, @Path("eventId") String eventId);
 }

@@ -15,5 +15,5 @@ public interface EventService {
 
     Void getEvents(ServiceCallback<List<Event>> callback);
 
-
+    Void find(String eventId, ServiceCallback<Event> callback);
 }

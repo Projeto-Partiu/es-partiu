@@ -68,6 +68,28 @@ public class EventServiceImpl implements EventService {
         return null;
     }
 
+    @Override
+    public Void find(String eventId, final ServiceCallback<Event> callback) {
+        eventRepository.findEvent(Util.getSessionToken(context), eventId)
+                .enqueue(new Callback<Event>() {
+                    @Override
+                    public void onResponse(Call<Event> call, Response<Event> response) {
+                        if (response.code() == 201) {
+                            callback.onResponse(response.body(), response);
+                        } else {
+                            callback.onError(null);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Event> call, Throwable t) {
+                        callback.onError(t);
+                    }
+                });
+
+        return null;
+    }
+
     private void validateEvent(Event event) {
         if (event.getName() == null || event.getName().isEmpty()) {
             throw new IllegalStateException("Nome é obrigatorio");

@@ -13,4 +13,5 @@
     <string name="action_marked_presence">marcou presença no evento</string>
     <string name="action_marked_interest">marcou interesse no evento</string>
     <string name="fragment_events_title">Eventos</string>
+    <string name="title_activity_event_detail">Evento</string>
 </resources>
