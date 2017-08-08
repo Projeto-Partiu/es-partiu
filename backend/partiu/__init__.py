@@ -151,7 +151,18 @@ def create_event(logged_user=None):
         return error(500)
 
 
+@app.route('/events/{string:event_id}', methods=['GET'])
+@requires_auth
+def find_event(event_id):
+    event = db.event.find_one({ '_id': event_id })
+
+    if not event:
+        return '', 404
+
+    return json.dumps(event, default=default_parser), 201
+
+
 @app.route('/events', methods=['GET'])
-#@requires_auth
+@requires_auth
 def get_events():
     return json.dumps(list(db.event.find()), default=default_parser), 200
