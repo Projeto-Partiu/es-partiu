@@ -83,15 +83,13 @@ def logout_user(logged_user=None):
     Find and Update Users
 """
 
-@app.route('/find_users/<string:query>', methods=['GET'])
+@app.route('/users', methods=['GET'])
 @requires_auth
 @with_user
-def find_users(query):
-    regx = re.compile("^" + query, re.IGNORECASE)
-    ret = {'users': []}
-    for user in db.user.find({"name": regx}):
-        ret['users'].append(user)
-    return json.dumps(ret, default=default_parser), 200
+def find_users(query="", logged_user=None):
+    query = request.args.get('query')
+    print(query)
+    return json.dumps(list(db.user.find({ 'name': { '$regex': re.compile("^" + query, re.IGNORECASE) } })), default=default_parser), 200
 
 @app.route('/user/update/<string:_id>', methods=['PUT'])
 @requires_auth
