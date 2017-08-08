@@ -2,9 +2,8 @@ package br.edu.ufcg.partiu.event_detail;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.test.mock.MockApplication;
-import android.util.Log;
 
 import javax.inject.Inject;
 
@@ -28,6 +27,13 @@ public class EventDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_detail);
 
+        ActionBar actionBar = getSupportActionBar();
+
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
+        }
+
         fragment = (EventDetailFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
 
         if (fragment == null) {
@@ -47,5 +53,11 @@ public class EventDetailActivity extends AppCompatActivity {
                 .eventDetailModule(new EventDetailModule(fragment))
                 .build()
                 .inject(this);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        super.onBackPressed();
+        return super.onSupportNavigateUp();
     }
 }
