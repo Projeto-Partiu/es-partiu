@@ -2,12 +2,14 @@
     Server
 """
 
+import pymongo
 import simplejson as json
 import os
 
 from flask import Flask, request
 from datetime import datetime
 from dateutil import parser as date_parser
+from bson.objectid import ObjectId
 from .shared.database import db
 from .shared.utils import default_parser, error, get_random_string
 from .shared.auth import requires_auth, with_user
@@ -110,7 +112,7 @@ def find_all_actions(logged_user=None):
         if not logged_user:
             return error(400)
 
-        actions = list(db.action.find({ 'user.id': { '$in': logged_user['following'] } }))
+        actions = list(db.action.find({ 'user.id': { '$in': logged_user['following'] } }).sort('date', pymongo.DESCENDING))
 
         return json.dumps(actions, default=default_parser)
     except Exception as e:
@@ -154,7 +156,7 @@ def create_event(logged_user=None):
 @app.route('/event/<string:event_id>', methods=['GET'])
 @requires_auth
 def find_event(event_id):
-    event = db.event.find_one({ '_id': event_id })
+    event = db.event.find_one({ '_id': ObjectId(event_id) })
 
     if not event:
         return '', 404
