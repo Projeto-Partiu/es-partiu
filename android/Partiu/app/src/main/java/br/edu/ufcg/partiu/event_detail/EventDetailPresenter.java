@@ -124,24 +124,24 @@ public class EventDetailPresenter implements EventDetailContract.Presenter {
             eventService.disconfirmPresence(event, new ServiceCallback<Void>() {
                 @Override
                 public void onResponse(Void object, Response<Void> response) {
-                    // TODO: tudo ok
+                    view.setPresence(false);
                 }
 
                 @Override
                 public void onError(Throwable error) {
-                    // TODO: tratar erro
+                    view.showToast("Ocorreu um erro ao desconfirmar presença");
                 }
             });
         } else {
             eventService.confirmPresence(event, new ServiceCallback<Void>() {
                 @Override
                 public void onResponse(Void object, Response<Void> response) {
-                    // TODO: tudo ok
+                    view.setPresence(true);
                 }
 
                 @Override
                 public void onError(Throwable error) {
-                    // TODO: tratar erro
+                    view.showToast("Ocorreu um erro ao confirmar presença");
                 }
             });
         }
