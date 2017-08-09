@@ -4,6 +4,7 @@
 
 import simplejson as json
 import os
+import re
 
 from flask import Flask, request
 from datetime import datetime
@@ -11,6 +12,7 @@ from dateutil import parser as date_parser
 from .shared.database import db
 from .shared.utils import default_parser, error, get_random_string
 from .shared.auth import requires_auth, with_user
+from bson import ObjectId
 
 app = Flask(__name__)
 
@@ -78,7 +80,33 @@ def logout_user(logged_user=None):
         return error(500)
 
 """
-    Actions
+    Find and Update Users
+"""
+
+@app.route('/users', methods=['GET'])
+@requires_auth
+@with_user
+def find_users(query="", logged_user=None):
+    query = request.args.get('query')
+    print(query)
+    return json.dumps(list(db.user.find({ 'name': { '$regex': re.compile("^" + query, re.IGNORECASE) } })), default=default_parser), 200
+
+@app.route('/user/update/<string:_id>', methods=['PUT'])
+@requires_auth
+@with_user
+def update_user(_id):
+    updated_user = json.loads(request.data.decode('utf-8'))
+    old_user = db.session.find_one({'_id': ObjectId(_id)})
+    if old_user is None:
+        return error(404)
+    db.user.update_one( {'_id': ObjectId(old_user['user'])},
+        {
+            '$set': {'name': 'kkkk'}
+        }, upsert=False)
+    return "done", 200
+
+"""
+   Actions
 """
 
 @app.route('/action/', methods=['POST'])
