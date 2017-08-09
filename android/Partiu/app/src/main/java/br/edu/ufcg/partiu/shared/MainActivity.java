@@ -16,6 +16,9 @@ import br.edu.ufcg.partiu.R;
 import br.edu.ufcg.partiu.feed.FeedFragment;
 import br.edu.ufcg.partiu.feed.FeedModule;
 import br.edu.ufcg.partiu.feed.FeedPresenter;
+import br.edu.ufcg.partiu.profile.ProfileFragment;
+import br.edu.ufcg.partiu.profile.ProfileModule;
+import br.edu.ufcg.partiu.profile.ProfilePresenter;
 import br.edu.ufcg.partiu.settings.SettingsFragment;
 import br.edu.ufcg.partiu.settings.SettingsModule;
 import br.edu.ufcg.partiu.settings.SettingsPresenter;
@@ -50,6 +53,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     ShowEventsPresenter showEventsPresenter;
     ShowEventsFragment showEventsFragment;
 
+    @Inject
+    ProfilePresenter profilePresenter;
+    ProfileFragment profileFragment;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +77,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             outState.putInt(CURRENT_FRAGMENT_KEY, R.id.feed_icon);
         } else if (currentDisplayedFragment instanceof SettingsFragment) {
             outState.putInt(CURRENT_FRAGMENT_KEY, R.id.settings_icon);
+        } else if (currentDisplayedFragment instanceof ProfileFragment) {
+            outState.putInt(CURRENT_FRAGMENT_KEY, R.id.profile_icon);
         } else if (currentDisplayedFragment instanceof ShowEventsFragment) {
             outState.putInt(CURRENT_FRAGMENT_KEY, R.id.event_icon);
         } else {
@@ -92,6 +101,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 case R.id.settings_icon:
                     settingsFragment = (SettingsFragment) currentDisplayedFragment;
                     break;
+                case R.id.profile_icon:
+                    profileFragment = (ProfileFragment) currentDisplayedFragment;
+                    break;
                 case R.id.event_icon:
                     showEventsFragment = (ShowEventsFragment) currentDisplayedFragment;
                     break;
@@ -108,6 +120,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 .feedModule(new FeedModule(feedFragment))
                 .settingsModule(new SettingsModule(settingsFragment))
                 .showEventsModule(new ShowEventsModule(showEventsFragment))
+                .profileModule(new ProfileModule(profileFragment))
                 .build()
                 .inject(this);
     }
@@ -115,6 +128,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private void initializeFragments() {
         feedFragment = new FeedFragment();
         settingsFragment = new SettingsFragment();
+        profileFragment = new ProfileFragment();
         showEventsFragment = new ShowEventsFragment();
     }
 
@@ -132,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 navigateToEvents();
                 return true;
             case R.id.profile_icon:
+                navigateToProfile();
                 return true;
             case R.id.settings_icon:
                 navigateToSettings();
@@ -143,6 +158,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     private void navigateToEvents() {
         attachFragmentToContainer(showEventsFragment);
+    }
+
+    private void navigateToProfile() {
+        attachFragmentToContainer(profileFragment);
     }
 
     private void navigateToFeed() {
