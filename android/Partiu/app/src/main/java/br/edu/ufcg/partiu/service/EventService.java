@@ -17,4 +17,8 @@ public interface EventService {
     Void getEvents(ServiceCallback<List<Event>> callback);
 
     Void find(String eventId, ServiceCallback<Event> callback);
+
+    Void disconfirmPresence(Event event, ServiceCallback<Void> callback);
+
+    Void confirmPresence(Event event, ServiceCallback<Void> callback);
 }

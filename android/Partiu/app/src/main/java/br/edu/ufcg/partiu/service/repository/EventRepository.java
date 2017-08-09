@@ -9,6 +9,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.PUT;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -26,4 +27,10 @@ public interface EventRepository {
 
     @GET("event/{eventId}")
     Call<Event> findEvent(@Header("Authorization") String token, @Path("eventId") String eventId);
+
+    @PUT("events/disconfirm-presence/{eventId}")
+    Call<Void> disconfirmPresence(@Path("eventId") String eventId, @Header("Authorization") String token);
+
+    @PUT("events/confirm-presence/{eventId}")
+    Call<Void> confirmPresence(@Path("eventId") String eventId, @Header("Authorization") String token);
 }
