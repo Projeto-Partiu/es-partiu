@@ -27,4 +27,10 @@ public interface EventRepository {
 
     @GET("event/{eventId}")
     Call<Event> findEvent(@Header("Authorization") String token, @Path("eventId") String eventId);
+
+    @PUT("events/disconfirm-presence/{eventId}")
+    Call<Void> disconfirmPresence(@Path("eventId") String eventId, @Header("Authorization") String token);
+
+    @PUT("events/confirm-presence/{eventId}")
+    Call<Void> confirmPresence(@Path("eventId") String eventId, @Header("Authorization") String token);
 }

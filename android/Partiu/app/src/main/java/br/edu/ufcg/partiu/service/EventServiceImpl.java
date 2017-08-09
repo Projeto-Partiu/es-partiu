@@ -94,6 +94,42 @@ public class EventServiceImpl implements EventService {
         return null;
     }
 
+    @Override
+    public Void disconfirmPresence(Event event, final ServiceCallback<Void> callback) {
+        eventRepository.disconfirmPresence(event.getId(), Util.getSessionToken(context))
+            .enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    callback.onResponse(null, response);
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    callback.onError(t);
+                }
+            });
+
+        return null;
+    }
+
+    @Override
+    public Void confirmPresence(Event event, final ServiceCallback<Void> callback) {
+        eventRepository.confirmPresence(event.getId(), Util.getSessionToken(context))
+                .enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        callback.onResponse(null, response);
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        callback.onError(t);
+                    }
+                });
+
+        return null;
+    }
+
     private void validateEvent(Event event) {
         if (event.getName() == null || event.getName().isEmpty()) {
             throw new IllegalStateException("Nome é obrigatorio");

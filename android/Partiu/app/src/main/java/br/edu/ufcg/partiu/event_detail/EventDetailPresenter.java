@@ -121,9 +121,29 @@ public class EventDetailPresenter implements EventDetailContract.Presenter {
             break;
         }
         if (confirmed) {
-            // TODO: desmarca presença
+            eventService.disconfirmPresence(event, new ServiceCallback<Void>() {
+                @Override
+                public void onResponse(Void object, Response<Void> response) {
+                    // TODO: tudo ok
+                }
+
+                @Override
+                public void onError(Throwable error) {
+                    // TODO: tratar erro
+                }
+            });
         } else {
-            // TODO: marca presença
+            eventService.confirmPresence(event, new ServiceCallback<Void>() {
+                @Override
+                public void onResponse(Void object, Response<Void> response) {
+                    // TODO: tudo ok
+                }
+
+                @Override
+                public void onError(Throwable error) {
+                    // TODO: tratar erro
+                }
+            });
         }
     }
 
