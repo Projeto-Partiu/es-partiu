@@ -12,6 +12,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -74,6 +75,9 @@ public class EventDetailFragment extends Fragment implements EventDetailContract
     @BindView(R.id.add_comment_button)
     ImageButton addCommentButton;
 
+    @BindView(R.id.presence_button)
+    Button presence_button;
+
     ItemAdapter<CommentHolder> commentAdapter;
 
     @Nullable
@@ -129,6 +133,12 @@ public class EventDetailFragment extends Fragment implements EventDetailContract
             }
         });
 
+        presence_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.togglePresence();
+            }
+        });
         return view;
     }
 

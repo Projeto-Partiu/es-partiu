@@ -112,6 +112,22 @@ public class EventDetailPresenter implements EventDetailContract.Presenter {
     }
 
     @Override
+    public void togglePresence() {
+        User loggedUser = userService.loggedUser();
+        boolean confirmed = false;
+        for (int i = 0; i < event.getConfirmedUsers().size(); i++) {
+            if (loggedUser.get_Id().equals(event.getConfirmedUsers().get(i).get_Id()))
+                confirmed = true;
+            break;
+        }
+        if (confirmed) {
+            // TODO: desmarca presença
+        } else {
+            // TODO: marca presença
+        }
+    }
+
+    @Override
     public void onCommentClicked(Comment comment) {
         if (!comment.getUser().getId().equals(userService.loggedUser().getId()))
             return;
