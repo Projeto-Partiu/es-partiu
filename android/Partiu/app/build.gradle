@@ -66,6 +66,8 @@ dependencies {
     compile "com.android.support:preference-v7:$supportlibVersion"
     compile "com.android.support:preference-v14:$supportlibVersion"
 
+    compile "com.google.android.gms:play-services-location:11.0.4"
+
 
     compile "com.jakewharton:butterknife:$butterknifeVersion"
     compile "com.google.dagger:dagger:$daggerVersion"

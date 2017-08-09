@@ -7,15 +7,15 @@ import simplejson as json
 import os
 import re
 
-from bson import ObjectId
 from flask import Flask, request
 from datetime import datetime
 from dateutil import parser as date_parser
 from bson.objectid import ObjectId
 from .shared.database import db
-from .shared.utils import default_parser, error, get_random_string
+from .shared.utils import default_parser, error, get_random_string, haversine
 from .shared.auth import requires_auth, with_user
 from bson import ObjectId
+from math import sqrt
 
 app = Flask(__name__)
 
@@ -197,12 +197,46 @@ def find_event(event_id):
 @app.route('/events', methods=['GET'])
 @requires_auth
 def get_events():
-    events = list(db.event.find())
+    return json.dumps(list(db.event.find().limit(20)), default=default_parser), 200
+
+@app.route('/events/by_time', methods=['GET'])
+@requires_auth
+def get_events_by_time():
+    events = db.event.find({'startDate': {'$gt': datetime.now()}}).limit(20).sort([("startDate", pymongo.ASCENDING)])
+    listEvents = []
 
     for event in events:
         event['comments'] = _find_event_comments(event)
+        listEvents.append(event)
 
-    return json.dumps(events, default=default_parser), 200
+    return json.dumps(listEvents, default=default_parser), 200
+
+@app.route('/events/by_distance', methods=['POST'])
+@requires_auth
+def get_events_by_distance():
+    try:
+        if request.data:
+            position = json.loads(request.data.decode('utf-8'))
+            if position['latitude'] == -1 and position['longitude'] == -1:
+                position = {'latitude': -7.219447, 'longitude': -35.884460}  # Centro de CG
+        else:
+            position = {'latitude': -7.219447, 'longitude': -35.884460} # Centro de CG
+
+        events = db.event.find({'startDate': {'$gt': datetime.now()}}).limit(20)
+
+        list_next_events = []
+
+        for event in events:
+            if its_close(event, position):
+                event['comments'] = _find_event_comments(event)
+                list_next_events.append(event)
+
+
+        return json.dumps(list_next_events, default=default_parser), 200
+
+    except Exception as e:
+        print(e)
+        return error(500)
 
 @app.route('/events/confirm-presence/<string:_id>', methods=['PUT'])
 @requires_auth
@@ -222,14 +256,14 @@ def confirm_presence(_id, logged_user=None):
         if interestedUsers[index]['_id'] == confirmed_user['_id']:
             curr_event['interestedUsers'].pop(index)
             break
-    
+
     curr_event['confirmedUsers'].append(confirmed_user)
     db.event.find_one_and_update(
         {'_id': ObjectId(_id)},
         {'$set': curr_event}
     )
     return '', 204
-    
+
 @app.route('/events/disconfirm-presence/<string:_id>', methods=['PUT'])
 @requires_auth
 @with_user
@@ -242,7 +276,7 @@ def disconfirm_presence(_id, logged_user=None):
         if confirmedUsers[index]['_id'] == logged_user['_id']:
             curr_event['confirmedUsers'].pop(index)
             break
-    
+
     db.event.find_one_and_update(
         {'_id': ObjectId(_id)},
         {'$set': curr_event}
@@ -278,7 +312,7 @@ def add_comment(event_id, logged_user=None):
 
         del logged_user['token']
         comment['user'] = logged_user
-        comment['date'] = datetime.now().isoformat() + 'Z'
+        comment['date'] = datetime.now()
 
         inserted_id = db.comment.insert(comment)
 
@@ -300,3 +334,18 @@ def _find_event_comments(event):
         key=lambda x: x['date'],
         reverse=True
     )
+
+def its_close(event, position):
+    lat_user = position['latitude']
+    long_user = position['longitude']
+
+    lat_event = event['latitude']
+    long_event = event['longitude']
+
+    dt = haversine(long_user, lat_user, long_event, lat_event)
+
+    if dt < 20: # 20km
+        return True
+
+    return False
+

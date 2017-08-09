@@ -1,12 +1,15 @@
 package br.edu.ufcg.partiu.service;
 
 import android.content.Context;
+import android.location.Location;
 
 import java.util.List;
 
 import br.edu.ufcg.partiu.base.ServiceCallback;
 import br.edu.ufcg.partiu.model.Comment;
 import br.edu.ufcg.partiu.model.Event;
+import br.edu.ufcg.partiu.model.FilterType;
+import br.edu.ufcg.partiu.model.LocationUser;
 import br.edu.ufcg.partiu.service.repository.EventRepository;
 import br.edu.ufcg.partiu.util.Util;
 import retrofit2.Call;
@@ -51,8 +54,9 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Void getEvents(final ServiceCallback<List<Event>> callback) {
-        eventRepository.getEvents(Util.getSessionToken(context)).enqueue(new Callback<List<Event>>() {
+    public Void getEvents(FilterType filterType, final ServiceCallback<List<Event>> callback) {
+
+        Callback<List<Event>> callbackEvent = new Callback<List<Event>>() {
 
             @Override
             public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
@@ -67,7 +71,18 @@ public class EventServiceImpl implements EventService {
                 callback.onError(t);
             }
 
-        });
+        };
+
+        switch (filterType) {
+            case BY_DISTANCE:
+                LocationUser locationUser = Util.getLastLocation(context);
+
+                eventRepository.getEventsByDistance(Util.getSessionToken(context), locationUser).enqueue(callbackEvent);
+                break;
+            case BY_TIME:
+                eventRepository.getEventsByTime(Util.getSessionToken(context)).enqueue(callbackEvent);
+                break;
+        }
 
         return null;
     }
