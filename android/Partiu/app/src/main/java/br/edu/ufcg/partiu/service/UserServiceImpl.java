@@ -10,6 +10,7 @@ import com.google.gson.GsonBuilder;
 import java.util.List;
 
 import br.edu.ufcg.partiu.base.ServiceCallback;
+import br.edu.ufcg.partiu.model.Event;
 import br.edu.ufcg.partiu.model.User;
 import br.edu.ufcg.partiu.service.repository.UserRepository;
 import br.edu.ufcg.partiu.util.Constants;
@@ -115,6 +116,23 @@ public class UserServiceImpl implements UserService {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
+                callback.onError(t);
+            }
+        });
+
+        return null;
+    }
+
+    @Override
+    public Void findUsers(String query, final ServiceCallback<List<User>> callback) {
+        repository.findUsers(query, loggedUser().getToken()).enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                callback.onResponse(response.body(), response);
+            }
+
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
                 callback.onError(t);
             }
         });
