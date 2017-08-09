@@ -23,6 +23,8 @@ public interface EventDetailContract {
         void onCommentChanged(CharSequence text);
 
         void onComment();
+
+        void togglePresence();
     }
 
     interface View extends BaseView<Presenter> {

@@ -55,7 +55,7 @@
                 android:id="@+id/presence_button"
                 android:layout_width="184dp"
                 android:layout_height="wrap_content"
-                android:text="Confirmar Presença"
+                android:text="Alterar presença"
                 app:layout_constraintBottom_toBottomOf="@+id/presence_icon"
                 app:layout_constraintLeft_toRightOf="@+id/presence_text"
                 app:layout_constraintRight_toRightOf="parent"

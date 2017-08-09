@@ -238,10 +238,11 @@ def get_events_by_distance():
         print(e)
         return error(500)
 
-@app.route('/events/confirm-presense/<string:_id>', methods=['PUT'])
+@app.route('/events/confirm-presence/<string:_id>', methods=['PUT'])
 @requires_auth
 @with_user
 def confirm_presence(_id, logged_user=None):
+    print("Hellooooo")
     if logged_user is None:
         return error(400)
     confirmed_user = {
@@ -263,7 +264,7 @@ def confirm_presence(_id, logged_user=None):
     )
     return '', 204
 
-@app.route('/events/disconfirm-presense/<string:_id>', methods=['PUT'])
+@app.route('/events/disconfirm-presence/<string:_id>', methods=['PUT'])
 @requires_auth
 @with_user
 def disconfirm_presence(_id, logged_user=None):

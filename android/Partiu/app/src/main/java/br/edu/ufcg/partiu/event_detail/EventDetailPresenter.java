@@ -112,6 +112,42 @@ public class EventDetailPresenter implements EventDetailContract.Presenter {
     }
 
     @Override
+    public void togglePresence() {
+        User loggedUser = userService.loggedUser();
+        boolean confirmed = false;
+        for (int i = 0; i < event.getConfirmedUsers().size(); i++) {
+            if (loggedUser.get_Id().equals(event.getConfirmedUsers().get(i).get_Id()))
+                confirmed = true;
+            break;
+        }
+        if (confirmed) {
+            eventService.disconfirmPresence(event, new ServiceCallback<Void>() {
+                @Override
+                public void onResponse(Void object, Response<Void> response) {
+                    view.setPresence(false);
+                }
+
+                @Override
+                public void onError(Throwable error) {
+                    view.showToast("Ocorreu um erro ao desconfirmar presença");
+                }
+            });
+        } else {
+            eventService.confirmPresence(event, new ServiceCallback<Void>() {
+                @Override
+                public void onResponse(Void object, Response<Void> response) {
+                    view.setPresence(true);
+                }
+
+                @Override
+                public void onError(Throwable error) {
+                    view.showToast("Ocorreu um erro ao confirmar presença");
+                }
+            });
+        }
+    }
+
+    @Override
     public void onCommentClicked(Comment comment) {
         if (!comment.getUser().getId().equals(userService.loggedUser().getId()))
             return;
