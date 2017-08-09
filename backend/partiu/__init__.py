@@ -4,7 +4,7 @@
 
 import simplejson as json
 import os
-
+import pymongo
 from flask import Flask, request
 from datetime import datetime
 from dateutil import parser as date_parser
@@ -160,7 +160,7 @@ def get_events():
 @app.route('/events/by_time', methods=['GET'])
 @requires_auth
 def get_events_by_time():
-    events = db.event.find({'startDate': {'$gt': datetime.now()}}).limit(20)
+    events = db.event.find({'startDate': {'$gt': datetime.now()}}).limit(20).sort([("startDate", pymongo.ASCENDING)])
 
     return json.dumps(list(events), default=default_parser), 200
 
@@ -198,10 +198,7 @@ def its_close(event, position):
     lat_event = event['latitude']
     long_event = event['longitude']
 
-    print(position)
-
     dt = haversine(long_user, lat_user, long_event, lat_event)
-    print(dt)
 
     if dt < 20: # 20km
         return True

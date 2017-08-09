@@ -152,11 +152,13 @@ public class ShowEventsFragment extends Fragment implements ShowEventsContract.V
             case R.id.filter_time:
                 filterType = FilterType.BY_TIME;
                 loadEvents();
+                showToast("Loading upcoming events");
                 break;
 
             case R.id.filter_distance:
                 filterType = FilterType.BY_DISTANCE;
                 loadEvents();
+                showToast("Loading events near you");
                 break;
 
         }
