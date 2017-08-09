@@ -5,6 +5,7 @@ import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -14,6 +15,10 @@ public class ItemAdapter<T extends ItemAdapter.ItemHolder> extends RecyclerView.
 
     private final SparseArray<ItemViewHolder.Factory> factoryByViewType = new SparseArray<>();
     private final SparseArray<OnItemClickedListener> listenerByViewType = new SparseArray<>();
+
+    public ItemAdapter() {
+        itemHolderList = new ArrayList<>();
+    }
 
     public List<T> getItemHolderList() {
         return itemHolderList;
