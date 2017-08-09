@@ -1,18 +1,17 @@
 package br.edu.ufcg.partiu.profile.view_holder;
 
-import android.net.Uri;
-import android.support.design.widget.FloatingActionButton;
-import android.text.format.DateFormat;
+import android.support.v7.widget.CardView;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
 import br.edu.ufcg.partiu.R;
-import br.edu.ufcg.partiu.model.Event;
 import br.edu.ufcg.partiu.model.User;
 import br.edu.ufcg.partiu.util.ItemAdapter;
 import butterknife.BindView;
@@ -30,6 +29,8 @@ public class ProfileViewHolder extends ItemAdapter.ItemViewHolder<ProfileHolder>
     @BindView(R.id.profile_list_pic)
     ImageView picInList;
 
+    @BindView(R.id.root_profile_layout)
+    CardView layout;
 
 
     public ProfileViewHolder(View itemView) {
@@ -39,7 +40,15 @@ public class ProfileViewHolder extends ItemAdapter.ItemViewHolder<ProfileHolder>
 
     @Override
     public void bind(ProfileHolder itemHolder) {
-        User user = itemHolder.getUser();
+
+        layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProfileViewHolder.this.notifyItemClicked();
+            }
+        });
+
+        final User user = itemHolder.getUser();
 
         nameInList.setText(user.getName());
 

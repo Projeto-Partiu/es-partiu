@@ -1,6 +1,5 @@
 package br.edu.ufcg.partiu.profile.view_holder;
 
-import br.edu.ufcg.partiu.model.Event;
 import br.edu.ufcg.partiu.model.User;
 import br.edu.ufcg.partiu.util.ItemAdapter;
 

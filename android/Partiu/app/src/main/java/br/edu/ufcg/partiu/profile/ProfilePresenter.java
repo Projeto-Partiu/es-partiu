@@ -1,5 +1,7 @@
 package br.edu.ufcg.partiu.profile;
 
+import android.os.Bundle;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -36,8 +38,18 @@ public class ProfilePresenter implements ProfileContract.Presenter {
     }
 
     @Override
+    public Bundle provideBundle(User user) {
+        Bundle bundle = new Bundle();
+        bundle.putString("USER_NAME", user.getName());
+        bundle.putString("USER_PHOTO", user.getUrlPhoto());
+        bundle.putBoolean("USER_FOLLOWING", userService.loggedUser().getFollowing().contains(user.getId()));
+
+        return bundle;
+
+    }
+
+    @Override
     public void searchProfiles(String query) {
-//        view.launchSearchActivity();
 
         userService.findUsers(query, new ServiceCallback<List<User>>() {
             @Override

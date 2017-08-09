@@ -1,5 +1,7 @@
 package br.edu.ufcg.partiu.profile;
 
+import android.os.Bundle;
+
 import java.util.List;
 
 import br.edu.ufcg.partiu.base.BasePresenter;
@@ -13,6 +15,8 @@ import br.edu.ufcg.partiu.model.User;
 public interface ProfileContract {
 
     interface Presenter extends BasePresenter {
+        Bundle provideBundle(User user);
+
         void searchProfiles(String query);
     }
 

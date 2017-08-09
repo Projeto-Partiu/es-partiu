@@ -3,7 +3,6 @@ package br.edu.ufcg.partiu.profile;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,13 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.edu.ufcg.partiu.R;
-import br.edu.ufcg.partiu.model.Event;
 import br.edu.ufcg.partiu.model.User;
 import br.edu.ufcg.partiu.profile.view_holder.ProfileHolder;
 import br.edu.ufcg.partiu.profile.view_holder.ProfileViewHolder;
 import br.edu.ufcg.partiu.profile_search.ProfileSearchActivity;
-import br.edu.ufcg.partiu.show_events.view_holder.EventHolder;
-import br.edu.ufcg.partiu.show_events.view_holder.EventViewHolder;
 import br.edu.ufcg.partiu.util.ItemAdapter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,7 +45,8 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         profileRecyclerView = (RecyclerView) view.findViewById(R.id.user_list);
@@ -59,6 +56,8 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
             @Override
             public void onClick(View v) {
                 String query = searchTextView.getText().toString();
+
+
                 profileLayout.setVisibility(View.GONE);
                 profileRecyclerView.setVisibility(View.VISIBLE);
 
@@ -66,13 +65,28 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
             }
         });
 
+
         searchTextView = (TextView) view.findViewById(R.id.search_profile_field);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
         profileAdapter = new ItemAdapter<ProfileHolder>()
-                .withViewType(new ProfileViewHolder.Factory(inflater), ProfileHolder.VIEW_TYPE);
+                .withViewType(new ProfileViewHolder.Factory(inflater),
+                        ProfileHolder.VIEW_TYPE,
+                        new ItemAdapter.OnItemClickedListener() {
+                            @Override
+                            public void onItemClicked(ItemAdapter.ItemViewHolder<?> viewHolder) {
+
+                                User user = profileAdapter.getItemHolderList().get(viewHolder.getAdapterPosition()).getUser();
+
+                                Intent intent = new Intent(getContext(), ProfileSearchActivity.class);
+                                intent.putExtras(presenter.provideBundle(user));
+                                startActivity(intent);
+
+                            }
+                        });
+
 
         profileRecyclerView.setAdapter(profileAdapter);
         profileRecyclerView.setLayoutManager(layoutManager);
@@ -98,16 +112,9 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
         profileAdapter.setItemHolderList(profileHolderList);
     }
 
+
     @Override
     public void showToast(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
-
-    //    @Override
-//    public void launchSearchActivity() {
-//        Intent intent = new Intent(getContext(), ProfileSearchActivity.class);
-//        intent.putExtra("SEARCH_STRING", searchTextView.getText().toString());
-//
-//        startActivity(intent);
-//    }
 }
