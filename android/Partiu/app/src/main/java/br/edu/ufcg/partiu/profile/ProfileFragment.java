@@ -10,9 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +46,12 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
     @BindView(R.id.profile_layout)
     LinearLayout profileLayout;
 
+//    @BindView(R.id.profile_view_pic)
+//    ImageView profilePic;
+//
+//    @BindView(R.id.profile_view_name)
+//    TextView profileName;
+
     private ItemAdapter<ProfileHolder> profileAdapter;
 
     @Nullable
@@ -48,6 +59,18 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        ImageView profilePic = (ImageView) view.findViewById(R.id.profile_view_pic);
+        TextView profileName = (TextView) view.findViewById(R.id.profile_view_name);
+
+        User user = presenter.provideUser();
+
+        Picasso
+                .with(getContext())
+                .load(user.getUrlPhoto())
+                .into(profilePic);
+
+        profileName.setText(user.getName());
 
         profileRecyclerView = (RecyclerView) view.findViewById(R.id.user_list);
 

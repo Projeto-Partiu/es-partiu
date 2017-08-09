@@ -49,6 +49,11 @@ public class ProfilePresenter implements ProfileContract.Presenter {
     }
 
     @Override
+    public User provideUser() {
+        return userService.loggedUser();
+    }
+
+    @Override
     public void searchProfiles(String query) {
 
         userService.findUsers(query, new ServiceCallback<List<User>>() {

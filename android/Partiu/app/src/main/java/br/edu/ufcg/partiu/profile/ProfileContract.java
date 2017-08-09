@@ -17,6 +17,8 @@ public interface ProfileContract {
     interface Presenter extends BasePresenter {
         Bundle provideBundle(User user);
 
+        User provideUser();
+
         void searchProfiles(String query);
     }
 

@@ -43,7 +43,7 @@
         android:id="@+id/profile_layout">
 
         <ImageView
-            android:id="@+id/profile_view_puc"
+            android:id="@+id/profile_view_pic"
             android:layout_width="130dp"
             android:layout_height="130dp"
             app:srcCompat="@drawable/com_facebook_profile_picture_blank_square" />
