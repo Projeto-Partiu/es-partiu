@@ -202,7 +202,9 @@ def get_events():
 @app.route('/events/by_time', methods=['GET'])
 @requires_auth
 def get_events_by_time():
-    events = db.event.find({'startDate': {'$gt': datetime.now()}}).limit(20).sort([("startDate", pymongo.ASCENDING)])
+    events = db.event.find({'startDate': {'$gt': datetime.now()}}) \
+        .limit(20)                                                 \
+        .sort([("startDate", pymongo.ASCENDING)])
 
     for event in events:
         event['comments'] = _find_event_comments(event)
@@ -309,7 +311,7 @@ def add_comment(event_id, logged_user=None):
 
         del logged_user['token']
         comment['user'] = logged_user
-        comment['date'] = datetime.now().isoformat() + 'Z'
+        comment['date'] = datetime.now()
 
         inserted_id = db.comment.insert(comment)
 
