@@ -281,4 +281,24 @@ public class EventDetailFragment extends Fragment implements EventDetailContract
     public void setCommentInputText(String text) {
         commentEditText.setText(text);
     }
+
+    @Override
+    public void hideEventDescription() {
+        descriptionText.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showEventDescription() {
+        descriptionText.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showCommentsList() {
+        commentRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideCommentsList() {
+        commentRecyclerView.setVisibility(View.GONE);
+    }
 }

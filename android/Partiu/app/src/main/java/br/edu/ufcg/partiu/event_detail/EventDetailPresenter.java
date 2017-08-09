@@ -59,7 +59,14 @@ public class EventDetailPresenter implements EventDetailContract.Presenter {
                 DateFormat formatter = SimpleDateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT);
 
                 view.setEventName(event.getName());
-                view.setEventDescription(event.getDescription());
+
+                if (event.getDescription() == null) {
+                    view.hideEventDescription();
+                } else {
+                    view.showEventDescription();
+                    view.setEventDescription(event.getDescription());
+                }
+
                 view.setStartDate(formatter.format(event.getStartDate()));
                 view.setPlace(event.getAddress());
 
@@ -75,12 +82,15 @@ public class EventDetailPresenter implements EventDetailContract.Presenter {
                         confirmed = true;
                         break;
                 }
+
                 view.setPresence(confirmed);
 
                 if (!event.getComments().isEmpty()) {
                     view.hideEmptyCommentsMessage();
+                    view.showCommentsList();
                     view.setComments(event.getComments());
                 } else {
+                    view.hideCommentsList();
                     view.showEmptyCommentsMessage();
                 }
 

@@ -66,5 +66,13 @@ public interface EventDetailContract {
         void addCommentToList(Comment comment);
 
         void setCommentInputText(String text);
+
+        void hideEventDescription();
+
+        void showEventDescription();
+
+        void showCommentsList();
+
+        void hideCommentsList();
     }
 }
