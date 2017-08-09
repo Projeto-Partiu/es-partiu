@@ -80,6 +80,7 @@ public class UserServiceImpl implements UserService {
         loggedUser.setName(prefs.getString(Constants.NAME_USER, ""));
         loggedUser.setUrlPhoto(prefs.getString(Constants.URL_PHOTO_USER, ""));
         loggedUser.setToken(prefs.getString(Constants.TOKEN, ""));
+        loggedUser.set_Id(prefs.getString(Constants.ID_USER, ""));
         try {
             loggedUser.setFollowing((List<String>) gson.fromJson(prefs.getString(Constants.FOLLOWING_USER, "[]"), User.class.getDeclaredField("following").getGenericType()));
         } catch (NoSuchFieldException e) {

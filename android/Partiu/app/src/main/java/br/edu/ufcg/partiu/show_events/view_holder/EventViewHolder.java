@@ -1,6 +1,8 @@
 package br.edu.ufcg.partiu.show_events.view_holder;
 
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.CardView;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +21,9 @@ import butterknife.ButterKnife;
 
 public class EventViewHolder extends ItemAdapter.ItemViewHolder<EventHolder> {
 
+    @BindView(R.id.layout)
+    ConstraintLayout viewLayout;
+
     @BindView(R.id.day_text_view)
     TextView dayText;
 
@@ -33,9 +38,6 @@ public class EventViewHolder extends ItemAdapter.ItemViewHolder<EventHolder> {
 
     @BindView(R.id.date_text_view)
     TextView dateText;
-
-    @BindView(R.id.edit_event_fab)
-    FloatingActionButton fab;
 
     public EventViewHolder(View itemView) {
         super(itemView);
@@ -58,12 +60,10 @@ public class EventViewHolder extends ItemAdapter.ItemViewHolder<EventHolder> {
 
         dateText.setText(event.getFriendlyDate());
 
-        fab.setOnClickListener(new View.OnClickListener() {
+        viewLayout.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-//                Intent intent = new Intent(context, CreateEventActivity.class);
-//
-//                parent.getContext().startActivity(intent);
+            public void onClick(View v) {
+                EventViewHolder.super.notifyItemClicked();
             }
         });
     }

@@ -13,12 +13,15 @@ import br.edu.ufcg.partiu.model.Event;
 public interface ShowEventsContract {
 
     interface Presenter extends BasePresenter {
+        void onEventClicked(Event event);
     }
 
     interface View extends BaseView<Presenter> {
         void showEvents(List<Event> events);
 
         void showToast(String message);
+
+        void goToEventDetailActivity(String eventId);
     }
 
 }
