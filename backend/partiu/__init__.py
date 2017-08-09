@@ -202,14 +202,14 @@ def get_events():
 @app.route('/events/by_time', methods=['GET'])
 @requires_auth
 def get_events_by_time():
-    events = db.event.find({'startDate': {'$gt': datetime.now()}}) \
-        .limit(20)                                                 \
-        .sort([("startDate", pymongo.ASCENDING)])
+    events = db.event.find({'startDate': {'$gt': datetime.now()}}).limit(20).sort([("startDate", pymongo.ASCENDING)])
+    listEvents = []
 
     for event in events:
         event['comments'] = _find_event_comments(event)
+        listEvents.append(event)
 
-    return json.dumps(list(events), default=default_parser), 200
+    return json.dumps(listEvents, default=default_parser), 200
 
 @app.route('/events/by_distance', methods=['POST'])
 @requires_auth
