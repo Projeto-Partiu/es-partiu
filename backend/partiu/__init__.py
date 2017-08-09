@@ -2,15 +2,19 @@
     Server
 """
 
+import pymongo
 import simplejson as json
 import os
-import pymongo
+import re
+
 from flask import Flask, request
 from datetime import datetime
 from dateutil import parser as date_parser
+from bson.objectid import ObjectId
 from .shared.database import db
 from .shared.utils import default_parser, error, get_random_string, haversine
 from .shared.auth import requires_auth, with_user
+from bson import ObjectId
 from math import sqrt
 
 app = Flask(__name__)
@@ -79,7 +83,33 @@ def logout_user(logged_user=None):
         return error(500)
 
 """
-    Actions
+    Find and Update Users
+"""
+
+@app.route('/users', methods=['GET'])
+@requires_auth
+@with_user
+def find_users(query="", logged_user=None):
+    query = request.args.get('query')
+    print(query)
+    return json.dumps(list(db.user.find({ 'name': { '$regex': re.compile("^" + query, re.IGNORECASE) } })), default=default_parser), 200
+
+@app.route('/user/update/<string:_id>', methods=['PUT'])
+@requires_auth
+@with_user
+def update_user(_id):
+    updated_user = json.loads(request.data.decode('utf-8'))
+    old_user = db.session.find_one({'_id': ObjectId(_id)})
+    if old_user is None:
+        return error(404)
+    db.user.update_one( {'_id': ObjectId(old_user['user'])},
+        {
+            '$set': {'name': 'kkkk'}
+        }, upsert=False)
+    return "done", 200
+
+"""
+   Actions
 """
 
 @app.route('/action/', methods=['POST'])
@@ -96,7 +126,6 @@ def add_action(logged_user=None):
             'date': str(datetime.now()),
             'type': action['type'],
             'user': logged_user,
-            'comments': [],
             'arguments': action['arguments']
         })
 
@@ -112,7 +141,7 @@ def find_all_actions(logged_user=None):
         if not logged_user:
             return error(400)
 
-        actions = list(db.action.find({ 'user.id': {'$in': logged_user['following'] } }))
+        actions = list(db.action.find({ 'user.id': { '$in': logged_user['following'] } }).sort('date', pymongo.DESCENDING))
 
         return json.dumps(actions, default=default_parser)
     except Exception as e:
@@ -139,6 +168,7 @@ def create_event(logged_user=None):
         event['owner'] = logged_user
         event['interestedUsers'] = []
         event['confirmedUsers'] = []
+        event['comments'] = []
 
         inserted_id = db.event.insert(event)
 
@@ -151,6 +181,18 @@ def create_event(logged_user=None):
         print(e)
         return error(500)
 
+@app.route('/event/<string:event_id>', methods=['GET'])
+@requires_auth
+def find_event(event_id):
+    event = db.event.find_one({ '_id': ObjectId(event_id) })
+
+    if not event:
+        return '', 404
+
+    event['comments'] = _find_event_comments(event)
+
+    return json.dumps(event, default=default_parser), 201
+
 
 @app.route('/events', methods=['GET'])
 @requires_auth
@@ -161,6 +203,9 @@ def get_events():
 @requires_auth
 def get_events_by_time():
     events = db.event.find({'startDate': {'$gt': datetime.now()}}).limit(20).sort([("startDate", pymongo.ASCENDING)])
+
+    for event in events:
+        event['comments'] = _find_event_comments(event)
 
     return json.dumps(list(events), default=default_parser), 200
 
@@ -181,6 +226,7 @@ def get_events_by_distance():
 
         for event in events:
             if its_close(event, position):
+                event['comments'] = _find_event_comments(event)
                 list_next_events.append(event)
 
 
@@ -190,6 +236,101 @@ def get_events_by_distance():
         print(e)
         return error(500)
 
+@app.route('/events/confirm-presense/<string:_id>', methods=['PUT'])
+@requires_auth
+@with_user
+def confirm_presence(_id, logged_user=None):
+    if logged_user is None:
+        return error(400)
+    confirmed_user = {
+        'name': logged_user['name'],
+        'urlPhoto': logged_user['urlPhoto'],
+        '_id': logged_user['_id']
+    }
+    curr_event = db.event.find_one({ '_id': ObjectId(_id) })
+    interestedUsers = curr_event['interestedUsers']
+    for index in range(len(interestedUsers)):
+        if interestedUsers[index]['_id'] == confirmed_user['_id']:
+            curr_event['interestedUsers'].pop(index)
+            break
+
+    curr_event['confirmedUsers'].append(confirmed_user)
+    db.event.find_one_and_update(
+        {'_id': ObjectId(_id)},
+        {'$set': curr_event}
+    )
+    return '', 204
+
+@app.route('/events/disconfirm-presense/<string:_id>', methods=['PUT'])
+@requires_auth
+@with_user
+def disconfirm_presence(_id, logged_user=None):
+    if logged_user is None:
+        return error(400)
+    curr_event = db.event.find_one({'_id': ObjectId(_id)})
+    confirmedUsers = curr_event['confirmedUsers']
+    for index in range(len(confirmedUsers)):
+        if confirmedUsers[index]['_id'] == logged_user['_id']:
+            curr_event['confirmedUsers'].pop(index)
+            break
+
+    db.event.find_one_and_update(
+        {'_id': ObjectId(_id)},
+        {'$set': curr_event}
+    )
+    return '', 204
+
+@app.route('/comment/<string:comment_id>', methods=['DELETE'])
+@requires_auth
+@with_user
+def delete_comment(comment_id, logged_user=None):
+    try:
+        comment = db.comment.find_one({ '_id': ObjectId(comment_id) })
+
+        if comment['user']['id'] != logged_user['id']:
+            return error(401)
+
+        db.comment.delete_one(comment)
+
+        return '', 204
+    except:
+        return error(500)
+
+
+@app.route('/comment/<string:event_id>', methods=['POST'])
+@requires_auth
+@with_user
+def add_comment(event_id, logged_user=None):
+    try:
+        if not request.data:
+            return error(400)
+
+        comment = json.loads(request.data.decode('utf-8'))
+
+        del logged_user['token']
+        comment['user'] = logged_user
+        comment['date'] = datetime.now().isoformat() + 'Z'
+
+        inserted_id = db.comment.insert(comment)
+
+        if inserted_id:
+            comment['_id'] = inserted_id
+
+            db.event.update_one({ '_id': ObjectId(event_id) }, { '$push': { 'comments': str(inserted_id) }})
+
+            return json.dumps(comment, default=default_parser), 201
+        else:
+            return error(501)
+    except:
+        return error(500)
+
+
+def _find_event_comments(event):
+    return sorted(
+        list(db.comment.find({ '_id': { '$in': [ObjectId(id) for id in event['comments']] } })),
+        key=lambda x: x['date'],
+        reverse=True
+    )
 
 def its_close(event, position):
     lat_user = position['latitude']
@@ -204,5 +345,4 @@ def its_close(event, position):
         return True
 
     return False
-
 

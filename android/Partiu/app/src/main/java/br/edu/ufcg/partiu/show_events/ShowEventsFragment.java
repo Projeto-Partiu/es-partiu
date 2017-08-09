@@ -4,6 +4,7 @@ package br.edu.ufcg.partiu.show_events;
  * Created by ordan on 06/08/17.
  */
 
+import android.content.Intent;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -33,6 +34,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.edu.ufcg.partiu.R;
+import br.edu.ufcg.partiu.event_detail.EventDetailActivity;
+import br.edu.ufcg.partiu.feed.view_holder.ActionMarkInterestViewHolder;
 import br.edu.ufcg.partiu.model.Event;
 import br.edu.ufcg.partiu.model.FilterType;
 import br.edu.ufcg.partiu.show_events.view_holder.EventHolder;
@@ -82,7 +85,18 @@ public class ShowEventsFragment extends Fragment implements ShowEventsContract.V
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
         eventAdapter = new ItemAdapter<EventHolder>()
-                .withViewType(new EventViewHolder.Factory(inflater), EventHolder.VIEW_TYPE);
+                .withViewType(
+                        new EventViewHolder.Factory(inflater),
+                        EventHolder.VIEW_TYPE,
+                        new ItemAdapter.OnItemClickedListener() {
+                            @Override
+                            public void onItemClicked(ItemAdapter.ItemViewHolder<?> viewHolder) {
+                                EventHolder eventHolder = eventAdapter.getItemHolderList().get(viewHolder.getAdapterPosition());
+
+                                presenter.onEventClicked(eventHolder.getEvent());
+                            }
+                        }
+                );
 
         eventRecyclerView.setAdapter(eventAdapter);
         eventRecyclerView.setLayoutManager(layoutManager);
@@ -179,5 +193,13 @@ public class ShowEventsFragment extends Fragment implements ShowEventsContract.V
     @Override
     public void showToast(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void goToEventDetailActivity(String eventId) {
+        Intent intent = new Intent(getContext(), EventDetailActivity.class);
+        intent.putExtra(EventDetailActivity.EVENT_ID_KEY, eventId);
+
+        startActivity(intent);
     }
 }

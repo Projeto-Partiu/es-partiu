@@ -16,7 +16,6 @@ public class Action {
     private Date date;
     private ActionType type;
     private User user;
-    private List<Comment> comments;
     private Map<String, Object> arguments;
 
     public Action() {
@@ -52,14 +51,6 @@ public class Action {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
     }
 
     public Map<String, Object> getArguments() {

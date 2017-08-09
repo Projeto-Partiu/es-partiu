@@ -26,6 +26,10 @@ public class ItemAdapter<T extends ItemAdapter.ItemHolder> extends RecyclerView.
         }
     }
 
+    public void addItem(T itemHolder) {
+        addItem(itemHolderList.size(), itemHolder);
+    }
+
     public void addItem(int position, T itemHolder) {
         position = Math.min(position, itemHolderList.size());
         itemHolderList.add(position, itemHolder);

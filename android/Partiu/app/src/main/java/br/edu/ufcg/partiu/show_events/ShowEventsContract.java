@@ -16,15 +16,17 @@ import br.edu.ufcg.partiu.model.FilterType;
 public interface ShowEventsContract {
 
     interface Presenter extends BasePresenter {
-
         void getEvents(FilterType filterType);
 
+        void onEventClicked(Event event);
     }
 
     interface View extends BaseView<Presenter> {
         void showEvents(List<Event> events);
 
         void showToast(String message);
+
+        void goToEventDetailActivity(String eventId);
     }
 
 }

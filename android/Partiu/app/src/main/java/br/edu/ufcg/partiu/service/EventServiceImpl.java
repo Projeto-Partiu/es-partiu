@@ -6,6 +6,7 @@ import android.location.Location;
 import java.util.List;
 
 import br.edu.ufcg.partiu.base.ServiceCallback;
+import br.edu.ufcg.partiu.model.Comment;
 import br.edu.ufcg.partiu.model.Event;
 import br.edu.ufcg.partiu.model.FilterType;
 import br.edu.ufcg.partiu.model.LocationUser;
@@ -59,7 +60,10 @@ public class EventServiceImpl implements EventService {
 
             @Override
             public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
-                callback.onResponse(response.body(), response);
+                if (response.code() == 200)
+                    callback.onResponse(response.body(), response);
+                else
+                    callback.onError(null);
             }
 
             @Override
@@ -79,6 +83,28 @@ public class EventServiceImpl implements EventService {
                 eventRepository.getEventsByTime(Util.getSessionToken(context)).enqueue(callbackEvent);
                 break;
         }
+
+        return null;
+    }
+
+    @Override
+    public Void find(String eventId, final ServiceCallback<Event> callback) {
+        eventRepository.findEvent(Util.getSessionToken(context), eventId)
+                .enqueue(new Callback<Event>() {
+                    @Override
+                    public void onResponse(Call<Event> call, Response<Event> response) {
+                        if (response.code() == 201) {
+                            callback.onResponse(response.body(), response);
+                        } else {
+                            callback.onError(null);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Event> call, Throwable t) {
+                        callback.onError(t);
+                    }
+                });
 
         return null;
     }

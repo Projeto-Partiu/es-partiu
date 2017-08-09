@@ -48,10 +48,16 @@
             android:name=".event.CreateEventActivity"
             android:label="@string/title_activity_create_event" />
 
+        <activity
+            android:name=".event_detail.EventDetailActivity"
+            android:label="@string/title_activity_event_detail"
+            android:windowSoftInputMode="adjustPan" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAsRC-L4oCgfXC-CJnE1msXcB3UpuT2HAk" />
 
+        <activity android:name=".profile_search.ProfileSearchActivity" />
     </application>
 
 </manifest>
