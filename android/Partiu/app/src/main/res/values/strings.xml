@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">Partiu</string>
+
+    <string name="facebook_app_id">1454994784592664</string>
+    <string name="fb_login_protocol_scheme">fb1454994784592664</string>
+    <string name="fragment_feed_title">Feed</string>
+
+    <string name="title_activity_create_event">Criar Evento</string>
+    <string name="feed_empty_message">Você não tem atividades recentes para visualizar</string>
+    <string name="action_started_following">começou a seguir</string>
+    <string name="fragment_settings_title">Configuração</string>
+    <string name="title_activity_show_events">ShowEvents</string>
+    <string name="action_marked_presence">marcou presença no evento</string>
+    <string name="action_marked_interest">marcou interesse no evento</string>
+    <string name="fragment_events_title">Eventos</string>
+    <string name="title_activity_event_detail">Evento</string>
 </resources>
